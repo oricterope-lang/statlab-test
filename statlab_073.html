@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#183b50">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="StatLab">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>StatLab 0.7.3.0</title>
+<style>
+:root{--navy:#183b50;--teal:#267c78;--bg:#f3f6f8;--ink:#20313d;--muted:#667783;--line:#dce4e9;--white:#fff;--gold:#fff8e8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{background:var(--navy);color:#fff;padding:17px max(16px,calc((100vw - 1180px)/2));display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.brand{font-size:24px;font-weight:780;letter-spacing:.2px}.sub{color:#c8d9e2;font-size:12px;margin-top:3px}.header-actions{display:flex;gap:8px;flex-wrap:wrap}header button{border:1px solid #638092;background:#244c61;color:#fff;border-radius:8px;padding:9px 12px;font-weight:600}
+main{max-width:1180px;margin:20px auto;padding:0 14px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px}nav,.panel,.metric{background:#fff;border:1px solid var(--line);border-radius:13px}nav{padding:10px;height:max-content;position:sticky;top:10px}nav button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:12px;border-radius:8px;color:var(--ink);font-size:14px;margin:2px 0}nav button.active{background:#e9f2f3;color:#145b5a;font-weight:700}.content{min-width:0}.panel{padding:17px;margin-bottom:15px}.panel h2{margin:0 0 6px;font-size:19px}.muted{color:var(--muted);font-size:13px;line-height:1.5}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px}input,select{border:1px solid var(--line);border-radius:8px;padding:10px;background:white;color:var(--ink);font:inherit;max-width:100%;min-height:40px}input[type=text]{min-width:190px}button.primary{background:var(--teal);color:white;border:0;border-radius:8px;padding:11px 14px;font-weight:650}button.secondary{background:#edf2f5;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 13px;font-weight:600}button:disabled{opacity:.45}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}.metric{padding:12px}.metric .k{font-size:12px;color:var(--muted)}.metric .v{font-size:20px;font-weight:750;margin-top:5px;overflow-wrap:anywhere}table{border-collapse:collapse;width:100%;font-size:13px}td,th{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--muted);font-weight:650}canvas{width:100%;height:210px;display:block;background:#fbfcfd;border:1px solid var(--line);border-radius:9px}.notice{background:var(--gold);border:1px solid #f0dfb7;color:#70551d;border-radius:9px;padding:12px;font-size:13px;line-height:1.45}.status{font-size:12px;color:var(--muted);padding:8px 0}.tag{font-size:11px;background:#e8f1f2;color:#225e60;padding:5px 8px;border-radius:99px}.hidden{display:none}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field label{font-size:12px;color:var(--muted);font-weight:650}.actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:12px}.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.result-box{border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}.result-box .k{font-size:12px;color:var(--muted)}.result-box .v{font-size:18px;font-weight:750;margin-top:4px;overflow-wrap:anywhere}.result-table{overflow:auto;margin-top:10px}.analysis-card{border:1px solid var(--line);border-radius:9px;padding:11px;margin-top:8px}.analysis-card strong{display:block;margin-bottom:4px}.pill{display:inline-block;background:#eef3f5;padding:3px 7px;border-radius:20px;font-size:11px;color:#4c626e}.right{margin-left:auto}.empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}footer{max-width:1180px;margin:10px auto 28px;padding:0 14px;color:var(--muted);font-size:12px}
+@media(max-width:740px){.result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}nav{position:static;display:flex;overflow:auto;gap:3px}nav button{white-space:nowrap;width:auto;padding:10px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}header{padding:14px}.header-actions{width:100%}.header-actions button{flex:1}}
+
+.report-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.report-form .field.full{grid-column:1/-1}
+.report-select-list{display:grid;gap:7px;margin-top:10px}
+.report-select-item{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}
+.report-select-item input{min-height:auto;margin-top:3px}
+@media(max-width:740px){.report-form{grid-template-columns:1fr}.report-form .field.full{grid-column:auto}}
+</style></head>
+<body>
+<header><div><div class="brand">⚗ StatLab</div><div class="sub">Environnement statistique scientifique · Version 0.6.3 · Application web</div></div><div class="header-actions"><button id="newProject">＋ Nouveau projet</button><button id="openProject">↗ Ouvrir .statlab</button><button id="saveProject">↓ Enregistrer le projet</button><input id="projectFile" type="file" accept="*/*" hidden></div></header>
+<main><div class="panel" style="margin-bottom:14px"><div class="row" style="margin-top:0"><div style="flex:1;min-width:190px"><div class="muted">PROJET ACTUEL</div><input id="projectName" type="text" value="Nouveau projet" aria-label="Nom du projet" style="width:100%;font-weight:700"></div><span class="tag" id="saveState">Brouillon local</span></div><div class="status" id="status">Prêt. Crée un projet ou importe des données.</div></div>
+<div class="layout"><nav aria-label="Navigation"><button class="active" data-view="data">▦ Données</button><button data-view="desc">∑ Descriptives</button><button data-view="history">◷ Analyses enregistrées</button><button data-view="tests">⌁ Tests statistiques</button><button data-view="bland">↔ Bland-Altman</button><button data-view="models">⌂ Modélisation</button><button data-view="quality">◇ Qualité laboratoire</button><button data-view="reports">▤ Rapports PDF</button></nav>
+<section class="content">
+<div id="view-data">
+<div class="panel"><h2>Importer des données</h2><div class="muted">Fichiers pris en charge : CSV, TXT et classeurs Excel .xlsx. Pour un classeur Excel, la première feuille est importée. Tout le traitement s'effectue localement dans le navigateur.</div><div class="row"><input id="dataFile" type="file" accept=".csv,.txt,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><button class="secondary" id="demo">Charger un exemple</button></div><div class="status" id="datasetInfo">Aucun jeu de données chargé.</div></div>
+<div class="panel"><h2>Structure des variables</h2><div class="muted">Typage automatique indicatif. Il pourra être rendu modifiable dans une prochaine version, notamment pour distinguer identifiants et mesures numériques.</div><div id="variables" class="empty" style="margin-top:12px">Importe un jeu de données pour afficher les variables.</div></div>
+<div class="panel"><h2>Aperçu des données</h2><div class="row"><div class="field"><label for="filterColumn">Filtrer sur une variable</label><select id="filterColumn"><option value="">Aucun filtre</option></select></div><div class="field" style="flex:1"><label for="filterValue">Valeur exacte à conserver</label><input id="filterValue" type="text" placeholder="Laisser vide pour tout afficher"></div><button class="secondary" id="clearFilter">Effacer le filtre</button></div><div class="status" id="filterInfo"></div><div style="overflow:auto;margin-top:8px" id="preview"></div></div>
+<div class="notice">Prudence : prototype de démonstration. Ne charge pas de données nominatives, sensibles ou médico-légales réelles. Le stockage local du navigateur n'est pas un coffre-fort ; conserve une copie du fichier .statlab dans un emplacement approuvé. Aucun téléversement réseau n'est effectué par cette application.</div>
+</div>
+<div id="view-desc" class="hidden"><div class="panel"><h2>Statistiques descriptives</h2><div class="muted">Indicateurs calculés sur les observations conservées après filtrage. Écart-type calculé avec le dénominateur n−1.</div><div class="row"><div class="field"><label for="variable">Variable quantitative</label><select id="variable"><option value="">Charge d'abord un jeu de données</option></select></div><button class="primary" id="calculate">Calculer et enregistrer</button></div><div class="metrics" id="metrics"></div><div style="overflow:auto" id="statsTable"></div><div class="row" id="descExport"></div><h2 style="margin-top:20px">Distribution</h2><canvas id="hist" width="900" height="260"></canvas></div></div>
+<div id="view-history" class="hidden"><div class="panel"><h2>Analyses enregistrées dans le projet</h2><p class="muted">Chaque exécution descriptive est conservée avec la variable, les paramètres, les résultats et l'empreinte de la version des données présentes au moment du calcul.</p><div id="historyList" class="empty">Aucune analyse enregistrée.</div></div></div>
+<div id="view-tests" class="hidden">
+<div class="panel"><h2>Comparaison de deux groupes indépendants</h2><p class="muted">Version expérimentale 0.4. Sélectionne une variable quantitative et une variable de groupe comportant au moins deux modalités. Les observations manquantes ou non numériques sont exclues avec comptage explicite.</p>
+<div class="two" style="margin-top:14px">
+<div class="field"><label for="testVariable">Variable quantitative</label><select id="testVariable"><option value="">Importer des données</option></select></div>
+<div class="field"><label for="groupVariable">Variable de groupe</label><select id="groupVariable"><option value="">Importer des données</option></select></div>
+<div class="field"><label for="groupA">Premier groupe</label><select id="groupA"><option value="">—</option></select></div>
+<div class="field"><label for="groupB">Deuxième groupe</label><select id="groupB"><option value="">—</option></select></div>
+<div class="field"><label for="testMethod">Test statistique</label><select id="testMethod"><option value="welch">Welch (variances inégales)</option><option value="student">Student (variances égales)</option><option value="mw">Mann-Whitney (approximation normale)</option></select></div>
+<div class="field"><label for="alpha">Seuil alpha</label><select id="alpha"><option value="0.05">0,05</option><option value="0.01">0,01</option><option value="0.10">0,10</option></select></div>
+</div><div class="row"><button class="primary" id="runTest">Exécuter le test</button><button class="secondary" id="loadTestDemo">Charger l’exemple si nécessaire</button></div><div id="testResults" style="margin-top:14px"><div class="empty">Configure le test puis appuie sur « Exécuter le test ».</div></div>
+</div>
+<div class="notice">Précautions méthodologiques : Student suppose l'égalité des variances ; Welch ne la suppose pas et constitue un choix robuste par défaut. Mann-Whitney teste une différence de distributions (pas systématiquement une différence de médianes). La p-value ne mesure ni l'importance ni la pertinence scientifique de l'effet. L'approximation normale de Mann-Whitney est signalée ; les petits échantillons nécessitent une méthode exacte ou une validation complémentaire.</div>
+</div>
+<div id="view-bland" class="hidden">
+<div class="panel"><h2>Comparaison de méthodes — Bland-Altman</h2>
+<p class="muted">Une ligne représente un échantillon et chaque colonne une mesure. Chaque comparaison est calculée séparément sur les paires présentes à la même ligne.</p>
+<div class="two" style="margin-top:14px">
+<div class="field"><label for="baSetup">Organisation</label><select id="baSetup"><option value="free">Comparaisons libres par paires</option><option value="reference">Une référence contre toutes les autres méthodes</option></select></div>
+<div class="field" id="baReferenceWrap"><label for="baReference">Méthode de référence</label><select id="baReference"><option value="">Importer des données</option></select></div>
+<div class="field"><label for="baId">Identifiant (facultatif)</label><select id="baId"><option value="">Aucun identifiant</option></select></div>
+<div class="field"><label for="baMode">Échelle d'analyse</label><select id="baMode"><option value="classic">Classique — différences A − B</option><option value="log">Logarithmique — rapports A / B</option></select></div>
+<div class="field"><label for="baAlpha">Niveau de confiance</label><select id="baAlpha"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></div>
+</div>
+<div id="baFreeControls"><div class="row"><strong>Comparaisons à effectuer</strong><button class="secondary" id="baAddPair" type="button">＋ Ajouter une comparaison</button></div><div id="baPairs"></div></div>
+<div class="row"><button class="primary" id="runBland">Calculer les comparaisons</button><button class="secondary" id="loadBlandDemo">Charger l’exemple si nécessaire</button></div>
+<div id="baResults" style="margin-top:14px"><div class="empty">Choisis les colonnes à comparer puis lance l'analyse.</div></div>
+</div>
+<div class="notice">Les limites d'accord ne sont pas des intervalles de confiance de la moyenne. L'acceptabilité doit être définie à l'avance. La régression des différences sur les moyennes recherche un biais proportionnel ; une pente non significative ne prouve pas son absence. En mode logarithmique, les résultats exponentiés s'interprètent comme des rapports. Les colonnes d'identifiant usuelles sont écartées des choix de mesures ; vérifie toujours les variables proposées.</div>
+</div>
+<div id="view-models" class="hidden"><div class="panel"><h2>Modélisation</h2><p class="muted">Espace réservé aux modèles avancés, avec diagnostics, intervalles de confiance, résidus et export des coefficients.</p><table><tr><th>Modèle</th><th>Usage</th><th>État</th></tr><tr><td>Linéaire</td><td>Relation entre variables quantitatives</td><td>À développer</td></tr><tr><td>Logistique</td><td>Résultat binaire, probabilité et odds ratio</td><td>À développer</td></tr><tr><td>Poisson</td><td>Comptages et taux</td><td>À développer</td></tr><tr><td>Gamma</td><td>Variable positive continue asymétrique</td><td>À développer</td></tr><tr><td>ROC / AUC</td><td>Évaluation des seuils de classification</td><td>À développer</td></tr></table></div></div>
+
+<div id="view-reports" class="hidden">
+ <div class="panel">
+  <h2>Générateur de rapports PDF — StatLab 0.7.3</h2>
+  <p class="muted">Prépare un rapport scientifique à partir des analyses déjà enregistrées dans le projet. Les résultats sont repris tels qu'ils sont stockés ; aucune statistique n'est recalculée lors de la génération.</p>
+  <div class="report-form">
+   <div class="field"><label for="reportTitle">Titre du rapport</label><input id="reportTitle" type="text" value="Rapport d'analyse statistique"></div>
+   <div class="field"><label for="reportDate">Date</label><input id="reportDate" type="date"></div>
+   <div class="field"><label for="reportAuthor">Auteur</label><input id="reportAuthor" type="text" placeholder="Nom de l'auteur"></div>
+   <div class="field"><label for="reportLab">Laboratoire</label><input id="reportLab" type="text" placeholder="Nom du laboratoire"></div>
+   <div class="field"><label for="reportService">Service</label><input id="reportService" type="text" placeholder="Nom du service"></div>
+   <div class="field"><label for="reportReference">Référence de l'étude</label><input id="reportReference" type="text" placeholder="Référence / numéro d'étude"></div>
+   <div class="field full"><label for="reportInterpretation">Interprétation / commentaire (facultatif et modifiable)</label><textarea id="reportInterpretation" rows="5" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit" placeholder="La proposition automatique peut être générée puis modifiée librement."></textarea><div class="row"><button type="button" class="secondary" id="reportAutoInterpret">Proposer une interprétation automatique</button></div></div>
+  </div>
+ </div>
+ <div class="panel">
+  <h2>Analyses à inclure</h2>
+  <p class="muted">Sélectionne une analyse pour produire un rapport individuel, ou plusieurs analyses pour créer un rapport global. Les données individuelles ne sont pas incluses.</p>
+  <div id="reportAnalysisList" class="report-select-list"></div>
+  <div class="row">
+   <button class="primary" id="reportIndividual">Préparer le PDF individuel</button>
+   <button class="primary" id="reportGlobal">Préparer le rapport global</button>
+   <button class="secondary" id="reportRefresh">Actualiser la liste</button>
+  </div>
+  <div class="status" id="reportStatus">Les rapports PDF seront ouverts dans la fenêtre d'impression du navigateur. Sur iPad, utilise ensuite le menu de partage/impression pour enregistrer le PDF dans Fichiers.</div>
+ </div>
+ <div class="notice">Première version du générateur : page de garde, résultats enregistrés et interprétation proposée puis modifiable. Les graphiques intégrés seront ajoutés dans une révision suivante. Les analyses des modules encore indiqués « À développer » ne peuvent pas être rapportées.</div>
+</div>
+<div id="view-quality" class="hidden"><div class="panel"><h2>Qualité laboratoire</h2><p class="muted">Module métier dédié au suivi des contrôles et à l'évaluation des méthodes analytiques.</p><table><tr><th>Outil</th><th>Fonction</th><th>État</th></tr><tr><td>Cartes I-MR</td><td>Suivi de témoins et détection de dérives</td><td>À développer</td></tr><tr><td>Contaminations</td><td>Taux, modèle de Poisson, IC et probabilités</td><td>À développer</td></tr><tr><td>Comparaison de méthodes</td><td>Avant/après, biais, accord et régression</td><td>À développer</td></tr><tr><td>Validation analytique</td><td>Linéarité, répétabilité et précision</td><td>À développer</td></tr></table></div></div>
+</section></div></main><footer>StatLab 0.7.3.0 · Application locale de démonstration. Import XLSX limité à la première feuille ; les macros ne sont pas exécutées. Tests statistiques en version expérimentale : vérifier les résultats avant tout usage professionnel.</footer>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+let project={format:'statlab',version:2,id:makeId(),name:'Nouveau projet',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),sourceFilename:'',sourceFormat:'',headers:[],rows:[],filter:{column:'',value:''},analyses:[],dataRevision:0};
+let lastStats=null;
+function makeId(){return 'p-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
+function setStatus(s){$('status').textContent=s}
+function markChanged(){project.updatedAt=new Date().toISOString();$('saveState').textContent='Modifications locales';persistDraft()}
+function persistDraft(){try{localStorage.setItem('statlab-v02-draft',JSON.stringify(project));$('saveState').textContent='Brouillon sauvegardé localement'}catch(e){$('saveState').textContent='Export fichier recommandé'}}
+function loadDraft(){try{const s=localStorage.getItem('statlab-v02-draft');if(s){const p=JSON.parse(s);if(p&&p.format==='statlab'&&p.version===2){project=normaliseProject(p);renderAll();$('projectName').value=project.name;setStatus('Brouillon local restauré. Pense à exporter régulièrement le fichier .statlab.')}}}catch(e){}}
+function normaliseProject(p){return {format:'statlab',version:2,id:p.id||makeId(),name:p.name||'Projet importé',createdAt:p.createdAt||new Date().toISOString(),updatedAt:p.updatedAt||new Date().toISOString(),sourceFilename:p.sourceFilename||'',sourceFormat:p.sourceFormat||'',headers:Array.isArray(p.headers)?p.headers:[],rows:Array.isArray(p.rows)?p.rows:[],filter:p.filter||{column:'',value:''},analyses:Array.isArray(p.analyses)?p.analyses:[],dataRevision:Number(p.dataRevision)||0}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function num(x){if(x===null||x===undefined||String(x).trim()==='')return null;const n=Number(String(x).trim().replace(',','.'));return Number.isFinite(n)?n:null}
+function parseCSV(text){const first=text.split(/\r?\n/).find(x=>x.trim())||'';const seps=[',',';','\t'];const sep=seps.sort((a,b)=>first.split(b).length-first.split(a).length)[0];let out=[],row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'&&quoted&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=!quoted;else if(c===sep&&!quoted){row.push(cell);cell=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(x=>x.trim()!==''))out.push(row);row=[];cell=''}else cell+=c}row.push(cell);if(row.some(x=>x.trim()!==''))out.push(row);return out}
+async function unzipXlsx(buffer){const bytes=new Uint8Array(buffer),dv=new DataView(buffer);let eocd=-1;for(let i=bytes.length-22;i>=Math.max(0,bytes.length-65558);i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break}}if(eocd<0)throw Error('Archive XLSX invalide (fin ZIP introuvable).');const count=dv.getUint16(eocd+10,true),cdOffset=dv.getUint32(eocd+16,true);let pos=cdOffset,files={};for(let i=0;i<count;i++){if(dv.getUint32(pos,true)!==0x02014b50)throw Error('Répertoire ZIP invalide.');const method=dv.getUint16(pos+10,true),cs=dv.getUint32(pos+20,true),nl=dv.getUint16(pos+28,true),el=dv.getUint16(pos+30,true),cl=dv.getUint16(pos+32,true),lo=dv.getUint32(pos+42,true);const name=new TextDecoder().decode(bytes.slice(pos+46,pos+46+nl));const lnl=dv.getUint16(lo+26,true),lel=dv.getUint16(lo+28,true),start=lo+30+lnl+lel,compressed=bytes.slice(start,start+cs);let raw;if(method===0)raw=compressed;else if(method===8){if(typeof DecompressionStream==='undefined')throw Error('Ce navigateur ne propose pas la décompression XLSX hors ligne nécessaire. Exporte la feuille en CSV puis importe-la.');const ds=new DecompressionStream('deflate-raw');const stream=new Blob([compressed]).stream().pipeThrough(ds);raw=new Uint8Array(await new Response(stream).arrayBuffer())}else throw Error('Compression XLSX non prise en charge (méthode '+method+').');files[name]=new TextDecoder('utf-8').decode(raw);pos+=46+nl+el+cl}return files}
+function xmlDoc(str){return new DOMParser().parseFromString(str,'application/xml')}
+function firstTag(doc,name){return doc.getElementsByTagName(name)[0]||null}
+function parseXlsxSheet(files){const wb=xmlDoc(files['xl/workbook.xml']||'');const sheet=firstTag(wb,'sheet');if(!sheet)throw Error('Aucune feuille trouvée dans le classeur.');let target='xl/worksheets/sheet1.xml';const rid=sheet.getAttribute('r:id');if(files['xl/_rels/workbook.xml.rels']){const rels=xmlDoc(files['xl/_rels/workbook.xml.rels']);for(const r of rels.getElementsByTagName('Relationship'))if(r.getAttribute('Id')===rid){let t=r.getAttribute('Target')||'worksheets/sheet1.xml';target=t.startsWith('/')?t.slice(1):('xl/'+t).replace('xl/xl/','xl/');break}}const sh=xmlDoc(files[target]||files['xl/worksheets/sheet1.xml']||'');const ss=[];if(files['xl/sharedStrings.xml']){const sd=xmlDoc(files['xl/sharedStrings.xml']);for(const si of sd.getElementsByTagName('si'))ss.push(Array.from(si.getElementsByTagName('t')).map(t=>t.textContent).join(''))}const matrix=[];for(const row of sh.getElementsByTagName('row')){const ri=Math.max(0,(Number(row.getAttribute('r'))||1)-1);matrix[ri]=matrix[ri]||[];for(const c of row.getElementsByTagName('c')){const ref=c.getAttribute('r')||'A1',letters=(ref.match(/[A-Z]+/i)||['A'])[0].toUpperCase();let ci=0;for(const ch of letters)ci=ci*26+ch.charCodeAt(0)-64;ci--;const type=c.getAttribute('t'),v=firstTag(c,'v');let value='';if(type==='inlineStr'){value=Array.from(c.getElementsByTagName('t')).map(t=>t.textContent).join('')}else if(v){value=v.textContent;if(type==='s')value=ss[Number(value)]??'';else if(type==='b')value=value==='1'?'TRUE':'FALSE'}matrix[ri][ci]=value}}const width=Math.max(0,...matrix.map(r=>(r||[]).length));return matrix.filter(Boolean).map(r=>Array.from({length:width},(_,i)=>r[i]??''))}
+function importMatrix(matrix,filename,format){if(!matrix||matrix.length<2)throw Error('Le fichier ne contient pas d’en-tête et au moins une ligne de données.');const headers=matrix[0].map((h,i)=>String(h??'').trim()||'Variable_'+(i+1));const rows=matrix.slice(1).filter(r=>r.some(x=>String(x??'').trim()!=='' )).map(r=>headers.map((_,i)=>String(r[i]??'').trim()));project.headers=headers;project.rows=rows;project.sourceFilename=filename;project.sourceFormat=format;project.filter={column:'',value:''};project.analyses=[];project.dataRevision++;project.updatedAt=new Date().toISOString();lastStats=null;renderAll();markChanged();setStatus(`${filename} importé : ${rows.length.toLocaleString('fr-FR')} lignes et ${headers.length} variables. Les analyses antérieures ont été réinitialisées.`)}
+$('dataFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{setStatus('Lecture du fichier…');if(/\.xlsx$/i.test(f.name)){const z=await unzipXlsx(await f.arrayBuffer());const m=parseXlsxSheet(z);importMatrix(m,f.name,'XLSX')}else{const text=await f.text();importMatrix(parseCSV(text),f.name,'CSV')}}catch(err){setStatus('Import impossible : '+err.message);alert('Import impossible : '+err.message)}finally{e.target.value=''}});
+$('demo').addEventListener('click',()=>{const m=parseCSV('Echantillon;Concentration_H;Concentration_Y;Groupe;Methode\n1;12,4;0,8;A;56°C\n2;11,8;0,7;A;56°C\n3;13,1;1,1;A;56°C\n4;10,9;0,6;A;56°C\n5;9,8;0,5;B;70°C\n6;10,2;0,4;B;70°C\n7;8,9;0,3;B;70°C\n8;9,5;0,5;B;70°C\n9;7,8;0,2;C;70°C\n10;8,1;0,3;C;70°C\n11;7,4;0,2;C;70°C\n12;8,6;0,4;C;70°C');importMatrix(m,'Exemple StatLab','DEMO')});
+function typeOfColumn(i){const vals=project.rows.map(r=>r[i]).filter(v=>v!==''&&v!==null);if(!vals.length)return 'Vide';const n=vals.filter(v=>num(v)!==null).length;return n/vals.length>=.85?'Quantitative probable':'Qualitative probable'}
+function getFilteredRows(){const ci=project.filter.column===''?-1:Number(project.filter.column),val=project.filter.value;return project.rows.filter(r=>ci<0||val===''||String(r[ci]??'')===val)}
+function renderData(){const has=project.headers.length>0;$('datasetInfo').textContent=has?`${project.rows.length.toLocaleString('fr-FR')} lignes · ${project.headers.length} variables · ${project.sourceFilename||'données du projet'}`:'Aucun jeu de données chargé.';$('variables').innerHTML=has?'<table><thead><tr><th>Variable</th><th>Type détecté</th><th>Valeurs présentes</th><th>Manquantes</th></tr></thead><tbody>'+project.headers.map((h,i)=>{const present=project.rows.filter(r=>String(r[i]??'').trim()!=='').length;return `<tr><td>${esc(h)}</td><td><span class="pill">${typeOfColumn(i)}</span></td><td>${present}</td><td>${project.rows.length-present}</td></tr>`}).join('')+'</tbody></table>':'<div class="empty">Importe un jeu de données pour afficher les variables.</div>';
+const fc=$('filterColumn');const old=project.filter.column;fc.innerHTML='<option value="">Aucun filtre</option>'+project.headers.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join('');fc.value=old;$('filterValue').value=project.filter.value||'';renderPreview();renderVariableOptions()}
+function renderPreview(){const rows=getFilteredRows();$('filterInfo').textContent=`${rows.length.toLocaleString('fr-FR')} / ${project.rows.length.toLocaleString('fr-FR')} observations affichées`;$('preview').innerHTML=project.headers.length?'<table><thead><tr>'+project.headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.slice(0,12).map(r=>'<tr>'+r.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table>':'<div class="empty">Aucune donnée à afficher.</div>'}
+function renderVariableOptions(){const opts=project.headers.map((h,i)=>({h,i,n:getFilteredRows().filter(r=>num(r[i])!==null).length})).filter(x=>x.n>0);const sel=$('variable'),old=sel.value;sel.innerHTML=opts.length?opts.map(x=>`<option value="${x.i}">${esc(x.h)} (${x.n} nombres)</option>`).join(''):'<option value="">Aucune variable numérique</option>';if(opts.some(o=>String(o.i)===old))sel.value=old}
+$('filterColumn').addEventListener('change',()=>{project.filter.column=$('filterColumn').value;markChanged();renderPreview();renderVariableOptions()});$('filterValue').addEventListener('input',()=>{project.filter.value=$('filterValue').value;renderPreview();renderVariableOptions();markChanged()});$('clearFilter').addEventListener('click',()=>{project.filter={column:'',value:''};renderData();markChanged()});
+function quantile(a,p){const x=(a.length-1)*p,lo=Math.floor(x),hi=Math.ceil(x);return a[lo]+(a[hi]-a[lo])*(x-lo)}function fmt(x){return Number.isFinite(x)?x.toLocaleString('fr-FR',{maximumFractionDigits:6}):'—'}
+const csvExportPayloads=new Map();
+function csvSafe(value){let s=String(value??'');if(/^[=+@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+function csvRowsForAnalysis(a){
+ const rows=[];const meta=[['Type d’analyse',a.type||'Analyse'],['Date',a.createdAt?new Date(a.createdAt).toLocaleString('fr-FR'):''],['Fichier source',project.sourceFilename||''],['Variable(s)',a.variable||''],['Variable de groupe',a.groupVariable||''],['Groupes',Array.isArray(a.groups)?a.groups.join(' / '):''],['Révision des données',a.dataRevision??''],['Filtre',a.filter?.column!==undefined&&a.filter?.column!==''?`${project.headers?.[Number(a.filter.column)]??a.filter.column} = ${a.filter.value??''}`:'Aucun']];
+ for(const [k,v] of meta)rows.push(['Métadonnée',k,v,'']);
+ const flatten=(obj,prefix='')=>{if(obj&&typeof obj==='object'&&!Array.isArray(obj)){for(const [k,v] of Object.entries(obj))flatten(v,prefix?prefix+'.'+k:k)}else{const value=Array.isArray(obj)?obj.join(' ; '):obj===null?'':obj;rows.push(['Résultat',prefix,value,''])}};
+ if(a.parameters)flatten(a.parameters,'Paramètre');if(a.results)flatten(a.results,'Résultat');
+ return [['Catégorie','Élément','Valeur','Note'],...rows];
+}
+function registerCsvExport(container,analysis,filename){
+ if(!container)return;const id=makeId();csvExportPayloads.set(id,{analysis,filename:safeExportName(filename||'StatLab-analyse')+'.csv'});
+ const wrap=document.createElement('div');wrap.className='row';wrap.style.marginTop='12px';const button=document.createElement('button');button.type='button';button.className='secondary csv-export';button.dataset.csvId=id;button.textContent='↓ Exporter les résultats CSV';wrap.appendChild(button);container.appendChild(wrap);
+}
+function csvString(rows){return '\uFEFF'+rows.map(row=>row.map(csvSafe).join(';')).join('\r\n')+'\r\n'}
+document.addEventListener('click',async e=>{const b=e.target.closest('.csv-export');if(!b)return;const item=csvExportPayloads.get(b.dataset.csvId);if(!item)return;b.disabled=true;try{const content=csvString(csvRowsForAnalysis(item.analysis));const result=await download(item.filename,content,'text/csv;charset=utf-8');if(result?.ok)setStatus('Export CSV prêt : '+item.filename)}catch(err){setStatus('Export CSV impossible : '+(err?.message||String(err)))}finally{b.disabled=false}});
+function drawHist(a){const c=$('hist'),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);let min=a[0],max=a[a.length-1],bins=Math.min(14,Math.max(1,Math.ceil(Math.sqrt(a.length))));if(min===max){min-=.5;max+=.5}const counts=Array(bins).fill(0);a.forEach(x=>counts[Math.min(bins-1,Math.floor((x-min)/(max-min)*bins))]++);const top=Math.max(...counts),left=45,bottom=h-34,plotH=bottom-20,barW=(w-left-22)/bins;ctx.strokeStyle='#dce4e9';ctx.beginPath();ctx.moveTo(left,15);ctx.lineTo(left,bottom);ctx.lineTo(w-15,bottom);ctx.stroke();counts.forEach((v,i)=>{const bh=v/top*(plotH-8),x=left+i*barW+3,y=bottom-bh;ctx.fillStyle='#267c78';ctx.fillRect(x,y,barW-6,bh);ctx.fillStyle='#52636e';ctx.font='12px sans-serif';ctx.textAlign='center';ctx.fillText(v,x+(barW-6)/2,y-5)});ctx.fillStyle='#52636e';ctx.font='12px sans-serif';ctx.textAlign='left';ctx.fillText(fmt(min),left,bottom+20);ctx.textAlign='right';ctx.fillText(fmt(max),w-15,bottom+20)}
+function calculate(save=true){if(!project.rows.length)return;const idx=Number($('variable').value),all=getFilteredRows().map(r=>num(r[idx])),a=all.filter(x=>x!==null).sort((x,y)=>x-y),n=a.length;if(!n){alert('Aucune valeur numérique valide pour cette variable.');return}const mean=a.reduce((s,x)=>s+x,0)/n,sd=n>1?Math.sqrt(a.reduce((s,x)=>s+(x-mean)**2,0)/(n-1)):null;const stats=[['Effectif valide',n],['Valeurs manquantes / non numériques',all.length-n],['Moyenne',fmt(mean)],['Médiane',fmt(quantile(a,.5))],['Écart-type (n−1)',fmt(sd)],['Erreur standard',fmt(sd===null?NaN:sd/Math.sqrt(n))],['Minimum',fmt(a[0])],['Maximum',fmt(a[n-1])],['Premier quartile (Q1)',fmt(quantile(a,.25))],['Troisième quartile (Q3)',fmt(quantile(a,.75))],['IQR',fmt(quantile(a,.75)-quantile(a,.25))]];$('metrics').innerHTML=stats.slice(0,4).map(v=>`<div class="metric"><div class="k">${v[0]}</div><div class="v">${v[1]}</div></div>`).join('');$('statsTable').innerHTML='<table><tbody>'+stats.slice(4).map(v=>`<tr><th>${v[0]}</th><td>${v[1]}</td></tr>`).join('')+'</tbody></table>';drawHist(a);lastStats={variable:project.headers[idx],variableIndex:idx,filter:{...project.filter},n,missing:all.length-n,values:Object.fromEntries(stats),dataRevision:project.dataRevision};$('descExport').innerHTML='';registerCsvExport($('descExport'),{type:'Statistiques descriptives',variable:project.headers[idx],createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},parameters:{ecartType:'échantillon, dénominateur n−1',quartiles:'interpolation linéaire'},results:lastStats.values},'StatLab-descriptives-'+safeExportName(project.headers[idx]));if(save){project.analyses.push({id:makeId(),type:'Statistiques descriptives',variable:project.headers[idx],createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},results:lastStats.values,parameters:{ecartType:'échantillon, dénominateur n−1',quartiles:'interpolation linéaire'}});markChanged();renderHistory();setStatus('Analyse descriptive enregistrée dans le projet.')}}
+$('calculate').addEventListener('click',()=>calculate(true));$('variable').addEventListener('change',()=>calculate(false));
+// --- Tests à deux groupes indépendants (version expérimentale 0.4) ---
+function meanOf(a){return a.reduce((s,x)=>s+x,0)/a.length}
+function varianceOf(a){const m=meanOf(a);return a.length>1?a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1):NaN}
+function logGamma(z){const c=[676.5203681218851,-1259.1392167224028,771.3234287776531,-176.6150291621406,12.507343278686905,-0.13857109526572012,9.984369578019572e-6,1.5056327351493116e-7];if(z<0.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);z-=1;let x=0.99999999999980993;for(let i=0;i<c.length;i++)x+=c[i]/(z+i+1);const t=z+c.length-0.5;return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x)}
+function betaCF(a,b,x){const qab=a+b,qap=a+1,qam=a-1;let c=1,d=1-qab*x/qap;if(Math.abs(d)<1e-30)d=1e-30;d=1/d;let h=d;for(let m=1;m<=200;m++){let m2=2*m,aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function regBeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));return x<(a+1)/(a+b+2)?bt*betaCF(a,b,x)/a:1-bt*betaCF(b,a,1-x)/b}
+function tCDF(t,df){if(!(df>0))return NaN;if(t===0)return .5;const x=df/(df+t*t),ib=regBeta(x,df/2,.5);return t>0?1-.5*ib:.5*ib}
+function tQuantile(prob,df){if(!(prob>0&&prob<1&&df>0))return NaN;let lo=-1000,hi=1000;for(let i=0;i<110;i++){const mid=(lo+hi)/2;if(tCDF(mid,df)<prob)lo=mid;else hi=mid}return (lo+hi)/2}
+function rankData(a,b){const all=a.map(v=>({v,g:0})).concat(b.map(v=>({v,g:1}))).sort((x,y)=>x.v-y.v);let rankSumA=0,tieSum=0;for(let i=0;i<all.length;){let j=i+1;while(j<all.length&&all[j].v===all[i].v)j++;const avg=((i+1)+j)/2;for(let k=i;k<j;k++){all[k].rank=avg;if(all[k].g===0)rankSumA+=avg}const t=j-i;if(t>1)tieSum+=t*t*t-t;i=j}return {rankSumA,tieSum,N:all.length}}
+function runTwoGroupTest(){const vi=$('testVariable').value,gi=$('groupVariable').value,ga=$('groupA').value,gb=$('groupB').value,method=$('testMethod').value,alpha=Number($('alpha').value);if(vi===''||gi===''||ga===''||gb===''||ga===gb){$('testResults').innerHTML='<div class="notice">Choisis une variable numérique, une variable de groupe et deux modalités distinctes.</div>';return}const rows=getFilteredRows();let a=[],b=[],excluded=0;for(const r of rows){const g=String(r[Number(gi)]??'');const x=num(r[Number(vi)]);if(g!==ga&&g!==gb)continue;if(x===null){excluded++;continue}(g===ga?a:b).push(x)}if(a.length<2||b.length<2){$('testResults').innerHTML='<div class="notice">Il faut au moins deux valeurs numériques valides dans chacun des deux groupes. Effectifs obtenus : '+a.length+' et '+b.length+'.</div>';return}const n1=a.length,n2=b.length,m1=meanOf(a),m2=meanOf(b),v1=varianceOf(a),v2=varianceOf(b),diff=m1-m2;let statistic,df,p,ciLow=null,ciHigh=null,effect=null,effectName='',methodName='',extra='',warn='';
+if(method==='student'||method==='welch'){let se;if(method==='student'){const df0=n1+n2-2,sp2=((n1-1)*v1+(n2-1)*v2)/df0;se=Math.sqrt(sp2*(1/n1+1/n2));df=df0;methodName='t de Student (variance commune)';effect=(diff/Math.sqrt(sp2));}else{const q1=v1/n1,q2=v2/n2;se=Math.sqrt(q1+q2);df=(q1+q2)**2/(q1*q1/(n1-1)+q2*q2/(n2-1));methodName='t de Welch';const sp=Math.sqrt(((n1-1)*v1+(n2-1)*v2)/(n1+n2-2));effect=diff/sp;}statistic=diff/se;p=2*(1-tCDF(Math.abs(statistic),df));const crit=tQuantile(1-alpha/2,df);ciLow=diff-crit*se;ciHigh=diff+crit*se;const correction=1-3/(4*(n1+n2)-9);effect*=correction;effectName='g de Hedges (approx.)';if(method==='student')warn='Student suppose des variances égales ; vérifie cette hypothèse avant interprétation.';else warn='Welch ne suppose pas l’égalité des variances et est le choix recommandé par défaut.';
+}else{methodName='Mann-Whitney (approximation normale)';const rr=rankData(a,b),U1=rr.rankSumA-n1*(n1+1)/2,U2=n1*n2-U1,U=Math.min(U1,U2);const N=n1+n2,tie=rr.tieSum;let varU=n1*n2/12*((N+1)-tie/(N*(N-1)));if(!(varU>0)){ $('testResults').innerHTML='<div class="notice">Le test ne peut pas être calculé : toutes les observations sont identiques ou la variance des rangs est nulle.</div>';return}const mu=n1*n2/2,z=(Math.abs(U1-mu)-.5)/Math.sqrt(varU);statistic=U;p=2*(1-normalCDF(Math.abs(z)));df=null;effect=1-2*U1/(n1*n2);effectName='Corrélation bisérielle de rang';warn='Approximation normale avec correction de continuité et correction des ex æquo. Pour de petits échantillons, privilégier un calcul exact ou une validation spécialisée.';extra='U1 = '+fmt(U1)+' ; U2 = '+fmt(U2)+' ; Z = '+fmt(z)+'. La statistique U affichée est le plus petit des deux U.';}
+const sig=p<alpha;const summary=`${sig?'Différence statistiquement significative':'Pas de différence statistiquement significative'} au seuil α = ${fmt(alpha)}.`;const boxes=[['Effectif '+ga,n1],['Effectif '+gb,n2],['Valeur p',fmt(p)],['Moyenne '+ga,fmt(m1)],['Moyenne '+gb,fmt(m2)],['Différence des moyennes',fmt(diff)]];$('testResults').innerHTML=`<div class="analysis-card"><strong>${esc(methodName)}</strong><div class="result-grid">${boxes.map(x=>`<div class="result-box"><div class="k">${esc(x[0])}</div><div class="v">${esc(x[1])}</div></div>`).join('')}</div><div class="result-table"><table><tbody><tr><th>Statistique</th><td>${fmt(statistic)}</td></tr>${df!==null?`<tr><th>Degrés de liberté</th><td>${fmt(df)}</td></tr>`:''}<tr><th>Écart-type ${esc(ga)}</th><td>${fmt(Math.sqrt(v1))}</td></tr><tr><th>Écart-type ${esc(gb)}</th><td>${fmt(Math.sqrt(v2))}</td></tr>${ciLow!==null?`<tr><th>IC ${(1-alpha)*100}% de la différence des moyennes</th><td>[${fmt(ciLow)} ; ${fmt(ciHigh)}]</td></tr>`:''}<tr><th>${esc(effectName)}</th><td>${fmt(effect)}</td></tr><tr><th>Valeurs exclues (manquantes/non numériques)</th><td>${excluded}</td></tr></tbody></table></div><p><strong>${summary}</strong></p><p class="muted">${esc(warn)}</p>${extra?`<p class="muted">${esc(extra)}</p>`:''}<p class="muted">Comparaison orientée : ${esc(ga)} moins ${esc(gb)}. Différence des moyennes = ${fmt(diff)}. Le test de Mann-Whitney porte sur les rangs/distributions ; la différence des moyennes est fournie à titre descriptif et son IC n'est pas calculé ici.</p></div>`;
+registerCsvExport($('testResults'),{type:'Test deux groupes — '+methodName,variable:project.headers[Number(vi)],groupVariable:project.headers[Number(gi)],groups:[ga,gb],createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},parameters:{methode:method,alpha,version:'0.4 expérimental'},results:{n1,n2,mean1:m1,mean2:m2,differenceMean:diff,statistic,df,p,alpha,effect,effectName,ciLow,ciHigh,excluded}},'StatLab-test-'+safeExportName(methodName));
+project.analyses.push({id:makeId(),type:'Test deux groupes — '+methodName,variable:project.headers[Number(vi)],groupVariable:project.headers[Number(gi)],groups:[ga,gb],createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},results:{n1,n2,mean1:m1,mean2:m2,differenceMean:diff,statistic,df,p,alpha,effect,effectName,ciLow,ciHigh,excluded},parameters:{method:method,version:'0.4 expérimental'}});markChanged();renderHistory();setStatus('Test statistique calculé et enregistré dans le projet.');}
+function normalCDF(x){const z=Math.abs(x)/Math.sqrt(2),t=1/(1+0.3275911*z),erf=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z);return .5*(1+(x<0?-erf:erf))}
+function renderTestOptions(){const numOpts=project.headers.map((h,i)=>({h,i,n:getFilteredRows().filter(r=>num(r[i])!==null).length})).filter(x=>x.n>0);const oldV=$('testVariable').value,oldG=$('groupVariable').value;$('testVariable').innerHTML=numOpts.map(x=>`<option value="${x.i}">${esc(x.h)}</option>`).join('')||'<option value="">Aucune variable numérique</option>';if(numOpts.some(x=>String(x.i)===oldV))$('testVariable').value=oldV;const catOpts=project.headers.map((h,i)=>{const rows=getFilteredRows(),vals=[...new Set(rows.map(r=>String(r[i]??'')).filter(x=>x.trim()!==''))],numeric=rows.filter(r=>String(r[i]??'').trim()!=='').filter(r=>num(r[i])!==null).length,ratio=vals.length?numeric/rows.filter(r=>String(r[i]??'').trim()!=='').length:0;return {h,i,vals,ratio}}).filter(x=>x.vals.length>=2&&x.vals.length<=30&&x.ratio<.85);$('groupVariable').innerHTML=catOpts.map(x=>`<option value="${x.i}">${esc(x.h)} (${x.vals.length} modalités)</option>`).join('')||'<option value="">Aucune variable de groupe adaptée</option>';if(catOpts.some(x=>String(x.i)===oldG))$('groupVariable').value=oldG;updateGroupLevels()}
+function updateGroupLevels(){const gi=$('groupVariable').value;if(gi==='')return;const vals=[...new Set(getFilteredRows().map(r=>String(r[Number(gi)]??'')).filter(x=>x.trim()!==''))].sort((a,b)=>a.localeCompare(b,'fr',{numeric:true}));const a=$('groupA').value,b=$('groupB').value;$('groupA').innerHTML=vals.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');$('groupB').innerHTML=vals.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');if(vals.includes(a))$('groupA').value=a;if(vals.includes(b)&&b!==$('groupA').value)$('groupB').value=b;else if(vals.length>1)$('groupB').value=vals[1]}
+$('groupVariable').addEventListener('change',updateGroupLevels);$('runTest').addEventListener('click',runTwoGroupTest);$('loadTestDemo').addEventListener('click',()=>{if(!project.rows.length){$('demo').click();}renderTestOptions()});
+function baIsId(h,values){
+ const name=String(h).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ if(/\b(id|identifiant|echantillon|sample|numero|num|cb|dossier|index|ligne)\b/.test(name))return true;
+ const a=values.map(num).filter(x=>x!==null);
+ if(a.length>=5&&a.length===values.length&&a.every(Number.isInteger)&&new Set(a).size/a.length>=.98){
+  const q=[...a].sort((x,y)=>x-y);if(q.every((v,i)=>i===0||v-q[i-1]===1))return true;
+ }
+ return false;
+}
+function baOptions(){return project.headers.map((h,i)=>({h,i,n:getFilteredRows().filter(r=>num(r[i])!==null).length,values:getFilteredRows().map(r=>r[i])})).filter(x=>x.n>0&&!baIsId(x.h,x.values))}
+function baOptsHTML(opts,v){return '<option value="">— Choisir —</option>'+opts.map(x=>`<option value="${x.i}" ${String(x.i)===String(v)?'selected':''}>${esc(x.h)} (${x.n})</option>`).join('')}
+function addBAPair(a='',b=''){
+ const opts=baOptions(),d=document.createElement('div');d.className='two analysis-card ba-pair-row';d.style.marginTop='8px';
+ d.innerHTML=`<div class="field"><label>Méthode / mesure A</label><select class="ba-pair-a">${baOptsHTML(opts,a)}</select></div><div class="field"><label>Méthode / mesure B</label><select class="ba-pair-b">${baOptsHTML(opts,b)}</select></div><div class="row" style="grid-column:1/-1;margin-top:0"><button type="button" class="secondary ba-remove-pair">Retirer</button></div>`;
+ $('baPairs').appendChild(d);
+}
+function renderBlandOptions(){
+ const opts=baOptions(),ref=$('baReference').value,id=$('baId').value;
+ $('baReference').innerHTML=baOptsHTML(opts,ref);
+ if(opts.some(x=>String(x.i)===ref))$('baReference').value=ref;
+ const ids=project.headers.map((h,i)=>({h,i,v:getFilteredRows().map(r=>r[i])})).filter(x=>x.v.filter(v=>String(v??'').trim()!=='').length>0&&new Set(x.v.filter(v=>String(v??'').trim()!=='')).size===x.v.filter(v=>String(v??'').trim()!=='').length);
+ $('baId').innerHTML='<option value="">Aucun identifiant</option>'+ids.map(x=>`<option value="${x.i}">${esc(x.h)}</option>`).join('');
+ if(ids.some(x=>String(x.i)===id))$('baId').value=id;
+ if(!$('baPairs').children.length)addBAPair(opts[0]?.i??'',opts[1]?.i??'');
+ else document.querySelectorAll('.ba-pair-row').forEach(r=>{let a=r.querySelector('.ba-pair-a'),b=r.querySelector('.ba-pair-b'),av=a.value,bv=b.value;a.innerHTML=baOptsHTML(opts,av);b.innerHTML=baOptsHTML(opts,bv)});
+ $('baReferenceWrap').classList.toggle('hidden',$('baSetup').value!=='reference');
+ $('baFreeControls').classList.toggle('hidden',$('baSetup').value!=='free');
+}
+function drawBlandCanvas(c,pairs,bias,lo,hi,logMode){
+ const ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);if(!pairs.length)return;
+ const xs=pairs.map(p=>p.x),ys=pairs.map(p=>p.d),xmin=Math.min(...xs),xmax=Math.max(...xs);
+ let ymin=Math.min(...ys,lo),ymax=Math.max(...ys,hi),pad=(ymax-ymin)*.12||1;ymin-=pad;ymax+=pad;
+ const L=70,R=w-25,T=25,B=h-55,X=x=>L+(x-xmin)/(xmax-xmin||1)*(R-L),Y=y=>B-(y-ymin)/(ymax-ymin)*(B-T);
+ ctx.strokeStyle='#dce4e9';ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,B);ctx.lineTo(R,B);ctx.stroke();
+ ctx.font='13px sans-serif';ctx.fillStyle='#52636e';ctx.textAlign='center';ctx.fillText(logMode?'Moyenne des logarithmes':'Moyenne des deux méthodes',(L+R)/2,h-15);
+ ctx.save();ctx.translate(17,(T+B)/2);ctx.rotate(-Math.PI/2);ctx.fillText(logMode?'Logarithme du rapport A/B':'Différence A − B',0,0);ctx.restore();
+ function line(y,color,dash){ctx.beginPath();ctx.setLineDash(dash);ctx.strokeStyle=color;ctx.lineWidth=2;ctx.moveTo(L,Y(y));ctx.lineTo(R,Y(y));ctx.stroke();ctx.setLineDash([])}
+ line(bias,'#267c78',[]);line(lo,'#b46b2a',[8,5]);line(hi,'#b46b2a',[8,5]);ctx.fillStyle='#315c78';
+ pairs.forEach(p=>{ctx.beginPath();ctx.arc(X(p.x),Y(p.d),4,0,Math.PI*2);ctx.fill()});
+ ctx.fillStyle='#52636e';ctx.textAlign='left';ctx.fillText('Limite supérieure',L+8,Y(hi)-6);ctx.fillText('Biais',L+8,Y(bias)-6);ctx.fillText('Limite inférieure',L+8,Y(lo)-6);
+ ctx.textAlign='left';ctx.fillText(fmt(xmin),L,B+22);ctx.textAlign='right';ctx.fillText(fmt(xmax),R,B+22);
+}
+function runOneBland(ia,ib,mode,conf,idIndex,label,k){
+ if(ia===''||ib===''||ia===ib)return {error:'Choisis deux colonnes de mesure distinctes.'};
+ const pairs=[];let excluded=0,invalidLog=0;
+ getFilteredRows().forEach((r,i)=>{const a=num(r[+ia]),b=num(r[+ib]);if(a===null||b===null){excluded++;return}if(mode==='log'&&(a<=0||b<=0)){excluded++;invalidLog++;return}pairs.push({x:mode==='log'?(Math.log(a)+Math.log(b))/2:(a+b)/2,d:mode==='log'?Math.log(a/b):a-b})});
+ const n=pairs.length;if(n<3)return {error:`Il faut au moins 3 paires valides ; ${n} disponible(s).`,excluded};
+ const ds=pairs.map(p=>p.d),xs=pairs.map(p=>p.x),bias=meanOf(ds),sd=Math.sqrt(varianceOf(ds)),z=conf===.99?2.5758293035489:conf===.90?1.6448536269515:1.95996398454,lo=bias-z*sd,hi=bias+z*sd,alpha=1-conf,tcrit=tQuantile(1-alpha/2,n-1),biasSE=sd/Math.sqrt(n);
+ const biasCI=[bias-tcrit*biasSE,bias+tcrit*biasSE],loaSE=sd*Math.sqrt(1/n+z*z/(2*(n-1))),loCI=[lo-tcrit*loaSE,lo+tcrit*loaSE],hiCI=[hi-tcrit*loaSE,hi+tcrit*loaSE];
+ const mx=meanOf(xs),my=bias,Sxx=xs.reduce((s,x)=>s+(x-mx)**2,0),Sxy=pairs.reduce((s,p)=>s+(p.x-mx)*(p.d-my),0);let slope=NaN,slopeP=NaN,slopeCI=[NaN,NaN];
+ if(Sxx>0&&n>2){slope=Sxy/Sxx;const intercept=my-slope*mx,res=pairs.reduce((s,p)=>s+(p.d-intercept-slope*p.x)**2,0),se=Math.sqrt(res/(n-2)/Sxx),tc=tQuantile(1-alpha/2,n-2);if(se>0){slopeP=2*(1-tCDF(Math.abs(slope/se),n-2));slopeCI=[slope-tc*se,slope+tc*se]}}
+ const log=mode==='log',val=x=>log?Math.exp(x):x,loCount=pairs.filter(p=>p.d<lo||p.d>hi).length,aName=project.headers[+ia],bName=project.headers[+ib],cid='ba-chart-'+k;
+ const ci=a=>`[${fmt(val(a[0]))} ; ${fmt(val(a[1]))}]`,biasName=log?'Rapport géométrique moyen A/B':'Biais moyen (A − B)';
+ const stats={label,aName,bName,n,excluded,invalidLog,bias:val(bias),sd,lowerLimit:val(lo),upperLimit:val(hi),biasCI:biasCI.map(val),lowerLimitCI:loCI.map(val),upperLimitCI:hiCI.map(val),slope,slopeCI,slopeP,outside:loCount,mode,confidence:conf,relativeBiasPercent:log?(Math.exp(bias)-1)*100:null};
+ const vals=[['Paires analysées',n],['Paires exclues',excluded],[biasName,fmt(val(bias))],[`Limite inférieure ${conf*100}%`,fmt(val(lo))],[`Limite supérieure ${conf*100}%`,fmt(val(hi))],['Écart-type des différences',fmt(sd)],['Points hors limites',`${loCount} (${fmt(loCount/n*100)} %)`],...(log?[['Biais relatif',fmt(stats.relativeBiasPercent)+' %']]:[])];
+ const html=`<div class="analysis-card"><strong>${esc(label)} — ${log?'logarithmique':'classique'} : ${esc(aName)} vs ${esc(bName)}</strong><div class="result-grid">${vals.map(v=>`<div class="result-box"><div class="k">${esc(v[0])}</div><div class="v">${esc(v[1])}</div></div>`).join('')}</div><div class="result-table"><table><tbody><tr><th>IC du biais</th><td>${ci(biasCI)}</td></tr><tr><th>IC de la limite inférieure</th><td>${ci(loCI)}</td></tr><tr><th>IC de la limite supérieure</th><td>${ci(hiCI)}</td></tr><tr><th>Pente différence ~ moyenne</th><td>${fmt(slope)}</td></tr><tr><th>IC de la pente</th><td>[${fmt(slopeCI[0])} ; ${fmt(slopeCI[1])}]</td></tr><tr><th>p-value de la pente</th><td>${fmt(slopeP)}</td></tr><tr><th>Valeurs non positives exclues (log)</th><td>${invalidLog}</td></tr></tbody></table></div><p class="muted">${log?'Les valeurs exponentiées sont des rapports A/B ; le biais relatif vaut (rapport géométrique − 1) × 100.':'Les différences sont orientées A − B et exprimées dans l’unité des mesures.'} Les IC des limites utilisent une approximation usuelle. Les points hors limites sont un descriptif, pas un test d’acceptabilité.</p><h3>Diagramme de Bland-Altman</h3><canvas id="${cid}" width="900" height="430" style="height:320px"></canvas><div class="row"><button class="secondary ba-export-chart" data-canvas="${cid}" data-name="Bland-Altman-${k}">Exporter le graphique PNG</button></div></div>`;
+ return {html,pairs,bias,lo,hi,log,cid,stats};
+}
+function runBland(){
+ const mode=$('baMode').value,conf=Number($('baAlpha').value),id=$('baId').value,setup=$('baSetup').value;let configs=[];
+ if(setup==='reference'){const ref=$('baReference').value;if(ref===''){$('baResults').innerHTML='<div class="notice">Choisis une méthode de référence.</div>';return}configs=baOptions().filter(x=>String(x.i)!==ref).map(x=>({a:ref,b:String(x.i),label:`Référence ${project.headers[+ref]} vs ${x.h}`}))}
+ else configs=Array.from(document.querySelectorAll('.ba-pair-row')).map((r,i)=>({a:r.querySelector('.ba-pair-a').value,b:r.querySelector('.ba-pair-b').value,label:`Comparaison ${i+1}`}));
+ if(!configs.length){$('baResults').innerHTML='<div class="notice">Aucune comparaison à effectuer.</div>';return}
+ const out=[],errors=[];configs.forEach((c,i)=>{const r=runOneBland(c.a,c.b,mode,conf,id,c.label,i+1);if(r.error)errors.push(`${c.label} : ${r.error}`);else out.push(r)});
+ if(!out.length){$('baResults').innerHTML='<div class="notice">'+errors.map(esc).join('<br>')+'</div>';return}
+ $('baResults').innerHTML=(errors.length?'<div class="notice">'+errors.map(esc).join('<br>')+'</div>':'')+out.map(x=>x.html).join('');
+ $('baResults').querySelectorAll('.analysis-card').forEach((card,i)=>{const x=out[i];if(!x)return;registerCsvExport(card,{type:'Bland-Altman '+(mode==='log'?'logarithmique':'classique'),variable:x.stats.aName+' / '+x.stats.bName,createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},parameters:{mode,confidence:conf,setup,identifier:id===''?null:project.headers[+id]},results:x.stats},'StatLab-Bland-Altman-'+safeExportName(x.stats.aName)+'-'+safeExportName(x.stats.bName));});
+ out.forEach(x=>{const c=$(x.cid);if(c){drawBlandCanvas(c,x.pairs,x.bias,x.lo,x.hi,x.log);canvasToBlob(c).then(blob=>{if(blob)c.__statlabPngBlob=blob}).catch(()=>{})}project.analyses.push({id:makeId(),type:'Bland-Altman '+(mode==='log'?'logarithmique':'classique'),variable:x.stats.aName+' / '+x.stats.bName,createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},results:x.stats,parameters:{confidence:conf,setup,identifier:id===''?null:project.headers[+id],version:'0.6'}})});
+ markChanged();renderHistory();setStatus(`${out.length} comparaison(s) Bland-Altman calculée(s) et enregistrée(s).`);
+}
+$('baSetup').addEventListener('change',renderBlandOptions);
+$('baAddPair').addEventListener('click',()=>addBAPair());
+$('baPairs').addEventListener('click',e=>{if(e.target.classList.contains('ba-remove-pair'))e.target.closest('.ba-pair-row').remove()});
+$('runBland').addEventListener('click',runBland);
+$('loadBlandDemo').addEventListener('click',()=>{if(!project.rows.length)$('demo').click();renderBlandOptions()});
+$('baResults').addEventListener('click',e=>{const b=e.target.closest('.ba-export-chart');if(!b)return;const c=$(b.dataset.canvas);if(!c)return;const name=(b.dataset.name||'Bland-Altman')+'.png';if(c.__statlabPngBlob){b.disabled=true;exportBlob(name,c.__statlabPngBlob).catch(err=>setStatus('Export PNG impossible : '+(err?.message||String(err)))).finally(()=>{b.disabled=false});return}b.disabled=true;setStatus('Préparation du PNG… Le graphique sera prêt dans un instant.');canvasToBlob(c).then(blob=>{if(!blob)throw Error('Le navigateur n’a pas pu produire le fichier PNG.');c.__statlabPngBlob=blob;setStatus('Graphique prêt. Appuie de nouveau sur « Exporter le graphique PNG » pour choisir son enregistrement ou son partage.')}).catch(err=>setStatus('Export PNG impossible : '+(err?.message||String(err)))).finally(()=>{b.disabled=false})});
+function renderHistory(){const h=project.analyses||[];$('historyList').innerHTML=h.length?h.slice().reverse().map(a=>{const csvId=makeId();csvExportPayloads.set(csvId,{analysis:a,filename:'StatLab-'+safeExportName(a.type||'analyse')+'-'+safeExportName(a.variable||'resultats')+'.csv'});return `<div class="analysis-card"><strong>${esc(a.type)} · ${esc(a.variable)}</strong><div class="muted">${new Date(a.createdAt).toLocaleString('fr-FR')} · ${a.results?.['Effectif valide']??a.results?.n??'—'} valeurs valides · Révision des données ${a.dataRevision}</div><div class="small" style="margin-top:6px">${Object.entries(a.results||{}).slice(0,5).map(([k,v])=>`${esc(k)} : ${esc(v)}`).join(' · ')}</div>${a.dataRevision===project.dataRevision?'<span class="pill">Données identiques à la révision actuelle</span>':'<span class="pill" style="background:#fff2df;color:#865b18">Révision différente — résultats historiques</span>'}<div class="row"><button type="button" class="secondary csv-export" data-csv-id="${csvId}">↓ Exporter cette analyse en CSV</button></div></div>`}).join(''):'<div class="empty">Aucune analyse enregistrée. Lance une statistique descriptive pour commencer l’historique.</div>'}
+function renderAll(){renderData();renderHistory();$('projectName').value=project.name}
+function safeExportName(name){return String(name||'export').replace(/[\\/:*?"<>|\x00-\x1F]/g,'_').trim()||'export'}
+function canvasToBlob(canvas){return new Promise((resolve,reject)=>{try{if(typeof canvas.toBlob==='function'){canvas.toBlob(blob=>resolve(blob||null),'image/png');return}const data=canvas.toDataURL('image/png');const parts=data.split(',');if(parts.length!==2)throw Error('Image PNG invalide.');const mime=(parts[0].match(/data:([^;]+)/)||[])[1]||'image/png';const binary=atob(parts[1]);const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);resolve(new Blob([bytes],{type:mime}));}catch(err){reject(err)}})}
+async function exportBlob(name,blob){
+ const filename=safeExportName(name);if(!(blob instanceof Blob))blob=new Blob([blob],{type:'application/octet-stream'});
+ // 1) Native save dialog where supported (Chromium-based desktop browsers).
+ if(window.isSecureContext&&typeof window.showSaveFilePicker==='function'){
+  try{const handle=await window.showSaveFilePicker({suggestedName:filename});const writable=await handle.createWritable();await writable.write(blob);await writable.close();setStatus('Fichier enregistré : '+filename);return {ok:true,method:'save-picker'}}
+  catch(err){if(err&&err.name==='AbortError'){setStatus('Enregistrement annulé.');return {ok:false,cancelled:true}}}
+ }
+ // 2) Native share sheet when the browser can share files (notably iOS/iPadOS and Android).
+ if(typeof navigator.share==='function'&&typeof navigator.canShare==='function'&&typeof File==='function'){
+  try{const file=new File([blob],filename,{type:blob.type||'application/octet-stream'});if(navigator.canShare({files:[file]})){await navigator.share({files:[file],title:filename});setStatus('Fichier transmis au menu de partage : '+filename);return {ok:true,method:'share'}}}
+  catch(err){if(err&&err.name==='AbortError'){setStatus('Partage ou enregistrement annulé.');return {ok:false,cancelled:true}}}
+ }
+ // 3) Standard browser download fallback (Firefox, Safari desktop, and other browsers).
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.rel='noopener';a.style.display='none';document.body.appendChild(a);
+ try{if('download' in a){a.click();setStatus('Téléchargement demandé : '+filename+'. Vérifie les téléchargements du navigateur.')}else{const opened=window.open(url,'_blank','noopener');if(!opened){a.target='_self';a.click()}setStatus('Fichier prêt : '+filename+'. Enregistre-le depuis le nouvel onglet si nécessaire.')}}
+ catch(err){document.body.removeChild(a);URL.revokeObjectURL(url);throw err}
+ setTimeout(()=>{if(a.isConnected)a.remove()},1000);setTimeout(()=>URL.revokeObjectURL(url),60000);return {ok:true,method:'anchor-download'}
+}
+function download(name,content,type){const blob=content instanceof Blob?content:new Blob([content],{type:type||'application/octet-stream'});return exportBlob(name,blob)}
+async function saveProject(){project.name=$('projectName').value.trim()||'Projet sans nom';project.updatedAt=new Date().toISOString();const safe=project.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]+/gi,'_').slice(0,50)||'projet';try{const result=await download(safe+'.statlab',JSON.stringify(project,null,2),'application/json');if(result?.ok){persistDraft();$('saveState').textContent='Projet exporté';setStatus('Fichier .statlab exporté. Conserve-le dans un emplacement approuvé pour pouvoir le restaurer.')}}catch(err){setStatus('Export du projet impossible : '+(err?.message||String(err)))}}
+$('saveProject').addEventListener('click',saveProject);$('projectName').addEventListener('change',()=>{project.name=$('projectName').value.trim()||'Nouveau projet';markChanged()});$('openProject').addEventListener('click',()=>$('projectFile').click());$('projectFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const p=normaliseProject(JSON.parse(await f.text()));if(!Array.isArray(p.headers)||!Array.isArray(p.rows))throw Error('Structure de projet invalide.');project=p;renderAll();markChanged();setStatus('Projet restauré : '+f.name)}catch(err){alert('Ouverture impossible : '+err.message)}finally{e.target.value=''}});
+$('newProject').addEventListener('click',()=>{if(project.headers.length||project.analyses.length){if(!confirm('Créer un nouveau projet ? Pense à enregistrer le projet actuel avant de continuer.'))return}project={format:'statlab',version:2,id:makeId(),name:'Nouveau projet',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),sourceFilename:'',sourceFormat:'',headers:[],rows:[],filter:{column:'',value:''},analyses:[],dataRevision:0};renderAll();markChanged();setStatus('Nouveau projet créé.')});
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));['data','desc','history','tests','bland','models','quality','reports'].forEach(v=>$('view-'+v).classList.toggle('hidden',v!==b.dataset.view));if(b.dataset.view==='reports')renderReportChoices();if(b.dataset.view==='tests')renderTestOptions();if(b.dataset.view==='bland')renderBlandOptions()}));
+
+// --- Générateur de rapports PDF (première version StatLab 0.7.3) ---
+function reportDateDefault(){
+ const d=new Date();const z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`;
+}
+function renderReportChoices(){
+ const list=$('reportAnalysisList');
+ if(!list)return;
+ const items=project.analyses||[];
+ if(!items.length){list.innerHTML='<div class="empty">Aucune analyse enregistrée. Lance d’abord une analyse descriptive, un test ou une comparaison Bland–Altman.</div>';return}
+ list.innerHTML=items.slice().reverse().map((a,revIndex)=>{
+  const index=items.length-1-revIndex;
+  const date=a.createdAt?new Date(a.createdAt).toLocaleString('fr-FR'):'Date inconnue';
+  return `<label class="report-select-item"><input type="checkbox" class="report-analysis-check" value="${index}"><span><strong>${esc(a.type||'Analyse')}</strong><br><span class="muted">${esc(a.variable||'')} · ${esc(date)}</span></span></label>`;
+ }).join('');
+ if(!$('reportDate').value)$('reportDate').value=reportDateDefault();
+}
+const reportLabels={
+ n:'Nombre de paires',n1:'Effectif du groupe 1',n2:'Effectif du groupe 2',
+ mean1:'Moyenne du groupe 1',mean2:'Moyenne du groupe 2',
+ differenceMean:'Différence des moyennes (groupe 1 − groupe 2)',
+ statistic:'Statistique de test',df:'Degrés de liberté',p:'Valeur p',
+ alpha:'Seuil de significativité (α)',effect:'Taille d’effet',
+ effectName:'Indicateur de taille d’effet',ciLow:'Borne inférieure de l’IC',
+ ciHigh:'Borne supérieure de l’IC',excluded:'Observations exclues',
+ method:'Méthode statistique',version:'Version du module',
+ variance:'Hypothèse sur les variances',alternative:'Hypothèse alternative',
+ confidenceLevel:'Niveau de confiance',scale:'Échelle d’analyse',
+ quartiles:'Méthode de calcul des quartiles',standardDeviation:'Écart-type',
+ correction:'Correction appliquée',paired:'Données appariées',
+ bias:'Biais moyen',lowerLimit:'Limite inférieure d’accord',
+ upperLimit:'Limite supérieure d’accord',mode:'Échelle d’analyse',
+ ratioBias:'Rapport moyen',validPairs:'Paires valides',
+ 'Effectif valide':'Effectif valide',
+ 'Valeurs manquantes / non numériques':'Valeurs manquantes / non numériques',
+ 'Moyenne':'Moyenne','Médiane':'Médiane','Écart-type (n−1)':'Écart-type (n−1)',
+ 'Erreur standard':'Erreur standard','Minimum':'Minimum','Maximum':'Maximum',
+ 'Premier quartile (Q1)':'Premier quartile (Q1)',
+ 'Troisième quartile (Q3)':'Troisième quartile (Q3)','IQR':'Écart interquartile (IQR)'
+};
+function reportLabel(k){
+ if(reportLabels[k])return reportLabels[k];
+ return String(k).replace(/([a-z0-9])([A-Z])/g,'$1 $2').replace(/_/g,' ')
+  .replace(/^./,c=>c.toUpperCase());
+}
+function reportValue(v,key=''){
+ if(v===null||v===undefined)return '—';
+ if(typeof v==='boolean')return v?'Oui':'Non';
+ if(typeof v==='number'){
+  if(key==='p')return v<0.001?'< 0,001':v.toLocaleString('fr-FR',{maximumFractionDigits:4});
+  if(Number.isInteger(v))return v.toLocaleString('fr-FR');
+  return v.toLocaleString('fr-FR',{maximumFractionDigits:4});
+ }
+ if(typeof v==='object')return JSON.stringify(v);
+ return String(v);
+}
+function reportAnalysisTable(a){
+ const r=a.results||{};
+ const rows=Object.entries(r);
+ const isTwoGroup=String(a.type||'').includes('Test deux groupes');
+ const ciLabel=isTwoGroup&&Number.isFinite(Number(r.alpha))?`IC ${(1-Number(r.alpha))*100}% de la différence des moyennes`:'IC de la différence des moyennes';
+ return `<table class="results-table"><thead><tr><th>Indicateur</th><th>Résultat</th></tr></thead><tbody>${rows.map(([k,v])=>{let label=reportLabel(k);if(isTwoGroup&&k==='ciLow')label=ciLabel+' — borne inférieure';if(isTwoGroup&&k==='ciHigh')label=ciLabel+' — borne supérieure';return `<tr><td>${esc(label)}</td><td>${esc(reportValue(v,k))}</td></tr>`}).join('')}</tbody></table>`;
+}
+function reportAnalysisSection(a,index){
+ const p=a.parameters||{},filter=a.filter||{};
+ const metadata=[
+  ['Analyse',a.type||'—'],['Variable(s)',a.variable||'—'],
+  ...(a.groupVariable?[['Variable de groupe',a.groupVariable]]:[]),
+  ...(a.groups?[['Groupes comparés',a.groups.join(' vs ')]]:[]),
+  ['Date du calcul',a.createdAt?new Date(a.createdAt).toLocaleString('fr-FR'):'—'],
+  ['Révision des données',a.dataRevision??'—'],
+  ['Filtre appliqué',filter.column?`${filter.column} = ${filter.value}`:'Aucun filtre'],
+  ['Paramètres',Object.entries(p).map(([k,v])=>`${reportLabel(k)} : ${reportValue(v,k)}`).join(' ; ')||'Non renseignés']
+ ];
+ return `<section class="analysis"><h2>${index+1}. ${esc(a.type||'Analyse statistique')}</h2><p class="lead">${esc(a.variable||'')}</p><table><tbody>${metadata.map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</tbody></table><h3>Résultats</h3>${reportAnalysisTable(a)}</section>`;
+}
+function buildReportHtml(selected,globalReport){
+ const title=$('reportTitle').value.trim()||'Rapport d’analyse statistique';
+ const author=$('reportAuthor').value.trim(),lab=$('reportLab').value.trim(),service=$('reportService').value.trim(),ref=$('reportReference').value.trim();
+ const date=$('reportDate').value||reportDateDefault();
+ const interpretation=$('reportInterpretation').value.trim();
+ const safeTitle=esc(title);
+ const coverFields=[['Auteur',author],['Laboratoire',lab],['Service',service],['Référence de l’étude',ref],['Date',date]].filter(x=>x[1]);
+ const body=selected.map(reportAnalysisSection).join('');
+ const synthesis=globalReport?`<section class="synthesis"><h2>Synthèse transversale</h2>${interpretation?`<p>${esc(interpretation).replace(/\n/g,'<br>')}</p>`:'<p class="muted">Aucune synthèse transversale n’a été rédigée. Cette section est volontairement laissée à compléter par l’auteur.</p>'}</section>`:'';
+ const individualNote=!globalReport&&interpretation?`<section><h2>Interprétation / commentaire</h2><p>${esc(interpretation).replace(/\n/g,'<br>')}</p></section>`:'';
+ return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${safeTitle}</title><style>
+ @page{size:A4;margin:18mm 17mm 18mm}*{box-sizing:border-box}body{font:10.5pt/1.48 Georgia,"Times New Roman",serif;color:#202b33;margin:0}h1,h2,h3{font-family:Arial,sans-serif;color:#183b50}h1{font-size:25pt;line-height:1.2;margin:0 0 14mm}h2{font-size:15pt;border-bottom:1px solid #9aabb5;padding-bottom:5px;margin:0 0 9px}h3{font-size:11pt;margin:14px 0 6px}.cover{height:230mm;min-height:0;display:flex;flex-direction:column;justify-content:center;page-break-after:always;break-after:page;position:relative;overflow:hidden}.brand{font:700 12pt Arial,sans-serif;letter-spacing:2px;color:#267c78;margin-bottom:25mm}.cover .rule{width:45mm;border-top:3px solid #267c78;margin:0 0 12mm}.cover-meta{margin-top:18mm;border-top:1px solid #d5dde2;padding-top:8mm}.cover>.footer{position:absolute;bottom:0;left:0;right:0;margin:0}.cover-meta p{margin:4px 0}.small{font:9pt Arial,sans-serif;color:#647580}.analysis{page-break-before:always;break-before:page}.analysis:first-child{page-break-before:auto;break-before:auto}h2,h3,.lead{break-after:avoid;page-break-after:avoid}.synthesis h2{break-after:avoid;page-break-after:avoid}.lead{font:italic 11pt Georgia,serif;color:#52636e}table{border-collapse:collapse;width:100%;margin:8px 0 15px;font:9pt Arial,sans-serif}th,td{border-bottom:1px solid #dce4e9;padding:4px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}tr{break-inside:avoid;page-break-inside:avoid}.results-table{font-size:8.5pt;margin:5px 0 10px}.results-table th,.results-table td{padding:3.5px 6px}th{width:34%;color:#52636e;background:#f5f8f9;font-weight:600}thead th{background:#eaf0f2}.synthesis{page-break-before:always;break-before:page}.synthesis p{orphans:3;widows:3}section{margin:0 0 18px}.footer{margin-top:20mm;border-top:1px solid #dce4e9;padding-top:5px;font:8pt Arial,sans-serif;color:#657680}.muted{color:#657680}.lead{margin:0 0 12px}@media screen{body{max-width:800px;margin:24px auto;padding:22px;background:white;box-shadow:0 2px 18px #0001}.cover{min-height:760px}} </style></head><body>
+ <div class="cover"><div class="brand">STATLAB · RAPPORT SCIENTIFIQUE</div><div class="rule"></div><h1>${safeTitle}</h1><p class="small">${globalReport?'RAPPORT GLOBAL':'RAPPORT INDIVIDUEL'} · StatLab 0.7.3</p><div class="cover-meta">${coverFields.map(([k,v])=>`<p><strong>${esc(k)} :</strong> ${esc(v)}</p>`).join('')}</div><div class="footer">Généré avec StatLab · Les résultats sont reproduits à partir des analyses enregistrées dans le projet.</div></div>
+ ${globalReport?`<section><h2>Sommaire</h2><ol>${selected.map(a=>`<li>${esc(a.type||'Analyse')} — ${esc(a.variable||'')}</li>`).join('')}<li>Synthèse transversale</li></ol></section>`:''}
+ ${body}${individualNote}${synthesis}
+ <div class="footer">StatLab 0.7.3 · Rapport généré le ${esc(new Date().toLocaleString('fr-FR'))}. Les données individuelles ne sont pas incluses.</div>
+ <script>window.addEventListener('load',()=>setTimeout(()=>window.print(),450));<\/script></body></html>`;
+}
+
+function formatReportNumber(value,digits=4){
+ const n=Number(value);
+ return Number.isFinite(n)?n.toLocaleString('fr-FR',{maximumFractionDigits:digits}):'non disponible';
+}
+function effectSizeComment(a){
+ const r=a.results||{},name=String(r.effectName||'').toLowerCase(),value=Number(r.effect);
+ if(!Number.isFinite(value))return '';
+ const abs=Math.abs(value);
+ // These conventional thresholds apply to standardized mean differences only.
+ if(name.includes('hedges')||name.includes('cohen')||name==='d'){
+  const level=abs<0.2?'négligeable':abs<0.5?'faible':abs<0.8?'modérée':'importante';
+  return ` Selon les repères conventionnels souvent utilisés pour une différence standardisée (0,2 ; 0,5 ; 0,8), l’ampleur observée est ${level} (|g| = ${formatReportNumber(abs)}). Ces seuils sont indicatifs et ne remplacent pas des critères de pertinence définis pour le domaine étudié.`;
+ }
+ // Do not apply Hedges/Cohen thresholds to unrelated effect-size metrics.
+ if(name.includes('cramer')){
+  const level=abs<0.1?'faible':abs<0.3?'modérée':abs<0.5?'forte':'très forte';
+  return ` Pour le V de Cramér, les repères indicatifs dépendent notamment du tableau de contingence ; la valeur observée est ${formatReportNumber(value)}. L’interprétation doit tenir compte des dimensions du tableau et du contexte.`;
+ }
+ if(name.includes('eta')){
+  return ` La taille d’effet est exprimée en ${r.effectName}. Son interprétation doit utiliser des repères adaptés au modèle et au plan d’étude ; aucun seuil générique n’est appliqué automatiquement ici.`;
+ }
+ if(name.includes('odds')||name.includes('rapport de cotes')){
+  return ` Cette mesure est un rapport de cotes : une valeur de 1 correspond à l’absence d’association sur cette échelle. Son importance s’interprète selon son éloignement de 1, son intervalle de confiance et le contexte.`;
+ }
+ return ` L’ampleur de cette taille d’effet doit être appréciée avec des repères propres à cet indicateur et au domaine d’application ; aucun seuil générique n’est appliqué automatiquement.`;
+}
+function autoInterpretationForAnalysis(a){
+ const r=a.results||{},type=String(a.type||'');
+ if(type.includes('descriptives')){
+  const n=Number(r['Effectif valide']),mean=r['Moyenne'],median=r['Médiane'],sd=r['Écart-type (n−1)'];
+  return `L’analyse descriptive porte sur ${Number.isFinite(n)?n:'un effectif non précisé'} observation(s) valide(s) pour la variable « ${a.variable||'non précisée'} ». La moyenne est de ${mean??'non disponible'}, la médiane de ${median??'non disponible'} et l’écart-type (calculé avec le dénominateur n−1) de ${sd??'non disponible'}. Ces indicateurs décrivent la distribution observée ; ils ne permettent pas, à eux seuls, d’établir une différence statistique entre groupes ni une relation causale.`;
+ }
+ if(type.includes('Test deux groupes')){
+  const p=Number(r.p),alpha=Number(r.alpha),diff=Number(r.differenceMean),effect=r.effect;
+  let conclusion='La conclusion inférentielle ne peut pas être formulée car la valeur p ou le seuil alpha n’est pas disponible.';
+  if(Number.isFinite(p)&&Number.isFinite(alpha)){
+   conclusion=p<alpha
+    ?`La valeur p (${formatReportNumber(p)}) est inférieure au seuil alpha (${formatReportNumber(alpha)}). Le résultat est statistiquement significatif au seuil retenu.`
+    :`La valeur p (${formatReportNumber(p)}) est supérieure ou égale au seuil alpha (${formatReportNumber(alpha)}). Le résultat n’est pas statistiquement significatif au seuil retenu ; cela ne démontre pas l’absence d’effet.`;
+  }
+  const effectText=effect!==undefined&&effect!==null?`; la taille d’effet (${r.effectName||'indicateur'}) est ${formatReportNumber(effect)}`:'';
+  const ciText=Number.isFinite(Number(r.ciLow))&&Number.isFinite(Number(r.ciHigh))?` L’intervalle de confiance ${(1-alpha)*100}% affiché dans le tableau concerne la différence des moyennes, et non la taille d’effet.`:' Aucun intervalle de confiance de la différence des moyennes n’est disponible dans les résultats enregistrés.';
+  const effectUncertainty=' La taille d’effet est présentée séparément ; aucun intervalle de confiance de cette taille d’effet n’est fourni par cette analyse.';
+  return `La comparaison porte sur ${a.variable||'la variable étudiée'} entre les groupes ${a.groups?.[0]??'A'} et ${a.groups?.[1]??'B'} (${type}). La différence de moyennes enregistrée est ${formatReportNumber(diff)}${effectText}. ${conclusion}${ciText}${effectUncertainty}${effectSizeComment(a)} L’interprétation doit également tenir compte des effectifs, des hypothèses du test et de la pertinence scientifique de l’écart observé.`;
+ }
+ if(type.includes('Bland-Altman')){
+  const n=Number(r.n),bias=r.bias,lo=r.lowerLimit,hi=r.upperLimit,mode=r.mode;
+  return `La comparaison de Bland–Altman entre ${a.variable||'les deux méthodes'} repose sur ${Number.isFinite(n)?n:'un nombre non précisé'} paire(s) valide(s). Le biais estimé est ${bias??'non disponible'} ; les limites d’accord estimées sont ${lo??'non disponibles'} et ${hi??'non disponibles'}. ${mode==='log'?'L’analyse est réalisée sur l’échelle logarithmique ; les valeurs exponentiées s’interprètent comme des rapports.':'Les différences sont orientées selon l’ordre A − B.'} L’acceptabilité de l’accord ne peut être conclue qu’en comparant ces limites à des critères définis a priori et adaptés à l’usage. Les intervalles des limites peuvent être approximatifs selon la méthode implémentée.`;
+ }
+ return `L’analyse « ${type||'analyse statistique'} » porte sur ${a.variable||'une variable non précisée'}. Les résultats numériques sont présentés dans le tableau ci-dessous. Une interprétation spécifique nécessite de vérifier la méthode, ses hypothèses, les effectifs et les critères d’acceptabilité pertinents.`;
+}
+function proposeReportInterpretation(){
+ const selected=[...document.querySelectorAll('.report-analysis-check:checked')].map(x=>project.analyses[Number(x.value)]).filter(Boolean);
+ if(!selected.length){$('reportStatus').textContent='Sélectionne au moins une analyse avant de générer une proposition.';return}
+ if(selected.length===1)$('reportInterpretation').value=autoInterpretationForAnalysis(selected[0]);
+ else $('reportInterpretation').value=selected.map((a,i)=>`${i+1}. ${a.type||'Analyse'} — ${a.variable||''}\n${autoInterpretationForAnalysis(a)}`).join('\n\n')+'\n\nSynthèse transversale : ces analyses sont présentées côte à côte. Leur rapprochement ne constitue pas une méta-analyse ; toute conclusion commune doit tenir compte des différences de méthodes, de variables et d’effectifs.';
+ $('reportStatus').textContent='Proposition générée. Relis-la et modifie-la avant l’export PDF.';
+}
+
+function launchPdfReport(globalReport){
+ const checked=[...document.querySelectorAll('.report-analysis-check:checked')].map(x=>project.analyses[Number(x.value)]).filter(Boolean);
+ if(!checked.length){$('reportStatus').textContent='Sélectionne au moins une analyse.';return}
+ if(!globalReport&&checked.length!==1){$('reportStatus').textContent='Pour un rapport individuel, sélectionne exactement une analyse.';return}
+ const win=window.open('','_blank');
+ if(!win){$('reportStatus').textContent='La fenêtre du rapport a été bloquée. Autorise les fenêtres surgissantes pour ce site puis réessaie.';return}
+ win.document.open();win.document.write(buildReportHtml(checked,globalReport));win.document.close();
+ $('reportStatus').textContent='Rapport préparé. Dans la fenêtre d’impression, choisis « Enregistrer en PDF » ou le partage/impression sur iPad.';
+}
+$('reportAutoInterpret')?.addEventListener('click',proposeReportInterpretation);
+$('reportIndividual')?.addEventListener('click',()=>launchPdfReport(false));
+$('reportGlobal')?.addEventListener('click',()=>launchPdfReport(true));
+$('reportRefresh')?.addEventListener('click',renderReportChoices);
+
+loadDraft();renderAll();
+window.addEventListener('error', event => {
+  const message = event?.message || 'Erreur JavaScript inconnue';
+  const status = document.getElementById('status');
+  if (status) status.textContent = 'Erreur de l’application : ' + message;
+});
+window.addEventListener('unhandledrejection', event => {
+  const message = event?.reason?.message || String(event?.reason || 'Erreur asynchrone inconnue');
+  const status = document.getElementById('status');
+  if (status) status.textContent = 'Erreur de traitement : ' + message;
+});
+// Service worker désactivé dans cette version de test : aucun fichier sw.js n'est fourni.
+</script></body></html>
