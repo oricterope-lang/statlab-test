@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#183b50">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="StatLab">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>StatLab 0.10.10</title>
+<style>
+:root{--navy:#183b50;--teal:#267c78;--bg:#f3f6f8;--ink:#20313d;--muted:#667783;--line:#dce4e9;--white:#fff;--gold:#fff8e8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{background:var(--navy);color:#fff;padding:17px max(16px,calc((100vw - 1180px)/2));display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.brand{font-size:24px;font-weight:780;letter-spacing:.2px}.sub{color:#c8d9e2;font-size:12px;margin-top:3px}.header-actions{display:flex;gap:8px;flex-wrap:wrap}header button{border:1px solid #638092;background:#244c61;color:#fff;border-radius:8px;padding:9px 12px;font-weight:600}
+main{max-width:1180px;margin:20px auto;padding:0 14px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px}nav,.panel,.metric{background:#fff;border:1px solid var(--line);border-radius:13px}nav{padding:10px;height:max-content;position:sticky;top:10px}nav button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:12px;border-radius:8px;color:var(--ink);font-size:14px;margin:2px 0}nav button.active{background:#e9f2f3;color:#145b5a;font-weight:700}.content{min-width:0}.panel{padding:17px;margin-bottom:15px}.panel h2{margin:0 0 6px;font-size:19px}.muted{color:var(--muted);font-size:13px;line-height:1.5}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px}input,select{border:1px solid var(--line);border-radius:8px;padding:10px;background:white;color:var(--ink);font:inherit;max-width:100%;min-height:40px}input[type=text]{min-width:190px}button.primary{background:var(--teal);color:white;border:0;border-radius:8px;padding:11px 14px;font-weight:650}button.secondary{background:#edf2f5;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 13px;font-weight:600}button:disabled{opacity:.45}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}.metric{padding:12px}.metric .k{font-size:12px;color:var(--muted)}.metric .v{font-size:20px;font-weight:750;margin-top:5px;overflow-wrap:anywhere}table{border-collapse:collapse;width:100%;font-size:13px}td,th{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--muted);font-weight:650}canvas{width:100%;height:210px;display:block;background:#fbfcfd;border:1px solid var(--line);border-radius:9px}.notice{background:var(--gold);border:1px solid #f0dfb7;color:#70551d;border-radius:9px;padding:12px;font-size:13px;line-height:1.45}.status{font-size:12px;color:var(--muted);padding:8px 0}.tag{font-size:11px;background:#e8f1f2;color:#225e60;padding:5px 8px;border-radius:99px}.hidden{display:none!important}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field label{font-size:12px;color:var(--muted);font-weight:650}.actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:12px}.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.result-box{border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}.result-box .k{font-size:12px;color:var(--muted)}.result-box .v{font-size:18px;font-weight:750;margin-top:4px;overflow-wrap:anywhere}.result-table{overflow:auto;margin-top:10px}.analysis-card{border:1px solid var(--line);border-radius:9px;padding:11px;margin-top:8px}.analysis-card strong{display:block;margin-bottom:4px}.pill{display:inline-block;background:#eef3f5;padding:3px 7px;border-radius:20px;font-size:11px;color:#4c626e}.right{margin-left:auto}.empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}footer{max-width:1180px;margin:10px auto 28px;padding:0 14px;color:var(--muted);font-size:12px}
+.variable-table-wrap{width:100%;max-width:100%;overflow-x:auto}.variable-table{width:100%;table-layout:fixed}.variable-table th,.variable-table td{white-space:normal;overflow-wrap:anywhere;word-break:normal}.variable-table th:nth-child(1){width:23%}.variable-table th:nth-child(2){width:18%}.variable-table th:nth-child(3){width:23%}.variable-table th:nth-child(4),.variable-table th:nth-child(5){width:18%}.variable-table .modality-cell{white-space:normal;overflow-wrap:anywhere;line-height:1.5}
+@media(max-width:740px){.result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}nav{position:static;display:flex;overflow:auto;gap:3px}nav button{white-space:nowrap;width:auto;padding:10px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}header{padding:14px}.header-actions{width:100%}.header-actions button{flex:1}}
+
+.report-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.report-form .field.full{grid-column:1/-1}
+.report-select-list{display:grid;gap:7px;margin-top:10px}
+.report-select-item{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}
+.report-select-item input{min-height:auto;margin-top:3px}
+@media(max-width:740px){.report-form{grid-template-columns:1fr}.report-form .field.full{grid-column:auto}}
+</style></head>
+<body>
+<header><div><div class="brand">⚗ StatLab</div><div class="sub">Environnement statistique scientifique · Version 0.10.10 · Application web</div></div><div class="header-actions"><button id="newProject">＋ Nouveau projet</button><button id="openProject">↗ Ouvrir .statlab</button><button id="saveProject">↓ Enregistrer le projet</button><input id="projectFile" type="file" accept="*/*" hidden></div></header>
+<main><div class="panel" style="margin-bottom:14px"><div class="row" style="margin-top:0"><div style="flex:1;min-width:190px"><div class="muted">PROJET ACTUEL</div><input id="projectName" type="text" value="Nouveau projet" aria-label="Nom du projet" style="width:100%;font-weight:700"></div><span class="tag" id="saveState">Brouillon local</span></div><div class="status" id="status">Prêt. Crée un projet ou importe des données.</div></div>
+<div class="layout"><nav aria-label="Navigation"><button class="active" data-view="data">▦ Données</button><button data-view="desc">∑ Descriptives</button><button data-view="history">◷ Analyses enregistrées</button><button data-view="tests">⌁ Tests statistiques</button><button data-view="bland">↔ Bland-Altman</button><button data-view="models">⌂ Modélisation</button><button data-view="quality">◇ Qualité laboratoire</button><button data-view="reports">▤ Rapports PDF</button></nav>
+<section class="content">
+<div id="view-data">
+<div class="panel"><h2>Importer des données</h2><div class="muted">Fichiers pris en charge : CSV, TXT et classeurs Excel .xlsx. Pour un classeur Excel, la première feuille est importée. Tout le traitement s'effectue localement dans le navigateur.</div><div class="row"><input id="dataFile" type="file" accept=".csv,.txt,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><button class="secondary" id="demo">Charger un exemple</button></div><div class="status" id="datasetInfo">Aucun jeu de données chargé.</div></div>
+<div class="panel"><h2>Structure des variables</h2><div class="muted">Le type détecté est une proposition. Tu peux le modifier variable par variable. Pour les variables qualitatives, les modalités distinctes et leurs effectifs sont indiqués.</div>
+<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:650">Comprendre les types de variables</summary><div class="muted" style="margin-top:10px;display:grid;gap:9px">
+<div><strong>Quantitative</strong> — mesure numérique pour laquelle les opérations arithmétiques ont un sens (ex. concentration d’ADN, durée, température). À utiliser pour les moyennes, écarts-types, tests t et ANOVA.</div>
+<div><strong>Qualitative nominale</strong> — catégories sans ordre naturel (ex. méthode d’extraction, type de prélèvement, laboratoire). Les valeurs distinctes sont les modalités.</div>
+<div><strong>Qualitative ordinale</strong> — catégories qui suivent un ordre, sans que l’écart entre deux niveaux soit nécessairement mesurable (ex. faible, moyen, élevé ; grade 1, 2, 3).</div>
+<div><strong>Identifiant</strong> — code servant à reconnaître une ligne, un échantillon ou un sujet (ex. numéro de dossier). Même s’il est composé de chiffres, il ne représente pas une quantité et ne doit pas être analysé comme telle.</div>
+<div><strong>Texte</strong> — contenu libre ou commentaire (ex. observations, description). Il n’est pas directement utilisable dans les analyses statistiques numériques ou catégorielles.</div>
+<p><strong>À retenir :</strong> le format numérique ne suffit pas à rendre une variable quantitative. C’est le sens scientifique de la donnée qui détermine son type. En cas de doute, vérifie la définition de la variable avant l’analyse.</p></div></details>
+<div id="variables" class="empty" style="margin-top:12px">Importe un jeu de données pour afficher les variables.</div></div>
+<div class="panel"><h2>Aperçu des données</h2><div class="row"><div class="field"><label for="filterColumn">Filtrer sur une variable</label><select id="filterColumn"><option value="">Aucun filtre</option></select></div><div class="field" style="flex:1"><label for="filterValue">Valeur exacte à conserver</label><select id="filterValue"><option value="">Toutes les valeurs</option></select></div><button class="secondary" id="clearFilter">Effacer le filtre</button></div><div class="status" id="filterInfo"></div><div style="overflow:auto;margin-top:8px" id="preview"></div></div>
+<div class="notice">Prudence : prototype de démonstration. Ne charge pas de données nominatives, sensibles ou médico-légales réelles. Le stockage local du navigateur n'est pas un coffre-fort ; conserve une copie du fichier .statlab dans un emplacement approuvé. Aucun téléversement réseau n'est effectué par cette application.</div>
+</div>
+<div id="view-desc" class="hidden">
+ <div class="panel">
+  <h2>Statistiques descriptives</h2>
+  <div class="muted">Explore une variable quantitative sur l’ensemble des observations ou séparément selon une variable de groupe. Les statistiques sont calculées après application du filtre général du projet. L’écart-type et la variance utilisent le dénominateur n−1.</div>
+  <div class="two" style="margin-top:14px">
+   <div class="field"><label for="variable">Variable quantitative</label><select id="variable"><option value="">Charge d'abord un jeu de données</option></select></div>
+   <div class="field"><label for="descGroupVariable">Variable de regroupement (facultative)</label><select id="descGroupVariable"><option value="">Aucun regroupement</option></select></div>
+  </div>
+  <div id="descGroupChoices" class="analysis-card hidden" style="margin-top:10px">
+   <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><strong>Groupes à afficher</strong><div class="actions"><button class="secondary" type="button" id="descSelectAll">Tout sélectionner</button><button class="secondary" type="button" id="descSelectNone">Tout désélectionner</button></div></div>
+   <div class="muted">Le tableau global inclut toutes les observations conservées, y compris celles dont la variable de groupe est manquante. Les lignes détaillées sont affichées pour les groupes sélectionnés.</div>
+   <div id="descGroupChecklist" class="report-select-list"></div>
+  </div>
+  <div class="two" style="margin-top:10px">
+   <div class="field"><label for="descCustomQuantiles">Quantiles personnalisés (%)</label><input id="descCustomQuantiles" type="text" value="5, 10, 90, 95" placeholder="Ex. : 5, 10, 25, 75, 90, 95"><div class="muted">Saisis un ou plusieurs pourcentages entre 0 et 100, séparés par des virgules ou des points-virgules (ex. : 5, 10, 90, 95). Chaque quantile demandé apparaîtra dans le tableau après le calcul. Tu peux aussi saisir uniquement 95.</div></div>
+   <div class="field"><label>Intervalle de confiance de la moyenne</label><div class="muted" style="padding:10px;border:1px solid var(--line);border-radius:8px">IC bilatéral à 95 %, calculé avec la loi de Student et n−1 degrés de liberté.</div></div>
+  </div>
+  <div class="row"><button class="primary" id="calculate">Calculer et enregistrer</button></div>
+  <details class="analysis-card" style="margin-top:12px">
+   <summary><strong>Comprendre les indicateurs descriptifs</strong></summary>
+   <div class="muted" style="margin-top:10px;display:grid;gap:10px">
+    <div><strong>Quantile (ex. 90e percentile)</strong><br>Valeur en dessous de laquelle se trouvent environ 90 % des observations. Le 50e percentile est la médiane ; le 25e et le 75e percentiles correspondent à Q1 et Q3. Le calcul de StatLab utilise une interpolation linéaire (type 7) : selon la convention choisie, de légères différences avec un autre logiciel sont possibles.</div>
+    <div><strong>Mode</strong><br>Valeur observée le plus souvent. Une série peut avoir plusieurs modes si plusieurs valeurs ont la même fréquence maximale. Pour une variable quantitative continue, le mode exact est souvent peu informatif : des valeurs identiques peuvent notamment résulter de l’arrondi ou de la précision de mesure. Il ne faut pas le confondre avec le pic d’une courbe de densité.</div>
+    <div><strong>Asymétrie (coefficient de Fisher-Pearson corrigé)</strong><br>Mesure l'asymétrie de la distribution. Une valeur proche de 0 indique une distribution globalement équilibrée ; une valeur positive indique une queue plus longue du côté des grandes valeurs ; une valeur négative, du côté des petites valeurs. Ce coefficient est sensible aux valeurs extrêmes.</div>
+    <div><strong>Kurtosis en excès</strong><br>Décrit le poids des queues et la concentration autour du centre, par comparaison à une loi normale dont la kurtosis en excès vaut 0. Une valeur positive indique des queues plus lourdes selon cette mesure ; une valeur négative, des queues plus légères. Ce n'est pas une mesure simple de la seule « hauteur » du pic.</div>
+    <div><strong>Erreur standard de l’asymétrie et de la kurtosis</strong><br>Quantifie l'incertitude d'échantillonnage de ces coefficients. Elle diminue généralement lorsque l'effectif augmente. Les rapports coefficient / erreur standard peuvent servir de repères exploratoires, mais ne remplacent pas un test de normalité ni l'examen graphique.</div>
+    <div><strong>Intervalle de confiance à 95 % de la moyenne</strong><br>Intervalle construit avec la loi de Student et l'écart-type de l'échantillon. Sous les hypothèses usuelles, il décrit l'incertitude sur la moyenne de la population ; il ne contient pas 95 % des observations individuelles.</div>
+   </div>
+  </details>
+  <div id="descResults" style="margin-top:14px"><div class="empty">Choisis une variable quantitative puis lance le calcul.</div></div>
+  <div class="row" id="descExport"></div>
+  <div class="analysis-card">
+   <strong>À propos des statistiques descriptives</strong>
+   <p class="muted">Les statistiques décrivent les observations disponibles ; elles ne permettent pas, à elles seules, de conclure qu’il existe une différence statistiquement significative entre les groupes. Les valeurs manquantes de la variable étudiée sont exclues des calculs et comptabilisées séparément.</p>
+  </div>
+  <h2 style="margin-top:20px">Distribution</h2>
+  <p class="muted">Les graphiques comparatifs utilisent les mêmes limites d’axe et les mêmes classes pour tous les groupes sélectionnés. Les histogrammes sont normalisés en densité afin de comparer les formes même lorsque les effectifs diffèrent.</p>
+  <div class="two">
+   <div class="field"><label for="descChartType">Type de graphique</label><select id="descChartType"><option value="hist">Histogrammes comparatifs</option><option value="hist-density">Histogrammes + courbes de densité</option><option value="density">Courbes de densité</option><option value="box">Boîtes à moustaches (boxplots)</option></select></div>
+   <div class="field"><label for="descBins">Nombre de classes (histogrammes)</label><select id="descBins"><option value="auto">Automatique</option><option value="8">8 classes</option><option value="12">12 classes</option><option value="16">16 classes</option><option value="20">20 classes</option><option value="30">30 classes</option></select></div>
+  </div>
+  <div id="descBoxOptions" class="field hidden"><label><input type="checkbox" id="descShowBoxPoints"> Afficher les observations individuelles</label></div>
+  <div id="descChartLegend" class="row" style="gap:14px;flex-wrap:wrap"></div>
+  <canvas id="hist" width="1000" height="420" style="width:100%;height:auto"></canvas>
+  <p id="descChartNote" class="muted">La densité est une estimation lissée de la distribution, pas une série de valeurs observées. Son apparence dépend du paramètre de lissage.</p>
+ </div>
+</div>
+<div id="view-history" class="hidden"><div class="panel"><h2>Analyses enregistrées dans le projet</h2><p class="muted">Chaque exécution descriptive est conservée avec la variable, les paramètres, les résultats et l'empreinte de la version des données présentes au moment du calcul.</p><div id="historyList" class="empty">Aucune analyse enregistrée.</div></div></div>
+<div id="view-tests" class="hidden">
+<div class="panel"><h2>Comparaison de deux groupes indépendants</h2><p class="muted">Version expérimentale 0.4. Sélectionne une variable quantitative et une variable de groupe comportant au moins deux modalités. Les observations manquantes ou non numériques sont exclues avec comptage explicite.</p>
+<div class="two" style="margin-top:14px">
+<div class="field"><label for="testVariable">Variable quantitative</label><select id="testVariable"><option value="">Importer des données</option></select></div>
+<div class="field"><label for="groupVariable">Variable de groupe</label><select id="groupVariable"><option value="">Importer des données</option></select></div>
+<div class="field"><label for="groupA">Premier groupe</label><select id="groupA"><option value="">—</option></select></div>
+<div class="field"><label for="groupB">Deuxième groupe</label><select id="groupB"><option value="">—</option></select></div>
+<div class="field"><label for="testMethod">Test statistique</label><select id="testMethod"><option value="welch">Welch (variances inégales)</option><option value="student">Student (variances égales)</option><option value="mw">Mann-Whitney (approximation normale)</option></select></div>
+<div class="field"><label for="alpha">Seuil alpha</label><select id="alpha"><option value="0.05">0,05</option><option value="0.01">0,01</option><option value="0.10">0,10</option></select></div>
+</div><div class="row"><button class="primary" id="runTest">Exécuter le test</button><button class="secondary" id="loadTestDemo">Charger l’exemple si nécessaire</button></div><div id="testResults" style="margin-top:14px"><div class="empty">Configure le test puis appuie sur « Exécuter le test ».</div></div>
+
+<div class="panel" id="pairedPanel"><h2>Tests pour échantillons appariés</h2>
+<p class="muted">À utiliser lorsque deux mesures sont liées : mêmes individus ou échantillons mesurés deux fois, ou paires constituées selon un protocole explicite. Chaque paire doit être identifiable sans ambiguïté.</p>
+<div class="field"><label for="pairedLayout">Organisation des données</label><select id="pairedLayout"><option value="wide">Deux colonnes : une mesure par condition</option><option value="long">Format long : identifiant + condition + mesure</option></select></div>
+<div id="pairedWideFields" class="two" style="margin-top:10px">
+ <div class="field"><label for="pairedVarA">Première mesure</label><select id="pairedVarA"></select></div>
+ <div class="field"><label for="pairedVarB">Deuxième mesure</label><select id="pairedVarB"></select></div>
+</div>
+<div id="pairedLongFields" class="two hidden" style="margin-top:10px">
+ <div class="field"><label for="pairedId">Identifiant de la paire</label><select id="pairedId"></select></div>
+ <div class="field"><label for="pairedCondition">Variable de condition</label><select id="pairedCondition"></select></div>
+ <div class="field"><label for="pairedValue">Variable mesurée</label><select id="pairedValue"></select></div>
+ <div class="field"><label for="pairedLevelA">Première condition</label><select id="pairedLevelA"></select></div>
+ <div class="field"><label for="pairedLevelB">Deuxième condition</label><select id="pairedLevelB"></select></div>
+</div>
+<div class="two" style="margin-top:10px">
+ <div class="field"><label for="pairedMethod">Test statistique</label><select id="pairedMethod"><option value="t">t de Student apparié</option><option value="wilcoxon">Wilcoxon signé-rang</option><option value="sign">Test des signes (exact)</option></select></div>
+ <div class="field"><label for="pairedAlpha">Seuil alpha</label><select id="pairedAlpha"><option value="0.05">0,05</option><option value="0.01">0,01</option><option value="0.10">0,10</option></select></div>
+</div>
+<details class="analysis-card"><summary><strong>Comment choisir le test ?</strong></summary>
+<p><strong>t apparié :</strong> teste si la moyenne des différences (mesure B − mesure A) est nulle. Il suppose des différences indépendantes entre paires et une distribution des différences approximativement normale, surtout avec de petits effectifs.</p>
+<p><strong>Wilcoxon signé-rang :</strong> utilise le signe et le rang des différences non nulles. Il est utile lorsque la normalité des différences est discutable ; son interprétation comme décalage de position suppose notamment une distribution des différences suffisamment symétrique. Les ex æquo et les petits effectifs peuvent nécessiter un calcul exact.</p>
+<p><strong>Test des signes :</strong> utilise uniquement le sens des différences. Il est plus simple et moins puissant, mais ne suppose pas la symétrie des différences. Les paires à différence nulle sont exclues du dénominateur.</p>
+<p class="muted">La normalité concerne les différences au sein des paires, jamais les deux colonnes séparément. L'indépendance entre paires dépend du plan expérimental et ne peut pas être déduite automatiquement du tableau.</p>
+</details>
+<div class="row"><button class="primary" id="runPaired">Calculer l'analyse appariée</button></div>
+<div id="pairedResults" style="margin-top:12px"><div class="empty">Choisis l'organisation des données et les variables, puis lance l'analyse.</div></div>
+</div>
+<div class="panel"><h2>Diagnostic des hypothèses et distribution</h2><p class="muted">Outils complémentaires pour examiner la distribution et l’homogénéité des variances. Ces diagnostics éclairent le choix du test ; ils ne remplacent pas l’examen du plan expérimental.</p><div class="two" style="margin-top:12px"><div class="field"><label for="diagVariable">Variable quantitative</label><select id="diagVariable"><option value="">Importer des données</option></select></div><div class="field"><label for="diagGroup">Variable de groupe</label><select id="diagGroup"><option value="">Importer des données</option></select></div></div><div class="row"><button class="primary" id="runDiagnostics">Afficher les diagnostics de normalité et Levene</button></div><div id="diagResults" style="margin-top:12px"><div class="empty">Choisis les variables puis lance les diagnostics.</div></div></div>
+<div class="panel"><h2>Analyse de variance à un facteur (ANOVA)</h2><p class="muted">Compare les moyennes de deux groupes ou plus. L’ANOVA indique si au moins une moyenne diffère ; elle ne précise pas à elle seule quelles paires de groupes diffèrent. Le tableau de résultats détaille les sommes des carrés, les carrés moyens et le rapport F.</p><div class="two" style="margin-top:12px"><div class="field"><label for="anovaVariable">Variable quantitative</label><select id="anovaVariable"><option value="">Importer des données</option></select></div><div class="field"><label for="anovaGroup">Variable de groupe</label><select id="anovaGroup"><option value="">Importer des données</option></select></div></div><div class="two" style="margin-top:10px"><div class="field"><label for="anovaMode">Méthode globale</label><select id="anovaMode"><option value="param">ANOVA classique (variances homogènes)</option><option value="welch">ANOVA de Welch (variances inégales)</option><option value="nonparam">Kruskal–Wallis (non paramétrique)</option></select></div><div class="field"><label for="anovaPosthoc">Comparaisons post hoc</label><select id="anovaPosthoc"><option value="tukey">Tukey–Kramer (ANOVA classique)</option><option value="games">Games–Howell (Welch)</option><option value="holm">Tests t par paires + Holm</option><option value="dunn">Dunn–Holm (Kruskal–Wallis)</option><option value="dscf">DSCF (comparaisons par rangs)</option></select></div></div><p class="muted">Choisis une procédure adaptée au modèle global. Le guide ci-dessous explique les conditions d’emploi ; la recommandation reste indicative et ne remplace pas l’examen du plan expérimental.</p><details class="analysis-card" open><summary><strong>Guide de choix du test post hoc</strong></summary><div class="two" style="margin-top:10px"><div><strong>ANOVA classique</strong><p class="muted">Tukey–Kramer est le choix usuel pour comparer toutes les paires de moyennes lorsque l’homogénéité des variances est raisonnablement défendable. Il contrôle le risque familial de comparaisons multiples.</p></div><div><strong>ANOVA de Welch</strong><p class="muted">Games–Howell est conçu pour comparer toutes les paires sans supposer des variances égales. Il tient compte des variances et des effectifs propres à chaque groupe.</p></div><div><strong>Tests t par paires + Holm</strong><p class="muted">Procédure flexible : chaque paire est testée, puis les p-values sont ajustées par Holm. Choisir la version à variance commune ou celle de Welch selon les hypothèses.</p></div><div><strong>Kruskal–Wallis</strong><p class="muted">Dunn–Holm compare les rangs moyens. DSCF est une autre procédure de comparaisons multiples, distincte de Dunn. Elle compare les paires à partir de tests de rangs et d'une correction fondée sur l'étendue studentisée.</p></div></div><div class="notice" id="posthocRecommendation">Recommandation : Tukey–Kramer avec l’ANOVA classique ; Games–Howell avec Welch ; Dunn–Holm ou DSCF avec Kruskal–Wallis. Vérifie les hypothèses et le plan d’échantillonnage.</div></details><div class="row"><button class="primary" id="runAnova">Calculer l’analyse</button></div><div id="anovaResults" style="margin-top:12px"><div class="empty">Configure l’analyse puis lance le calcul.</div></div></div>
+<div class="notice">État des méthodes dans cette version : le Q-Q plot, le test de Levene (centré sur la médiane, approche de Brown–Forsythe) et l’ANOVA à un facteur sont disponibles. Le test de Shapiro–Wilk et les analyses complètes de variables qualitatives (tableaux de contingence, Fisher, proportions, OR/RR) restent à intégrer et ne sont pas simulés ici. L’indépendance des observations ne peut pas être vérifiée automatiquement : elle dépend du plan d’échantillonnage.</div>
+</div>
+<div class="notice">Précautions méthodologiques : Student suppose l'égalité des variances ; Welch ne la suppose pas et constitue un choix robuste par défaut. Mann-Whitney teste une différence de distributions (pas systématiquement une différence de médianes). La p-value ne mesure ni l'importance ni la pertinence scientifique de l'effet. L'approximation normale de Mann-Whitney est signalée ; les petits échantillons nécessitent une méthode exacte ou une validation complémentaire.</div>
+</div>
+<div id="view-bland" class="hidden">
+<div class="panel"><h2>Comparaison de méthodes — Bland-Altman</h2>
+<p class="muted">Une ligne représente un échantillon et chaque colonne une mesure. Chaque comparaison est calculée séparément sur les paires présentes à la même ligne.</p>
+<div class="two" style="margin-top:14px">
+<div class="field"><label for="baSetup">Organisation</label><select id="baSetup"><option value="free">Comparaisons libres par paires</option><option value="reference">Une référence contre toutes les autres méthodes</option></select></div>
+<div class="field" id="baReferenceWrap"><label for="baReference">Méthode de référence</label><select id="baReference"><option value="">Importer des données</option></select></div>
+<div class="field"><label for="baId">Identifiant (facultatif)</label><select id="baId"><option value="">Aucun identifiant</option></select></div>
+<div class="field"><label for="baMode">Échelle d'analyse</label><select id="baMode"><option value="classic">Classique — différences A − B</option><option value="log">Logarithmique — rapports A / B</option></select></div>
+<div class="field"><label for="baAlpha">Niveau de confiance</label><select id="baAlpha"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></div>
+</div>
+<div id="baFreeControls"><div class="row"><strong>Comparaisons à effectuer</strong><button class="secondary" id="baAddPair" type="button">＋ Ajouter une comparaison</button></div><div id="baPairs"></div></div>
+<div class="row"><button class="primary" id="runBland">Calculer les comparaisons</button><button class="secondary" id="loadBlandDemo">Charger l’exemple si nécessaire</button></div>
+<div id="baResults" style="margin-top:14px"><div class="empty">Choisis les colonnes à comparer puis lance l'analyse.</div></div>
+</div>
+<div class="notice">Les limites d'accord ne sont pas des intervalles de confiance de la moyenne. L'acceptabilité doit être définie à l'avance. La régression des différences sur les moyennes recherche un biais proportionnel ; une pente non significative ne prouve pas son absence. En mode logarithmique, les résultats exponentiés s'interprètent comme des rapports. Les colonnes d'identifiant usuelles sont écartées des choix de mesures ; vérifie toujours les variables proposées.</div>
+</div>
+<div id="view-models" class="hidden"><div class="panel"><h2>Modélisation</h2><p class="muted">Espace réservé aux modèles avancés, avec diagnostics, intervalles de confiance, résidus et export des coefficients.</p><table><tr><th>Modèle</th><th>Usage</th><th>État</th></tr><tr><td>Linéaire</td><td>Relation entre variables quantitatives</td><td>À développer</td></tr><tr><td>Logistique</td><td>Résultat binaire, probabilité et odds ratio</td><td>À développer</td></tr><tr><td>Poisson</td><td>Comptages et taux</td><td>À développer</td></tr><tr><td>Gamma</td><td>Variable positive continue asymétrique</td><td>À développer</td></tr><tr><td>ROC / AUC</td><td>Évaluation des seuils de classification</td><td>À développer</td></tr></table></div></div>
+
+<div id="view-reports" class="hidden">
+ <div class="panel">
+  <h2>Générateur de rapports PDF — StatLab 0.7.3</h2>
+  <p class="muted">Prépare un rapport scientifique à partir des analyses déjà enregistrées dans le projet. Les résultats sont repris tels qu'ils sont stockés ; aucune statistique n'est recalculée lors de la génération.</p>
+  <div class="report-form">
+   <div class="field"><label for="reportTitle">Titre du rapport</label><input id="reportTitle" type="text" value="Rapport d'analyse statistique"></div>
+   <div class="field"><label for="reportDate">Date</label><input id="reportDate" type="date"></div>
+   <div class="field"><label for="reportAuthor">Auteur</label><input id="reportAuthor" type="text" placeholder="Nom de l'auteur"></div>
+   <div class="field"><label for="reportLab">Laboratoire</label><input id="reportLab" type="text" placeholder="Nom du laboratoire"></div>
+   <div class="field"><label for="reportService">Service</label><input id="reportService" type="text" placeholder="Nom du service"></div>
+   <div class="field"><label for="reportReference">Référence de l'étude</label><input id="reportReference" type="text" placeholder="Référence / numéro d'étude"></div>
+   <div class="field full"><label for="reportInterpretation">Interprétation / commentaire (facultatif et modifiable)</label><textarea id="reportInterpretation" rows="5" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit" placeholder="La proposition automatique peut être générée puis modifiée librement."></textarea><div class="row"><button type="button" class="secondary" id="reportAutoInterpret">Proposer une interprétation automatique</button></div></div>
+  </div>
+ </div>
+ <div class="panel">
+  <h2>Analyses à inclure</h2>
+  <p class="muted">Sélectionne une analyse pour produire un rapport individuel, ou plusieurs analyses pour créer un rapport global. Les données individuelles ne sont pas incluses.</p>
+  <div id="reportAnalysisList" class="report-select-list"></div>
+  <div class="row">
+   <button class="primary" id="reportIndividual">Préparer le PDF individuel</button>
+   <button class="primary" id="reportGlobal">Préparer le rapport global</button>
+   <button class="secondary" id="reportRefresh">Actualiser la liste</button>
+  </div>
+  <div class="status" id="reportStatus">Les rapports PDF seront ouverts dans la fenêtre d'impression du navigateur. Sur iPad, utilise ensuite le menu de partage/impression pour enregistrer le PDF dans Fichiers.</div>
+ </div>
+ <div class="notice">Première version du générateur : page de garde, résultats enregistrés et interprétation proposée puis modifiable. Les graphiques intégrés seront ajoutés dans une révision suivante. Les analyses des modules encore indiqués « À développer » ne peuvent pas être rapportées.</div>
+</div>
+<div id="view-quality" class="hidden"><div class="panel"><h2>Qualité laboratoire</h2><p class="muted">Module métier dédié au suivi des contrôles et à l'évaluation des méthodes analytiques.</p><table><tr><th>Outil</th><th>Fonction</th><th>État</th></tr><tr><td>Cartes I-MR</td><td>Suivi de témoins et détection de dérives</td><td>À développer</td></tr><tr><td>Contaminations</td><td>Taux, modèle de Poisson, IC et probabilités</td><td>À développer</td></tr><tr><td>Comparaison de méthodes</td><td>Avant/après, biais, accord et régression</td><td>À développer</td></tr><tr><td>Validation analytique</td><td>Linéarité, répétabilité et précision</td><td>À développer</td></tr></table></div></div>
+</section></div></main><footer>StatLab 0.10.1 · Application locale de démonstration. Import XLSX limité à la première feuille ; les macros ne sont pas exécutées. Tests statistiques en version expérimentale : vérifier les résultats avant tout usage professionnel.</footer>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+let project={format:'statlab',version:2,id:makeId(),name:'Nouveau projet',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),sourceFilename:'',sourceFormat:'',headers:[],rows:[],variableTypes:{},filter:{column:'',value:''},analyses:[],dataRevision:0};
+let lastStats=null;
+function makeId(){return 'p-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
+function setStatus(s){$('status').textContent=s}
+function markChanged(){project.updatedAt=new Date().toISOString();$('saveState').textContent='Modifications locales';persistDraft()}
+function persistDraft(){try{localStorage.setItem('statlab-v02-draft',JSON.stringify(project));$('saveState').textContent='Brouillon sauvegardé localement'}catch(e){$('saveState').textContent='Export fichier recommandé'}}
+function loadDraft(){try{const s=localStorage.getItem('statlab-v02-draft');if(s){const p=JSON.parse(s);if(p&&p.format==='statlab'&&p.version===2){project=normaliseProject(p);renderAll();$('projectName').value=project.name;setStatus('Brouillon local restauré. Pense à exporter régulièrement le fichier .statlab.')}}}catch(e){}}
+function normaliseProject(p){const headers=Array.isArray(p.headers)?p.headers:[],rows=Array.isArray(p.rows)?p.rows:[],variableTypes={...(p.variableTypes||{})};headers.forEach((h,i)=>{if(!variableTypes[i])variableTypes[i]=guessVariableType(rows,i)});return {format:'statlab',version:2,id:p.id||makeId(),name:p.name||'Projet importé',createdAt:p.createdAt||new Date().toISOString(),updatedAt:p.updatedAt||new Date().toISOString(),sourceFilename:p.sourceFilename||'',sourceFormat:p.sourceFormat||'',headers,rows,variableTypes,filter:p.filter||{column:'',value:''},analyses:Array.isArray(p.analyses)?p.analyses:[],dataRevision:Number(p.dataRevision)||0}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function num(x){if(x===null||x===undefined||String(x).trim()==='')return null;const n=Number(String(x).trim().replace(',','.'));return Number.isFinite(n)?n:null}
+function parseCSV(text){const first=text.split(/\r?\n/).find(x=>x.trim())||'';const seps=[',',';','\t'];const sep=seps.sort((a,b)=>first.split(b).length-first.split(a).length)[0];let out=[],row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'&&quoted&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=!quoted;else if(c===sep&&!quoted){row.push(cell);cell=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(x=>x.trim()!==''))out.push(row);row=[];cell=''}else cell+=c}row.push(cell);if(row.some(x=>x.trim()!==''))out.push(row);return out}
+async function unzipXlsx(buffer){const bytes=new Uint8Array(buffer),dv=new DataView(buffer);let eocd=-1;for(let i=bytes.length-22;i>=Math.max(0,bytes.length-65558);i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break}}if(eocd<0)throw Error('Archive XLSX invalide (fin ZIP introuvable).');const count=dv.getUint16(eocd+10,true),cdOffset=dv.getUint32(eocd+16,true);let pos=cdOffset,files={};for(let i=0;i<count;i++){if(dv.getUint32(pos,true)!==0x02014b50)throw Error('Répertoire ZIP invalide.');const method=dv.getUint16(pos+10,true),cs=dv.getUint32(pos+20,true),nl=dv.getUint16(pos+28,true),el=dv.getUint16(pos+30,true),cl=dv.getUint16(pos+32,true),lo=dv.getUint32(pos+42,true);const name=new TextDecoder().decode(bytes.slice(pos+46,pos+46+nl));const lnl=dv.getUint16(lo+26,true),lel=dv.getUint16(lo+28,true),start=lo+30+lnl+lel,compressed=bytes.slice(start,start+cs);let raw;if(method===0)raw=compressed;else if(method===8){if(typeof DecompressionStream==='undefined')throw Error('Ce navigateur ne propose pas la décompression XLSX hors ligne nécessaire. Exporte la feuille en CSV puis importe-la.');const ds=new DecompressionStream('deflate-raw');const stream=new Blob([compressed]).stream().pipeThrough(ds);raw=new Uint8Array(await new Response(stream).arrayBuffer())}else throw Error('Compression XLSX non prise en charge (méthode '+method+').');files[name]=new TextDecoder('utf-8').decode(raw);pos+=46+nl+el+cl}return files}
+function xmlDoc(str){return new DOMParser().parseFromString(str,'application/xml')}
+function firstTag(doc,name){return doc.getElementsByTagName(name)[0]||null}
+function parseXlsxSheet(files){const wb=xmlDoc(files['xl/workbook.xml']||'');const sheet=firstTag(wb,'sheet');if(!sheet)throw Error('Aucune feuille trouvée dans le classeur.');let target='xl/worksheets/sheet1.xml';const rid=sheet.getAttribute('r:id');if(files['xl/_rels/workbook.xml.rels']){const rels=xmlDoc(files['xl/_rels/workbook.xml.rels']);for(const r of rels.getElementsByTagName('Relationship'))if(r.getAttribute('Id')===rid){let t=r.getAttribute('Target')||'worksheets/sheet1.xml';target=t.startsWith('/')?t.slice(1):('xl/'+t).replace('xl/xl/','xl/');break}}const sh=xmlDoc(files[target]||files['xl/worksheets/sheet1.xml']||'');const ss=[];if(files['xl/sharedStrings.xml']){const sd=xmlDoc(files['xl/sharedStrings.xml']);for(const si of sd.getElementsByTagName('si'))ss.push(Array.from(si.getElementsByTagName('t')).map(t=>t.textContent).join(''))}const matrix=[];for(const row of sh.getElementsByTagName('row')){const ri=Math.max(0,(Number(row.getAttribute('r'))||1)-1);matrix[ri]=matrix[ri]||[];for(const c of row.getElementsByTagName('c')){const ref=c.getAttribute('r')||'A1',letters=(ref.match(/[A-Z]+/i)||['A'])[0].toUpperCase();let ci=0;for(const ch of letters)ci=ci*26+ch.charCodeAt(0)-64;ci--;const type=c.getAttribute('t'),v=firstTag(c,'v');let value='';if(type==='inlineStr'){value=Array.from(c.getElementsByTagName('t')).map(t=>t.textContent).join('')}else if(v){value=v.textContent;if(type==='s')value=ss[Number(value)]??'';else if(type==='b')value=value==='1'?'TRUE':'FALSE'}matrix[ri][ci]=value}}const width=Math.max(0,...matrix.map(r=>(r||[]).length));return matrix.filter(Boolean).map(r=>Array.from({length:width},(_,i)=>r[i]??''))}
+function importMatrix(matrix,filename,format){if(!matrix||matrix.length<2)throw Error('Le fichier ne contient pas d’en-tête et au moins une ligne de données.');const headers=matrix[0].map((h,i)=>String(h??'').trim()||'Variable_'+(i+1));const rows=matrix.slice(1).filter(r=>r.some(x=>String(x??'').trim()!=='' )).map(r=>headers.map((_,i)=>String(r[i]??'').trim()));project.headers=headers;project.rows=rows;project.variableTypes={};headers.forEach((h,i)=>project.variableTypes[i]=guessVariableType(rows,i));project.sourceFilename=filename;project.sourceFormat=format;project.filter={column:'',value:''};project.analyses=[];project.dataRevision++;project.updatedAt=new Date().toISOString();lastStats=null;renderAll();markChanged();setStatus(`${filename} importé : ${rows.length.toLocaleString('fr-FR')} lignes et ${headers.length} variables. Les analyses antérieures ont été réinitialisées.`)}
+$('dataFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{setStatus('Lecture du fichier…');if(/\.xlsx$/i.test(f.name)){const z=await unzipXlsx(await f.arrayBuffer());const m=parseXlsxSheet(z);importMatrix(m,f.name,'XLSX')}else{const text=await f.text();importMatrix(parseCSV(text),f.name,'CSV')}}catch(err){setStatus('Import impossible : '+err.message);alert('Import impossible : '+err.message)}finally{e.target.value=''}});
+$('demo').addEventListener('click',()=>{const m=parseCSV('Echantillon;Concentration_H;Concentration_Y;Groupe;Methode\n1;12,4;0,8;A;56°C\n2;11,8;0,7;A;56°C\n3;13,1;1,1;A;56°C\n4;10,9;0,6;A;56°C\n5;9,8;0,5;B;70°C\n6;10,2;0,4;B;70°C\n7;8,9;0,3;B;70°C\n8;9,5;0,5;B;70°C\n9;7,8;0,2;C;70°C\n10;8,1;0,3;C;70°C\n11;7,4;0,2;C;70°C\n12;8,6;0,4;C;70°C');importMatrix(m,'Exemple StatLab','DEMO')});
+function guessVariableType(rows,i){const vals=rows.map(r=>r[i]).filter(v=>String(v??'').trim()!=='');if(!vals.length)return 'texte';const numeric=vals.filter(v=>num(v)!==null).length;return numeric/vals.length>=.85?'quantitative':'nominale'}
+function typeOfColumn(i){const vals=project.rows.map(r=>r[i]).filter(v=>String(v??'').trim()!=='');if(!vals.length)return 'Vide';const n=vals.filter(v=>num(v)!==null).length;return n/vals.length>=.85?'Quantitative probable':'Qualitative probable'}
+const VARIABLE_TYPE_LABELS={quantitative:'Quantitative',nominale:'Qualitative nominale',ordinale:'Qualitative ordinale',identifiant:'Identifiant',texte:'Texte'};
+function variableTypeSelect(i){const current=project.variableTypes?.[i]||guessVariableType(project.rows,i);return `<select class="variable-type-select" data-variable-index="${i}" aria-label="Type de ${esc(project.headers[i])}">${Object.entries(VARIABLE_TYPE_LABELS).map(([v,l])=>`<option value="${v}" ${current===v?'selected':''}>${l}</option>`).join('')}</select>`}
+function modalitySummary(i){const counts=new Map();project.rows.forEach(r=>{const v=String(r[i]??'').trim();if(v!=='')counts.set(v,(counts.get(v)||0)+1)});const entries=[...counts.entries()].sort((a,b)=>a[0].localeCompare(b[0],'fr',{numeric:true}));if(!entries.length)return 'Aucune modalité renseignée';return `<strong>${entries.length} modalité${entries.length>1?'s':''} :</strong> ${entries.map(([v,n])=>`${esc(v)} <span class="muted">(n=${n})</span>`).join(' · ')}`}
+function getFilteredRows(){const ci=project.filter.column===''?-1:Number(project.filter.column),val=project.filter.value;return project.rows.filter(r=>ci<0||val===''||(val==='__STATLAB_MISSING__'?!String(r[ci]??'').trim():String(r[ci]??'')===val))}
+function renderData(){const has=project.headers.length>0;$('datasetInfo').textContent=has?`${project.rows.length.toLocaleString('fr-FR')} lignes · ${project.headers.length} variables · ${project.sourceFilename||'données du projet'}`:'Aucun jeu de données chargé.';$('variables').innerHTML=has?'<div class="variable-table-wrap"><table class="variable-table"><thead><tr><th>Variable</th><th>Type détecté</th><th>Type utilisé</th><th>Valeurs présentes</th><th>Manquantes</th></tr></thead><tbody>'+project.headers.map((h,i)=>{const present=project.rows.filter(r=>String(r[i]??'').trim()!=='').length;const categorical=['nominale','ordinale'].includes(project.variableTypes?.[i]);return `<tr><td>${esc(h)}</td><td><span class="pill">${typeOfColumn(i)}</span></td><td>${variableTypeSelect(i)}</td><td>${present}</td><td>${project.rows.length-present}</td></tr>${categorical?`<tr><td colspan="5" class="modality-cell" style="background:var(--surface2);font-size:12px">${modalitySummary(i)}</td></tr>`:''}`}).join('')+'</tbody></table></div>':'<div class="empty">Importe un jeu de données pour afficher les variables.</div>';
+const fc=$('filterColumn');const old=project.filter.column;fc.innerHTML='<option value="">Aucun filtre</option>'+project.headers.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join('');fc.value=old;renderFilterValues();renderPreview();renderVariableOptions();renderDescGroupOptions()}
+document.addEventListener('change',e=>{const sel=e.target.closest('.variable-type-select');if(!sel)return;const i=Number(sel.dataset.variableIndex);project.variableTypes=project.variableTypes||{};project.variableTypes[i]=sel.value;markChanged();renderData();setStatus(`Type de la variable « ${project.headers[i]} » défini sur « ${VARIABLE_TYPE_LABELS[sel.value]} ».`)});
+function renderPreview(){const rows=getFilteredRows();$('filterInfo').textContent=`${rows.length.toLocaleString('fr-FR')} / ${project.rows.length.toLocaleString('fr-FR')} observations affichées`;$('preview').innerHTML=project.headers.length?'<table><thead><tr>'+project.headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.slice(0,12).map(r=>'<tr>'+r.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table>':'<div class="empty">Aucune donnée à afficher.</div>'}
+function renderVariableOptions(){const opts=project.headers.map((h,i)=>({h,i,n:getFilteredRows().filter(r=>num(r[i])!==null).length})).filter(x=>x.n>0&&(project.variableTypes?.[x.i]||guessVariableType(project.rows,x.i))==='quantitative');const sel=$('variable'),old=sel.value;sel.innerHTML=opts.length?opts.map(x=>`<option value="${x.i}">${esc(x.h)} (${x.n} nombres)</option>`).join(''):'<option value="">Aucune variable numérique</option>';if(opts.some(o=>String(o.i)===old))sel.value=old}
+function renderFilterValues(){const sel=$('filterValue'),ci=project.filter.column===''?-1:Number(project.filter.column),old=project.filter.value||'';if(ci<0){sel.innerHTML='<option value="">Toutes les valeurs</option>';sel.value='';project.filter.value='';return}const counts=new Map();let missing=0;project.rows.forEach(r=>{const v=String(r[ci]??'').trim();if(!v)missing++;else counts.set(v,(counts.get(v)||0)+1)});sel.innerHTML='<option value="">Toutes les valeurs</option>'+[...counts.entries()].sort((a,b)=>a[0].localeCompare(b[0],'fr',{numeric:true})).map(([v,n])=>`<option value="${esc(v)}">${esc(v)} (n=${n})</option>`).join('')+(missing?`<option value="__STATLAB_MISSING__">Valeurs manquantes / vides (n=${missing})</option>`:'');sel.value=[...sel.options].some(o=>o.value===old)?old:'';project.filter.value=sel.value}
+$('filterColumn').addEventListener('change',()=>{project.filter.column=$('filterColumn').value;project.filter.value='';renderFilterValues();markChanged();renderPreview();renderVariableOptions();renderDescGroupOptions()});$('filterValue').addEventListener('change',()=>{project.filter.value=$('filterValue').value;renderPreview();renderVariableOptions();renderDescGroupOptions();markChanged()});$('clearFilter').addEventListener('click',()=>{project.filter={column:'',value:''};renderData();markChanged()});
+function quantile(a,p){const x=(a.length-1)*p,lo=Math.floor(x),hi=Math.ceil(x);return a[lo]+(a[hi]-a[lo])*(x-lo)}function fmt(x){return Number.isFinite(x)?x.toLocaleString('fr-FR',{maximumFractionDigits:6}):'—'}
+const csvExportPayloads=new Map();
+function csvSafe(value){let s=String(value??'');if(/^[=+@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+function csvRowsForAnalysis(a){
+ const rows=[];const meta=[['Type d’analyse',a.type||'Analyse'],['Date',a.createdAt?new Date(a.createdAt).toLocaleString('fr-FR'):''],['Fichier source',project.sourceFilename||''],['Variable(s)',a.variable||''],['Variable de groupe',a.groupVariable||''],['Groupes',Array.isArray(a.groups)?a.groups.join(' / '):''],['Révision des données',a.dataRevision??''],['Filtre',a.filter?.column!==undefined&&a.filter?.column!==''?`${project.headers?.[Number(a.filter.column)]??a.filter.column} = ${a.filter.value??''}`:'Aucun']];
+ for(const [k,v] of meta)rows.push(['Métadonnée',k,v,'']);
+ const flatten=(obj,prefix='')=>{if(obj&&typeof obj==='object'&&!Array.isArray(obj)){for(const [k,v] of Object.entries(obj))flatten(v,prefix?prefix+'.'+k:k)}else{const value=Array.isArray(obj)?obj.join(' ; '):obj===null?'':obj;rows.push(['Résultat',prefix,value,''])}};
+ if(a.parameters)flatten(a.parameters,'Paramètre');if(a.results)flatten(a.results,'Résultat');
+ return [['Catégorie','Élément','Valeur','Note'],...rows];
+}
+function registerCsvExport(container,analysis,filename){
+ if(!container)return;const id=makeId();csvExportPayloads.set(id,{analysis,filename:safeExportName(filename||'StatLab-analyse')+'.csv'});
+ const wrap=document.createElement('div');wrap.className='row';wrap.style.marginTop='12px';const button=document.createElement('button');button.type='button';button.className='secondary csv-export';button.dataset.csvId=id;button.textContent='↓ Exporter les résultats CSV';wrap.appendChild(button);container.appendChild(wrap);
+}
+function csvString(rows){return '\uFEFF'+rows.map(row=>row.map(csvSafe).join(';')).join('\r\n')+'\r\n'}
+document.addEventListener('click',async e=>{const b=e.target.closest('.csv-export');if(!b)return;const item=csvExportPayloads.get(b.dataset.csvId);if(!item)return;b.disabled=true;try{const content=csvString(csvRowsForAnalysis(item.analysis));const result=await download(item.filename,content,'text/csv;charset=utf-8');if(result?.ok)setStatus('Export CSV prêt : '+item.filename)}catch(err){setStatus('Export CSV impossible : '+(err?.message||String(err)))}finally{b.disabled=false}});
+
+const DESC_PALETTE=['#267c78','#d17a35','#5477a8','#9a6bb0','#7b8e45','#c05a75'];
+let descChartSeries=[];
+function drawHist(a){
+ const c=$('hist'),ctx=c.getContext('2d');
+ drawDescDistribution([{label:'Ensemble des observations',values:a}], 'hist');
+}
+function drawDescDistribution(series,requestedType){
+ const c=$('hist'),ctx=c.getContext('2d'),w=c.width,h=c.height;
+ ctx.clearRect(0,0,w,h);
+ const valid=series.map(s=>({...s,values:s.values.filter(Number.isFinite)})).filter(s=>s.values.length);
+ $('descChartLegend').innerHTML=valid.map((s,i)=>`<span style="display:inline-flex;align-items:center;gap:6px"><i style="display:inline-block;width:12px;height:12px;border-radius:2px;background:${DESC_PALETTE[i%DESC_PALETTE.length]}"></i>${esc(s.label)} (n=${s.values.length})</span>`).join('');
+ if(!valid.length){ctx.fillStyle='#52636e';ctx.fillText('Aucune donnée numérique à représenter.',30,40);return}
+ let min=Math.min(...valid.flatMap(s=>s.values)),max=Math.max(...valid.flatMap(s=>s.values));
+ if(min===max){min-=.5;max+=.5}
+ const type=requestedType||$('descChartType')?.value||'hist';
+ const binsValue=$('descBins')?.value||'auto';
+ const bins=binsValue==='auto'?Math.min(30,Math.max(6,Math.ceil(Math.sqrt(valid.reduce((n,s)=>n+s.values.length,0))))):Number(binsValue);
+ const step=(max-min)/bins,left=66,right=22,top=24,bottom=h-58,pw=w-left-right,ph=bottom-top;
+ const boxOptions=$('descBoxOptions');
+ if(boxOptions)boxOptions.classList.toggle('hidden',type!=='box');
+ if(type==='box'){
+  const pad=(max-min)*.06||1,lo=min-pad,hi=max+pad;
+  const y=v=>bottom-(v-lo)/(hi-lo)*ph;
+  const mid=i=>left+pw*(i+.5)/valid.length;
+  const tick=hi-lo;
+  ctx.strokeStyle='#e8edf0';ctx.fillStyle='#52636e';ctx.font='11px sans-serif';ctx.textAlign='right';
+  for(let k=0;k<=5;k++){const v=lo+tick*k/5,yy=y(v);ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(w-right,yy);ctx.stroke();ctx.fillText(fmt(v),left-8,yy+4)}
+  valid.forEach((s,i)=>{
+   const a=[...s.values].sort((x,y)=>x-y),q1=quantile(a,.25),med=quantile(a,.5),q3=quantile(a,.75),iqr=q3-q1;
+   const lowerFence=q1-1.5*iqr,upperFence=q3+1.5*iqr;
+   const inside=a.filter(v=>v>=lowerFence&&v<=upperFence),lowWhisker=inside[0],highWhisker=inside[inside.length-1];
+   const cx=mid(i),bw=Math.min(100,pw/valid.length*.42),color=DESC_PALETTE[i%DESC_PALETTE.length];
+   ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=2;
+   ctx.beginPath();ctx.moveTo(cx,y(lowWhisker));ctx.lineTo(cx,y(q1));ctx.moveTo(cx,y(q3));ctx.lineTo(cx,y(highWhisker));ctx.stroke();
+   ctx.beginPath();ctx.moveTo(cx-bw*.22,y(lowWhisker));ctx.lineTo(cx+bw*.22,y(lowWhisker));ctx.moveTo(cx-bw*.22,y(highWhisker));ctx.lineTo(cx+bw*.22,y(highWhisker));ctx.stroke();
+   ctx.globalAlpha=.22;ctx.fillRect(cx-bw/2,y(q3),bw,Math.max(1,y(q1)-y(q3)));ctx.globalAlpha=1;
+   ctx.strokeRect(cx-bw/2,y(q3),bw,Math.max(1,y(q1)-y(q3)));
+   ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(cx-bw/2,y(med));ctx.lineTo(cx+bw/2,y(med));ctx.stroke();
+   const outliers=a.filter(v=>v<lowerFence||v>upperFence);
+   ctx.fillStyle=color;outliers.forEach((v,j)=>{ctx.beginPath();ctx.arc(cx,y(v),4,0,Math.PI*2);ctx.fill()});
+   if($('descShowBoxPoints')?.checked){
+    a.forEach((v,j)=>{const jitter=(((j*37+i*19)%17)-8)*2.1;ctx.beginPath();ctx.globalAlpha=.48;ctx.arc(cx+jitter,y(v),2.2,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1});
+   }
+   ctx.fillStyle='#52636e';ctx.textAlign='center';ctx.font='12px sans-serif';ctx.fillText(s.label,cx,bottom+24);
+  });
+  ctx.fillStyle='#52636e';ctx.textAlign='center';ctx.font='12px sans-serif';ctx.fillText('Groupes',left+pw/2,h-10);
+  $('descChartNote').textContent='Lecture du boxplot : le trait dans la boîte est la médiane ; la boîte va de Q1 à Q3 et contient les 50 % centraux. Les moustaches vont jusqu’aux observations les plus extrêmes situées dans les limites Q1 − 1,5 × IQR et Q3 + 1,5 × IQR. Les points au-delà sont des valeurs atypiques potentielles, pas nécessairement des erreurs. Elles ne sont pas supprimées du calcul.';
+  return;
+ }
+ const x=v=>left+(v-min)/(max-min)*pw;
+ const yMax=(()=> {
+  let peak=0;
+  if(type!=='density') valid.forEach(s=>{
+   const counts=Array(bins).fill(0);s.values.forEach(v=>counts[Math.min(bins-1,Math.max(0,Math.floor((v-min)/step)))]++);
+   peak=Math.max(peak,...counts.map(n=>n/(s.values.length*step)));
+  });
+  if(type==='density'||type==='hist-density'){
+   valid.forEach(s=>{const bw=Math.max((max-min)/35,1.06*sampleSd(s.values)*Math.pow(s.values.length,-.2));for(let j=0;j<=160;j++){const xx=min+(max-min)*j/160;let d=0;s.values.forEach(v=>{const z=(xx-v)/bw;d+=Math.exp(-.5*z*z)});d/=s.values.length*bw*Math.sqrt(2*Math.PI);peak=Math.max(peak,d)}});
+  }
+  return peak>0?peak*1.12:1;
+ })();
+ ctx.strokeStyle='#dce4e9';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(left,top);ctx.lineTo(left,bottom);ctx.lineTo(w-right,bottom);ctx.stroke();
+ ctx.font='11px sans-serif';ctx.fillStyle='#52636e';ctx.textAlign='right';
+ for(let k=0;k<=4;k++){const val=yMax*k/4,yy=bottom-(val/yMax)*ph;ctx.strokeStyle='#e8edf0';ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(w-right,yy);ctx.stroke();ctx.fillText(fmt(val),left-8,yy+4)}
+ ctx.textAlign='center';for(let k=0;k<=5;k++){const val=min+(max-min)*k/5;ctx.fillText(fmt(val),x(val),bottom+20)}
+ const drawHistograms=type==='hist'||type==='hist-density';
+ if(drawHistograms){
+  const groupWidth=pw/bins;
+  valid.forEach((s,si)=>{
+   const counts=Array(bins).fill(0);s.values.forEach(v=>counts[Math.min(bins-1,Math.max(0,Math.floor((v-min)/step)))]++);
+   counts.forEach((n,i)=>{const density=n/(s.values.length*step),barH=density/yMax*ph,bx=left+i*groupWidth+1;ctx.globalAlpha=valid.length>1?.36:.68;ctx.fillStyle=DESC_PALETTE[si%DESC_PALETTE.length];ctx.fillRect(bx,bottom-barH,Math.max(1,groupWidth-2),barH)});
+  });
+  ctx.globalAlpha=1;
+ }
+ if(type==='density'||type==='hist-density'){
+  valid.forEach((s,si)=>{
+   const bw=Math.max((max-min)/35,1.06*sampleSd(s.values)*Math.pow(s.values.length,-.2));
+   ctx.beginPath();ctx.strokeStyle=DESC_PALETTE[si%DESC_PALETTE.length];ctx.lineWidth=2.5;
+   for(let j=0;j<=200;j++){const xx=min+(max-min)*j/200;let d=0;s.values.forEach(v=>{const z=(xx-v)/bw;d+=Math.exp(-.5*z*z)});d/=s.values.length*bw*Math.sqrt(2*Math.PI);const yy=bottom-(d/yMax)*ph;if(j===0)ctx.moveTo(x(xx),yy);else ctx.lineTo(x(xx),yy)}
+   ctx.stroke();
+  });
+ }
+ ctx.fillStyle='#52636e';ctx.textAlign='center';ctx.font='12px sans-serif';ctx.fillText('Valeur',left+pw/2,h-10);
+ $('descChartNote').textContent=type==='hist'
+  ?'Histogrammes comparatifs : mêmes limites et mêmes classes pour tous les groupes. L’axe vertical représente une densité (aire totale égale à 1 par groupe), ce qui facilite la comparaison lorsque les effectifs diffèrent.'
+  :type==='density'
+  ?'Courbes de densité : estimation lissée par noyau gaussien. Le lissage dépend de la dispersion et de l’effectif de chaque groupe ; la courbe ne représente pas directement les observations.'
+  :'Histogrammes et densités : les barres et les courbes utilisent une échelle verticale de densité. Les courbes sont des estimations lissées et non des observations.';
+}
+function sampleSd(a){if(a.length<2)return 0;const m=a.reduce((s,x)=>s+x,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1))}
+
+
+let descSelectedGroups = new Set();
+function descGroupValue(row,idx){
+ const v=String(row[idx]??'').trim();
+ return v===''?'__MISSING__':v;
+}
+function descGroupLabel(v){return v==='__MISSING__'?'(Valeur manquante)':v}
+function renderDescGroupOptions(){
+ const sel=$('descGroupVariable');
+ if(!sel)return;
+ const old=sel.value;
+ const candidates=project.headers.map((h,i)=>({h,i,type:project.variableTypes?.[i]||guessVariableType(project.rows,i)}))
+  .filter(x=>['nominale','ordinale','identifiant','texte'].includes(x.type));
+ sel.innerHTML='<option value="">Aucun regroupement</option>'+candidates.map(x=>`<option value="${x.i}">${esc(x.h)}</option>`).join('');
+ if(candidates.some(x=>String(x.i)===old))sel.value=old;
+ updateDescGroupChecklist();
+}
+function updateDescGroupChecklist(){
+ const sel=$('descGroupVariable');
+ const idx=sel?.value??'';
+ const wrap=$('descGroupChoices');
+ if(idx===''){
+  wrap.classList.add('hidden');
+  $('descGroupChecklist').innerHTML='';
+  descSelectedGroups.clear();
+  return;
+ }
+ wrap.classList.remove('hidden');
+ wrap.style.display='block';
+ const i=Number(idx),rows=getFilteredRows(),values=[...new Set(rows.map(r=>descGroupValue(r,i)))];
+ values.sort((a,b)=>a==='__MISSING__'?1:b==='__MISSING__'?-1:a.localeCompare(b,'fr',{numeric:true}));
+ const valid=new Set(values);
+ descSelectedGroups=new Set([...descSelectedGroups].filter(v=>valid.has(v)));
+ if(descSelectedGroups.size===0)descSelectedGroups=new Set(values);
+ $('descGroupChecklist').innerHTML=values.map(v=>`<label class="report-select-item"><input type="checkbox" class="desc-group-check" value="${esc(v)}" ${descSelectedGroups.has(v)?'checked':''}><span>${esc(descGroupLabel(v))} <span class="muted">(n=${rows.filter(r=>descGroupValue(r,i)===v).length})</span></span></label>`).join('');
+}
+$('descGroupVariable').addEventListener('change',()=>{descSelectedGroups.clear();updateDescGroupChecklist();});
+$('descGroupChecklist').addEventListener('change',e=>{
+ const cb=e.target.closest('.desc-group-check');if(!cb)return;
+ if(cb.checked)descSelectedGroups.add(cb.value);else descSelectedGroups.delete(cb.value);
+});
+$('descSelectAll').addEventListener('click',()=>{document.querySelectorAll('.desc-group-check').forEach(cb=>{cb.checked=true;descSelectedGroups.add(cb.value)})});
+$('descSelectNone').addEventListener('click',()=>{document.querySelectorAll('.desc-group-check').forEach(cb=>{cb.checked=false;descSelectedGroups.delete(cb.value)})});
+
+
+function descriptiveSummary(values,totalRows,customQuantiles=[]){
+ const a=values.filter(x=>x!==null&&Number.isFinite(x)).sort((x,y)=>x-y),n=a.length,missing=totalRows-n;
+ if(!n)return {n:0,missing,mean:null,median:null,variance:null,sd:null,se:null,min:null,q1:null,q3:null,iqr:null,max:null,range:null,mode:null,skewness:null,excessKurtosis:null,ciLow:null,ciHigh:null,customQuantiles:{},sorted:a};
+ const mean=a.reduce((s,x)=>s+x,0)/n;
+ const variance=n>1?a.reduce((s,x)=>s+(x-mean)**2,0)/(n-1):null;
+ const sd=variance===null?null:Math.sqrt(variance);
+ const q1=quantile(a,.25),median=quantile(a,.5),q3=quantile(a,.75);
+ let skewness=null,excessKurtosis=null;
+ if(n>=3&&sd>0){
+  const m3=a.reduce((s,x)=>s+Math.pow((x-mean)/sd,3),0);
+  skewness=n/((n-1)*(n-2))*m3;
+ }
+ if(n>=4&&sd>0){
+  const m4=a.reduce((s,x)=>s+Math.pow((x-mean)/sd,4),0);
+  excessKurtosis=(n*(n+1)/((n-1)*(n-2)*(n-3)))*m4-(3*(n-1)**2/((n-2)*(n-3)));
+ }
+ const freq=new Map();a.forEach(v=>freq.set(v,(freq.get(v)||0)+1));
+ const maxFreq=Math.max(...freq.values());
+ const modes=maxFreq>1?[...freq.entries()].filter(([v,c])=>c===maxFreq).map(([v])=>v):[];
+ let ciLow=null,ciHigh=null;
+ if(n>1&&sd!==null){const margin=tQuantile(.975,n-1)*sd/Math.sqrt(n);ciLow=mean-margin;ciHigh=mean+margin}
+ const custom=Object.fromEntries(customQuantiles.map(p=>[p,quantile(a,p/100)]));
+ const seSkewness=n>2?Math.sqrt(6*n*(n-1)/((n-2)*(n+1)*(n+3))):null;
+ const seKurtosis=n>3?Math.sqrt(24*n*(n-1)**2/((n-3)*(n-2)*(n+3)*(n+5))):null;
+ return {n,missing,mean,median,variance,sd,se:sd===null?null:sd/Math.sqrt(n),min:a[0],q1,q3,iqr:q3-q1,max:a[n-1],range:a[n-1]-a[0],mode:modes.length===1?modes[0]:null,modeCount:maxFreq,modeMultiplicity:modes.length,skewness,excessKurtosis,seSkewness,seKurtosis,ciLow,ciHigh,customQuantiles:custom,sorted:a};
+}
+function descStatRows(s){
+ const rows=[
+  ['Effectif valide (N)',s.n],['Valeurs manquantes / non numériques',s.missing],
+  ['Moyenne',s.mean],['Médiane',s.median],['Mode',s.mode===null?(s.modeCount>1&&s.modeMultiplicity>1?'Plusieurs modes ex æquo':'Aucun mode répété'):s.mode],
+  ['Variance (n−1)',s.variance],['Écart-type (n−1)',s.sd],['Erreur standard de la moyenne',s.se],
+  ['Asymétrie (Fisher-Pearson corrigée)',s.skewness],['Erreur standard de l’asymétrie (approx.)',s.seSkewness],
+  ['Kurtosis en excès (corrigée)',s.excessKurtosis],['Erreur standard de la kurtosis (approx.)',s.seKurtosis],
+  ['Minimum',s.min],['Premier quartile (Q1)',s.q1],['Troisième quartile (Q3)',s.q3],
+  ['Écart interquartile (IQR)',s.iqr],['Maximum',s.max],['Étendue',s.range],
+  ['IC 95 % de la moyenne — borne basse',s.ciLow],['IC 95 % de la moyenne — borne haute',s.ciHigh]
+ ];
+ Object.entries(s.customQuantiles||{}).forEach(([p,v])=>rows.push([`Quantile ${p} %`,v]));
+ return rows;
+}
+function readDescQuantiles(){
+ const raw=$('descCustomQuantiles')?.value?.trim()||'';
+ if(!raw)return [];
+ const parts=raw.split(/[;,\\s]+/).filter(Boolean),vals=[];
+ for(const token of parts){
+  const p=Number(token.replace(',','.'));
+  if(!Number.isFinite(p)||p<=0||p>=100)throw new Error('Les quantiles doivent être des pourcentages strictement compris entre 0 et 100.');
+  if(!vals.includes(p))vals.push(p);
+ }
+ return vals.sort((a,b)=>a-b);
+}
+function calculate(save=true){
+ if(!project.rows.length)return;
+ const idx=Number($('variable').value);
+ if(!Number.isInteger(idx)||!project.headers[idx]){alert('Sélectionne une variable quantitative.');return}
+ const rows=getFilteredRows();
+ const groupSelect=$('descGroupVariable');
+ const groupValue=groupSelect?.value??'';
+ let groupIdx=groupValue===''?null:Number(groupValue);
+ if(groupIdx!==null&&(!Number.isInteger(groupIdx)||!project.headers[groupIdx])){
+  const visibleLabel=groupSelect?.selectedOptions?.[0]?.textContent?.trim();
+  const found=project.headers.findIndex(h=>String(h).trim()===visibleLabel);
+  groupIdx=found>=0?found:null;
+ }
+ let customQuantiles;
+ try{customQuantiles=readDescQuantiles()}catch(e){alert(e.message);return}
+ const globalValues=rows.map(r=>num(r[idx]));
+ const global=descriptiveSummary(globalValues,rows.length,customQuantiles);
+ if(!global.n){alert('Aucune valeur numérique valide pour cette variable.');return}
+ const summaries=[{label:'Ensemble des observations',key:'__ALL__',summary:global}];
+ if(groupIdx!==null&&Number.isInteger(groupIdx)&&project.headers[groupIdx]!==undefined){
+  // Lire directement les cases cochées au moment du calcul : la sélection visible
+  // dans l'interface est ainsi la source de vérité.
+  let chosen=Array.from(document.querySelectorAll('.desc-group-check:checked')).map(cb=>cb.value);
+  // Si le groupe est choisi mais que la liste de modalités n'a pas été initialisée,
+  // inclure toutes les modalités observées plutôt que retomber silencieusement sur le global.
+  if(!document.querySelector('.desc-group-check')){
+   chosen=[...new Set(rows.map(r=>descGroupValue(r,groupIdx)))];
+  }
+  for(const key of chosen){
+   const groupRows=rows.filter(r=>descGroupValue(r,groupIdx)===key);
+   const vals=groupRows.map(r=>num(r[idx]));
+   summaries.push({label:descGroupLabel(key),key,summary:descriptiveSummary(vals,groupRows.length,customQuantiles)});
+  }
+ }
+ if(groupIdx!==null&&Number.isInteger(groupIdx)&&project.headers[groupIdx]!==undefined&&summaries.length===1){
+  $('descResults').innerHTML='<div class="empty">Aucun groupe sélectionné. Coche au moins un groupe dans « Groupes à afficher », puis relance le calcul.</div>';
+  return;
+ }
+ const statDefs=descStatRows(global);
+ const head=`<table><thead><tr><th>Statistique</th>${summaries.map(x=>`<th>${esc(x.label)}</th>`).join('')}</tr></thead><tbody>`;
+ const body=statDefs.map(([label])=>`<tr><th>${esc(label)}</th>${summaries.map(x=>{const item=descStatRows(x.summary).find(y=>y[0]===label);return `<td>${item[1]===null?'—':typeof item[1]==='number'&&Number.isFinite(item[1])?fmt(item[1]):esc(item[1])}</td>`}).join('')}</tr>`).join('');
+ $('descResults').innerHTML=`<h3 style="margin:0 0 8px">Résultats descriptifs</h3><div class="muted">Variable : <strong>${esc(project.headers[idx])}</strong>${groupIdx!==null?` · Regroupement : <strong>${esc(project.headers[groupIdx])}</strong>`:''}</div><div class="result-table">${head+body+'</tbody></table>'}<p class="muted">Les quartiles et quantiles personnalisés utilisent l’interpolation linéaire (quantiles de type 7). La variance et l’écart-type utilisent n−1. L’asymétrie et la kurtosis sont des estimateurs corrigés. Le mode n’est affiché que si au moins une valeur est répétée. L’IC 95 % de la moyenne utilise la loi de Student. Ces indicateurs décrivent l’échantillon et ne remplacent pas les diagnostics adaptés au modèle.</p>`;
+ const chartSeries=summaries.filter(x=>x.key!=='__ALL__').map(x=>({label:x.label,values:x.summary.sorted||[]}));
+ if(chartSeries.length)drawDescDistribution(chartSeries,$('descChartType').value);
+ else drawDescDistribution([{label:'Ensemble des observations',values:global.sorted}],$('descChartType').value);
+ descChartSeries=chartSeries.length?chartSeries:[{label:'Ensemble des observations',values:global.sorted}];
+ const resultValues=Object.fromEntries(summaries.map(x=>[x.label,Object.fromEntries(descStatRows(x.summary).map(([k,v])=>[k,v]))]));
+ lastStats={variable:project.headers[idx],variableIndex:idx,groupVariable:groupIdx===null?'':project.headers[groupIdx],groups:summaries.map(x=>x.label),filter:{...project.filter},n:global.n,missing:global.missing,values:resultValues,dataRevision:project.dataRevision};
+ $('descExport').innerHTML='';
+ registerCsvExport($('descExport'),{type:'Statistiques descriptives par groupe',variable:project.headers[idx],groupVariable:groupIdx===null?'':project.headers[groupIdx],groups:summaries.map(x=>x.label),createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},parameters:{ecartType:'échantillon, dénominateur n−1',quartiles:'interpolation linéaire, quantiles de type 7',portee:'global et groupes sélectionnés'},results:resultValues},'StatLab-descriptives-'+safeExportName(project.headers[idx]));
+ if(save){
+  project.analyses.push({id:makeId(),type:'Statistiques descriptives par groupe',variable:project.headers[idx],groupVariable:groupIdx===null?'':project.headers[groupIdx],groups:summaries.map(x=>x.label),createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},results:resultValues,parameters:{ecartType:'échantillon, dénominateur n−1',quartiles:'interpolation linéaire, quantiles de type 7'}});
+  markChanged();renderHistory();setStatus('Analyse descriptive globale et par groupes enregistrée dans le projet.');
+ }
+}
+$('calculate').addEventListener('click',()=>calculate(true));
+$('variable').addEventListener('change',()=>calculate(false));
+$('descChartType').addEventListener('change',()=>{if(descChartSeries.length)drawDescDistribution(descChartSeries,$('descChartType').value)});
+$('descBins').addEventListener('change',()=>{if(descChartSeries.length)drawDescDistribution(descChartSeries,$('descChartType').value)});
+$('descShowBoxPoints').addEventListener('change',()=>{if(descChartSeries.length&&$('descChartType').value==='box')drawDescDistribution(descChartSeries,'box')});
+
+// --- Tests à deux groupes indépendants (version expérimentale 0.4) ---
+function meanOf(a){return a.reduce((s,x)=>s+x,0)/a.length}
+function varianceOf(a){const m=meanOf(a);return a.length>1?a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1):NaN}
+function logGamma(z){const c=[676.5203681218851,-1259.1392167224028,771.3234287776531,-176.6150291621406,12.507343278686905,-0.13857109526572012,9.984369578019572e-6,1.5056327351493116e-7];if(z<0.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);z-=1;let x=0.99999999999980993;for(let i=0;i<c.length;i++)x+=c[i]/(z+i+1);const t=z+c.length-0.5;return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x)}
+function betaCF(a,b,x){const qab=a+b,qap=a+1,qam=a-1;let c=1,d=1-qab*x/qap;if(Math.abs(d)<1e-30)d=1e-30;d=1/d;let h=d;for(let m=1;m<=200;m++){let m2=2*m,aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function regBeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));return x<(a+1)/(a+b+2)?bt*betaCF(a,b,x)/a:1-bt*betaCF(b,a,1-x)/b}
+
+// Fonction gamma incomplète régularisée supérieure Q(a,x).
+// Utilisée pour calculer directement la queue droite du khi-deux,
+// sans détour par une loi F ni soustraction instable 1-CDF.
+function regularizedGammaQ(a,x){
+ if(!(a>0)||x<0||!Number.isFinite(a)||!Number.isFinite(x))return NaN;
+ if(x===0)return 1;
+ const gln=logGamma(a),eps=3e-14,fpmin=1e-300;
+ if(x<a+1){
+  // Série de P(a,x), puis Q=1-P dans la zone où P converge rapidement.
+  let ap=a,sum=1/a,del=sum;
+  for(let n=1;n<=10000;n++){
+   ap+=1;del*=x/ap;sum+=del;
+   if(Math.abs(del)<Math.abs(sum)*eps)break;
+  }
+  const p=sum*Math.exp(-x+a*Math.log(x)-gln);
+  return Math.max(0,Math.min(1,1-p));
+ }
+ // Fraction continue de Lentz pour Q(a,x), stable dans la queue droite.
+ let b=x+1-a,c=1/fpmin,d=1/Math.max(Math.abs(b),fpmin)*(b<0?-1:1),h=d;
+ for(let i=1;i<=10000;i++){
+  const an=-i*(i-a);
+  b+=2;
+  d=an*d+b;if(Math.abs(d)<fpmin)d=fpmin;
+  c=b+an/c;if(Math.abs(c)<fpmin)c=fpmin;
+  d=1/d;
+  const delta=d*c;h*=delta;
+  if(Math.abs(delta-1)<eps)break;
+ }
+ const q=Math.exp(-x+a*Math.log(x)-gln)*h;
+ return Math.max(0,Math.min(1,q));
+}
+function chiSquareSurvival(x,df){
+ if(!(df>0)||x<0)return NaN;
+ return regularizedGammaQ(df/2,x/2);
+}
+
+function tCDF(t,df){if(!(df>0))return NaN;if(t===0)return .5;const x=df/(df+t*t),ib=regBeta(x,df/2,.5);return t>0?1-.5*ib:.5*ib}
+function tQuantile(prob,df){if(!(prob>0&&prob<1&&df>0))return NaN;let lo=-1000,hi=1000;for(let i=0;i<110;i++){const mid=(lo+hi)/2;if(tCDF(mid,df)<prob)lo=mid;else hi=mid}return (lo+hi)/2}
+// CDF de l'étendue studentisée : intégration numérique de la loi exacte (approximation par quadrature).
+// Utilisée pour les p-values de Tukey-Kramer et Games-Howell ; bornes et résolution contrôlées.
+function normalSurvivalStable(x){
+ // Queue normale supérieure calculée sans soustraire une CDF proche de 1.
+ const z=Math.abs(x)/Math.SQRT2,t=1/(1+0.5*z);
+ const tau=t*Math.exp(-z*z-1.26551223+t*(1.00002368+t*(0.37409196+t*(0.09678418+t*(-0.18628806+t*(0.27886807+t*(-1.13520398+t*(1.48851587+t*(-0.82215223+t*0.17087277)))))))));
+ const erfc=x>=0?tau:2-tau;
+ return x>=0?0.5*tau:1-0.5*tau;
+}
+function studentizedRangeP(q,k,df){
+ if(!(q>0&&k>=2&&df>0))return q<=0?1:NaN;
+ // Intégration directe de la probabilité de queue : évite le calcul instable 1-CDF.
+ const nx=500,nv=500,xmax=10,upper=Math.max(df+16*Math.sqrt(2*df)+60,df*10+60),vmin=1e-12;
+ const simpson=(fn,a,b,n)=>{const h=(b-a)/n;let z=fn(a)+fn(b);for(let i=1;i<n;i++)z+=(i%2?4:2)*fn(a+i*h);return z*h/3};
+ const logNorm=-.5*Math.log(2*Math.PI),shape=df/2,logConst=-shape*Math.log(2)-logGamma(shape);
+ const inner=(scale)=>simpson(x=>{
+   // Conditionnement sur le minimum x : les autres observations sont toutes > x,
+   // et au moins une dépasse x + q. Forme stable de a^(k-1) - (a-b)^(k-1).
+   const a=normalSurvivalStable(x),b=normalSurvivalStable(x+q*scale);
+   if(!(a>0)||b<=0)return 0;
+   const ratio=Math.min(1,b/a);
+   const logA=(k-1)*Math.log(a);
+   const conditional=Math.exp(logA)*(-Math.expm1((k-1)*Math.log1p(-ratio)));
+   return Math.exp(logNorm-.5*x*x)*conditional;
+ },-xmax,xmax,nx)*k;
+ const p=simpson(logv=>{const v=Math.exp(logv),logD=logConst+shape*Math.log(v)-v/2;return Math.exp(logD)*inner(Math.sqrt(v/df))},Math.log(vmin),Math.log(upper),nv);
+ return Math.max(0,Math.min(1,p));
+}
+// Queue de l'étendue studentisée à ddl infinis (limite normale), utilisée par l'approximation DSCF.
+function studentizedRangeNormalP(q,k){
+ if(!(q>0&&k>=2))return q<=0?1:NaN;
+ const n=1600,a=-9,b=9,h=(b-a)/n;
+ const phi=x=>Math.exp(-.5*x*x)/Math.sqrt(2*Math.PI);
+ const Phi=x=>normalCDF(x);
+ let sum=0;
+ for(let i=0;i<=n;i++){
+  const x=a+i*h,prob=Math.max(0,Math.min(1,Phi(x+q)-Phi(x)));
+  const f=phi(x)*Math.pow(prob,k-1);
+  sum+=(i===0||i===n?1:(i%2?4:2))*f;
+ }
+ const cdfRange=Math.max(0,Math.min(1,k*sum*h/3));
+ return Math.max(0,Math.min(1,1-cdfRange));
+}
+function dscfPair(a,b,k){
+ const all=a.map(v=>({v,g:0})).concat(b.map(v=>({v,g:1}))).sort((x,y)=>x.v-y.v);
+ let rankA=0,tieSum=0;
+ for(let i=0;i<all.length;){let j=i+1;while(j<all.length&&all[j].v===all[i].v)j++;
+  const avg=((i+1)+j)/2;for(let z=i;z<j;z++){all[z].rank=avg;if(all[z].g===0)rankA+=avg;}
+  const t=j-i;if(t>1)tieSum+=t*t*t-t;i=j;
+ }
+ const n1=a.length,n2=b.length,n=n1+n2;
+ const U=rankA-n1*(n1+1)/2,meanU=n1*n2/2;
+ const tieFactor=1-tieSum/(n*n*n-n);
+ const varU=n1*n2*(n+1)/12*tieFactor;
+ if(!(varU>0))return {z:0,q:0,p:1};
+ const z=Math.abs(U-meanU)/Math.sqrt(varU),q=Math.SQRT2*z;
+ return {z,q,p:studentizedRangeNormalP(q,k)};
+}
+function fmtP(x){
+ if(!Number.isFinite(x))return '—';
+ if(x===0)return '< limite numérique';
+ if(x<0.0001)return x.toExponential(3).replace('.',',').replace('e-',' × 10⁻');
+ return fmt(x);
+}
+
+function rankData(a,b){const all=a.map(v=>({v,g:0})).concat(b.map(v=>({v,g:1}))).sort((x,y)=>x.v-y.v);let rankSumA=0,tieSum=0;for(let i=0;i<all.length;){let j=i+1;while(j<all.length&&all[j].v===all[i].v)j++;const avg=((i+1)+j)/2;for(let k=i;k<j;k++){all[k].rank=avg;if(all[k].g===0)rankSumA+=avg}const t=j-i;if(t>1)tieSum+=t*t*t-t;i=j}return {rankSumA,tieSum,N:all.length}}
+function runTwoGroupTest(){const vi=$('testVariable').value,gi=$('groupVariable').value,ga=$('groupA').value,gb=$('groupB').value,method=$('testMethod').value,alpha=Number($('alpha').value);if(vi===''||gi===''||ga===''||gb===''||ga===gb){$('testResults').innerHTML='<div class="notice">Choisis une variable numérique, une variable de groupe et deux modalités distinctes.</div>';return}const rows=getFilteredRows();let a=[],b=[],excluded=0;for(const r of rows){const g=String(r[Number(gi)]??'');const x=num(r[Number(vi)]);if(g!==ga&&g!==gb)continue;if(x===null){excluded++;continue}(g===ga?a:b).push(x)}if(a.length<2||b.length<2){$('testResults').innerHTML='<div class="notice">Il faut au moins deux valeurs numériques valides dans chacun des deux groupes. Effectifs obtenus : '+a.length+' et '+b.length+'.</div>';return}const n1=a.length,n2=b.length,m1=meanOf(a),m2=meanOf(b),v1=varianceOf(a),v2=varianceOf(b),diff=m1-m2;let statistic,df,p,ciLow=null,ciHigh=null,effect=null,effectName='',methodName='',extra='',warn='';
+if(method==='student'||method==='welch'){let se;if(method==='student'){const df0=n1+n2-2,sp2=((n1-1)*v1+(n2-1)*v2)/df0;se=Math.sqrt(sp2*(1/n1+1/n2));df=df0;methodName='t de Student (variance commune)';effect=(diff/Math.sqrt(sp2));}else{const q1=v1/n1,q2=v2/n2;se=Math.sqrt(q1+q2);df=(q1+q2)**2/(q1*q1/(n1-1)+q2*q2/(n2-1));methodName='t de Welch';const sp=Math.sqrt(((n1-1)*v1+(n2-1)*v2)/(n1+n2-2));effect=diff/sp;}statistic=diff/se;p=2*(1-tCDF(Math.abs(statistic),df));const crit=tQuantile(1-alpha/2,df);ciLow=diff-crit*se;ciHigh=diff+crit*se;const correction=1-3/(4*(n1+n2)-9);effect*=correction;effectName='g de Hedges (approx.)';if(method==='student')warn='Student suppose des variances égales ; vérifie cette hypothèse avant interprétation.';else warn='Welch ne suppose pas l’égalité des variances et est le choix recommandé par défaut.';
+}else{methodName='Mann-Whitney (approximation normale)';const rr=rankData(a,b),U1=rr.rankSumA-n1*(n1+1)/2,U2=n1*n2-U1,U=Math.min(U1,U2);const N=n1+n2,tie=rr.tieSum;let varU=n1*n2/12*((N+1)-tie/(N*(N-1)));if(!(varU>0)){ $('testResults').innerHTML='<div class="notice">Le test ne peut pas être calculé : toutes les observations sont identiques ou la variance des rangs est nulle.</div>';return}const mu=n1*n2/2,z=(Math.abs(U1-mu)-.5)/Math.sqrt(varU);statistic=U;p=2*(1-normalCDF(Math.abs(z)));df=null;effect=1-2*U1/(n1*n2);effectName='Corrélation bisérielle de rang';warn='Approximation normale avec correction de continuité et correction des ex æquo. Pour de petits échantillons, privilégier un calcul exact ou une validation spécialisée.';extra='U1 = '+fmt(U1)+' ; U2 = '+fmt(U2)+' ; Z = '+fmt(z)+'. La statistique U affichée est le plus petit des deux U.';}
+const sig=p<alpha;const summary=`${sig?'Différence statistiquement significative':'Pas de différence statistiquement significative'} au seuil α = ${fmt(alpha)}.`;const boxes=[['Effectif '+ga,n1],['Effectif '+gb,n2],['Valeur p',fmt(p)],['Moyenne '+ga,fmt(m1)],['Moyenne '+gb,fmt(m2)],['Différence des moyennes',fmt(diff)]];$('testResults').innerHTML=`<div class="analysis-card"><strong>${esc(methodName)}</strong><div class="result-grid">${boxes.map(x=>`<div class="result-box"><div class="k">${esc(x[0])}</div><div class="v">${esc(x[1])}</div></div>`).join('')}</div><div class="result-table"><table><tbody><tr><th>Statistique</th><td>${fmt(statistic)}</td></tr>${df!==null?`<tr><th>Degrés de liberté</th><td>${fmt(df)}</td></tr>`:''}<tr><th>Écart-type ${esc(ga)}</th><td>${fmt(Math.sqrt(v1))}</td></tr><tr><th>Écart-type ${esc(gb)}</th><td>${fmt(Math.sqrt(v2))}</td></tr>${ciLow!==null?`<tr><th>IC ${(1-alpha)*100}% de la différence des moyennes</th><td>[${fmt(ciLow)} ; ${fmt(ciHigh)}]</td></tr>`:''}<tr><th>${esc(effectName)}</th><td>${fmt(effect)}</td></tr><tr><th>Valeurs exclues (manquantes/non numériques)</th><td>${excluded}</td></tr></tbody></table></div><p><strong>${summary}</strong></p><p class="muted">${esc(warn)}</p>${extra?`<p class="muted">${esc(extra)}</p>`:''}<p class="muted">Comparaison orientée : ${esc(ga)} moins ${esc(gb)}. Différence des moyennes = ${fmt(diff)}. Le test de Mann-Whitney porte sur les rangs/distributions ; la différence des moyennes est fournie à titre descriptif et son IC n'est pas calculé ici.</p></div>`;
+registerCsvExport($('testResults'),{type:'Test deux groupes — '+methodName,variable:project.headers[Number(vi)],groupVariable:project.headers[Number(gi)],groups:[ga,gb],createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},parameters:{methode:method,alpha,version:'0.4 expérimental'},results:{n1,n2,mean1:m1,mean2:m2,differenceMean:diff,statistic,df,p,alpha,effect,effectName,ciLow,ciHigh,excluded}},'StatLab-test-'+safeExportName(methodName));
+project.analyses.push({id:makeId(),type:'Test deux groupes — '+methodName,variable:project.headers[Number(vi)],groupVariable:project.headers[Number(gi)],groups:[ga,gb],createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},results:{n1,n2,mean1:m1,mean2:m2,differenceMean:diff,statistic,df,p,alpha,effect,effectName,ciLow,ciHigh,excluded},parameters:{method:method,version:'0.4 expérimental'}});markChanged();renderHistory();setStatus('Test statistique calculé et enregistré dans le projet.');}
+function inverseNormal(p){if(p<=0||p>=1)return NaN;const a=[-39.6968302866538,220.946098424521,-275.928510446969,138.357751867269,-30.6647980661472,2.50662827745924],b=[-54.4760987982241,161.585836858041,-155.698979859887,66.8013118877197,-13.2806815528857],c=[-.00778489400243029,-.322396458041136,-2.40075827716184,-2.54973253934373,4.37466414146497,2.93816398269878],d=[.00778469570904146,.32246712907004,2.445134137143,3.75440866190742];let q,r;if(p<.02425){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}if(p>1-.02425){q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}q=p-.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}
+function drawQQ(canvas,values){const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);const a=[...values].sort((x,y)=>x-y),n=a.length;if(n<3){ctx.fillText('Au moins 3 valeurs sont nécessaires.',20,30);return}const m=meanOf(a),sd=Math.sqrt(varianceOf(a));if(!(sd>0)){ctx.fillText('Variance nulle : Q-Q plot non informatif.',20,30);return}const pts=a.map((v,i)=>({x:inverseNormal((i+.5)/n),y:(v-m)/sd}));let xmin=pts[0].x,xmax=pts[n-1].x,ymin=Math.min(...pts.map(p=>p.y)),ymax=Math.max(...pts.map(p=>p.y));const pad=.12*Math.max(xmax-xmin,ymax-ymin,1);xmin-=pad;xmax+=pad;ymin-=pad;ymax+=pad;const L=55,R=w-20,T=18,B=h-42,X=x=>L+(x-xmin)/(xmax-xmin)*(R-L),Y=y=>B-(y-ymin)/(ymax-ymin)*(B-T);ctx.strokeStyle='#dce4e9';ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,B);ctx.lineTo(R,B);ctx.stroke();ctx.strokeStyle='#267c78';ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(X(xmin),Y(xmin));ctx.lineTo(X(xmax),Y(xmax));ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#315c78';pts.forEach(p=>{ctx.beginPath();ctx.arc(X(p.x),Y(p.y),3.5,0,Math.PI*2);ctx.fill()});ctx.fillStyle='#52636e';ctx.font='12px sans-serif';ctx.textAlign='center';ctx.fillText('Quantiles théoriques normaux',(L+R)/2,h-10);ctx.save();ctx.translate(14,(T+B)/2);ctx.rotate(-Math.PI/2);ctx.fillText('Quantiles observés standardisés',0,0);ctx.restore()}
+function fUpperP(f,df1,df2){if(!(f>=0&&df1>0&&df2>0))return NaN;const x=df2/(df2+df1*f);return regBeta(x,df2/2,df1/2)}
+function fillDiagnosticOptions(){const rows=getFilteredRows(),nums=project.headers.map((h,i)=>({h,i,n:rows.filter(r=>num(r[i])!==null).length})).filter(x=>x.n>0&&(project.variableTypes?.[x.i]||guessVariableType(project.rows,x.i))==='quantitative'),cats=project.headers.map((h,i)=>({h,i,k:new Set(rows.map(r=>String(r[i]??'')).filter(v=>v.trim()!=='' )).size})).filter(x=>x.k>=2&&x.k<=30&&['nominale','ordinale'].includes(project.variableTypes?.[x.i]||guessVariableType(project.rows,x.i)));['diagVariable','anovaVariable'].forEach(id=>{const el=$(id),old=el.value;el.innerHTML=nums.map(x=>`<option value="${x.i}">${esc(x.h)} (${x.n})</option>`).join('')||'<option value="">Aucune variable numérique</option>';if(nums.some(x=>String(x.i)===old))el.value=old});['diagGroup','anovaGroup'].forEach(id=>{const el=$(id),old=el.value;el.innerHTML=cats.map(x=>`<option value="${x.i}">${esc(x.h)} (${x.k} modalités)</option>`).join('')||'<option value="">Aucune variable de groupe</option>';if(cats.some(x=>String(x.i)===old))el.value=old})}
+function polySW(c,x){let v=c[c.length-1];for(let i=c.length-2;i>=0;i--)v=v*x+c[i];return v}
+function shapiroWilk(values){
+ const x=values.slice().sort((a,b)=>a-b),n=x.length;
+ if(n<3)return {error:'Effectif insuffisant : au moins 3 valeurs sont nécessaires.'};
+ if(n>5000)return {error:'Effectif supérieur à 5 000 : limite de l’algorithme AS R94 utilisé par cette version.'};
+ const range=x[n-1]-x[0];if(!(range>1e-19))return {error:'Toutes les valeurs sont identiques : le test n’est pas calculable.'};
+ const c1=[0,.221157,-.147981,-2.07119,4.434685,-2.706056],c2=[0,.042981,-.293762,-1.752461,5.682633,-3.582633],c3=[.544,-.39978,.025054,-.0006714],c4=[1.3822,-.77857,.062767,-.0020322],c5=[-1.5861,-.31082,-.083751,.0038915],c6=[-.4803,-.082676,.0030302],g=[-2.273,.459];
+ const nn2=Math.floor(n/2),a=new Array(nn2+1).fill(0);let pw=1;
+ if(n===3)a[1]=Math.SQRT1_2;
+ else {const an25=n+.25;let summ2=0;for(let i=1;i<=nn2;i++){a[i]=inverseNormal((i-.375)/an25);summ2+=a[i]*a[i]}summ2*=2;const ssumm2=Math.sqrt(summ2),rsn=1/Math.sqrt(n),a1=polySW(c1,rsn)-a[1]/ssumm2;let i1,fac;if(n>5){const a2=-a[2]/ssumm2+polySW(c2,rsn);fac=Math.sqrt((summ2-2*a[1]**2-2*a[2]**2)/(1-2*a1*a1-2*a2*a2));a[2]=a2;i1=3}else{fac=Math.sqrt((summ2-2*a[1]**2)/(1-2*a1*a1));i1=2}a[1]=a1;for(let i=i1;i<=nn2;i++)a[i]/=-fac;}
+ let xx=x[0]/range,sx=xx,sa=-a[1];for(let i=1,j=n-1;i<n;j--){const xi=x[i]/range;sx+=xi;i++;if(i!==j)sa+=(i-j>0?1:-1)*a[Math.min(i,j)];xx=xi}sa/=n;sx/=n;let ssa=0,ssx=0,sax=0;for(let i=0,j=n-1;i<n;i++,j--){const asa=i!==j?(i-j>0?1:-1)*a[1+Math.min(i,j)]-sa:-sa,xv=x[i]/range-sx;ssa+=asa*asa;ssx+=xv*xv;sax+=asa*xv}const ssassx=Math.sqrt(ssa*ssx),w1=(ssassx-sax)*(ssassx+sax)/(ssa*ssx),W=Math.max(0,Math.min(1,1-w1));
+ if(n===3){pw=Math.max(0,(6/Math.PI)*(Math.asin(Math.sqrt(W))-Math.asin(Math.sqrt(.75))));return {W,p:pw,n}}
+ let y=Math.log(Math.max(w1,1e-300)),m,sd;if(n<=11){const gamma=polySW(g,n);if(y>=gamma)return {W,p:1e-99,n};y=-Math.log(gamma-y);m=polySW(c3,n);sd=Math.exp(polySW(c4,n))}else{const ln=Math.log(n);m=polySW(c5,ln);sd=Math.exp(polySW(c6,ln))}const z=(y-m)/sd;pw=1-normalCDF(z);return {W,p:Math.max(0,Math.min(1,pw)),n};
+}
+function normalTail(z){
+ const x=Math.abs(z);
+ if(x<8)return 1-normalCDF(x);
+ const t=1/(1+0.2316419*x);
+ const d=0.3989422804014327*Math.exp(-x*x/2);
+ return d*t*(0.319381530+t*(-0.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));
+}
+function andersonDarlingNormal(values){
+ const x=values.slice().sort((a,b)=>a-b),n=x.length;
+ if(n<8)return {error:'Effectif insuffisant : au moins 8 valeurs sont recommandées pour cette approximation.'};
+ const m=meanOf(x),sd=Math.sqrt(varianceOf(x));
+ if(!(sd>0))return {error:'Variance nulle : le test n’est pas calculable.'};
+ let sum=0;
+ for(let i=0;i<n;i++){
+   const zi=(x[i]-m)/sd, zj=(x[n-1-i]-m)/sd;
+   const Fi=Math.max(1e-300,Math.min(1-1e-16,normalCDF(zi)));
+   const Sj=Math.max(1e-300,Math.min(1-1e-16,normalCDF(zj)));
+   sum+=(2*(i+1)-1)*(Math.log(Fi)+Math.log1p(-Sj));
+ }
+ const A2=-n-sum/n;
+ const A2star=A2*(1+0.75/n+2.25/(n*n));
+ let p;
+ if(A2star<0.2)p=1-Math.exp(-13.436+101.14*A2star-223.73*A2star*A2star);
+ else if(A2star<0.34)p=1-Math.exp(-8.318+42.796*A2star-59.938*A2star*A2star);
+ else if(A2star<0.6)p=Math.exp(0.9177-4.279*A2star-1.38*A2star*A2star);
+ else p=Math.exp(1.2937-5.709*A2star+0.0186*A2star*A2star);
+ return {A2,A2star,p:Math.max(0,Math.min(1,p)),n};
+}
+function runDiagnostics(){
+ const vi=$('diagVariable').value,gi=$('diagGroup').value;if(vi===''||gi==='')return;
+ const rows=getFilteredRows(),groups=new Map();let excluded=0;
+ rows.forEach(r=>{const g=String(r[+gi]??'').trim(),v=num(r[+vi]);if(!g||v===null){excluded++;return}if(!groups.has(g))groups.set(g,[]);groups.get(g).push(v)});
+ const gs=[...groups.entries()].filter(x=>x[1].length>0),valid=gs.flatMap(([name,a])=>a),residuals=gs.flatMap(([name,a])=>{const m=meanOf(a);return a.map(v=>v-m)}),k=gs.length,N=valid.length;
+ const sw=shapiroWilk(residuals);
+ const pText=p=>p===0?'< limite numérique':p<0.0001?p.toExponential(3).replace('.',',').replace('e-',' × 10⁻'):fmt(p);
+ const conclusion=p=>p<.05?'Rejet de la normalité (seuil 5 %)':'Normalité non rejetée (seuil 5 %)';
+ const testCard=(name,r)=>r.error?`<div class="notice">${esc(r.error)}</div>`:`<div class="result-grid"><div class="result-box"><div class="k">Statistique W</div><div class="v">${fmt(r.W)}</div></div><div class="result-box"><div class="k">p-value</div><div class="v">${pText(r.p)}</div></div><div class="result-box"><div class="k">Effectif</div><div class="v">${r.n.toLocaleString('fr-FR')}</div></div></div><p><strong>${conclusion(r.p)}</strong></p>`;
+ let levene='Non calculable : il faut au moins deux groupes avec 2 valeurs chacun.',f=NaN,p=NaN;
+ const validGs=gs.filter(x=>x[1].length>=2),kk=validGs.length;
+ if(kk>=2){const z=validGs.map(([name,a])=>({name,a:a.map(v=>Math.abs(v-quantile([...a].sort((x,y)=>x-y),.5)))})),NN=z.reduce((s,g)=>s+g.a.length,0),grand=z.reduce((s,g)=>s+g.a.reduce((u,v)=>u+v,0),0)/NN,between=z.reduce((s,g)=>s+g.a.length*(meanOf(g.a)-grand)**2,0),within=z.reduce((s,g)=>s+g.a.reduce((u,v)=>u+(v-meanOf(g.a))**2,0),0);f=(between/(kk-1))/(within/(NN-kk));p=fUpperP(f,kk-1,NN-kk);levene=`F(${kk-1}, ${NN-kk}) = ${fmt(f)} ; p = ${pText(p)}. ${p<.05?'Signal de variances différentes au seuil 5 %.':'Pas d’élément statistique suffisant pour conclure à une hétérogénéité des variances au seuil 5 %.'}`}
+ const perGroup=gs.map(([name,a])=>{
+   const r=shapiroWilk(a),ad=a.length>5000?andersonDarlingNormal(a):null;
+   return `<div class="analysis-card"><strong>${esc(name)} — n = ${a.length.toLocaleString('fr-FR')}</strong><p><strong>Shapiro–Wilk</strong></p>${testCard('Shapiro–Wilk',r)}${ad?`<p><strong>Anderson–Darling (normalité, approximation de Stephens)</strong></p><div class="result-grid"><div class="result-box"><div class="k">A² ajusté</div><div class="v">${fmt(ad.A2star)}</div></div><div class="result-box"><div class="k">p-value approchée</div><div class="v">${pText(ad.p)}</div></div><div class="result-box"><div class="k">Effectif</div><div class="v">${ad.n.toLocaleString('fr-FR')}</div></div></div><p><strong>${conclusion(ad.p)}</strong></p><p class="muted">Résultat indicatif : approximation de la p-value pour une loi normale dont les paramètres sont estimés sur l’échantillon.</p>`:''}</div>`;
+ }).join('');
+ const adResidual=andersonDarlingNormal(residuals);
+ $('diagResults').innerHTML=`<div class="analysis-card"><strong>Normalité des résidus centrés par groupe — diagnostic principal de l’ANOVA</strong><p>Pour chaque observation, StatLab soustrait la moyenne de son groupe. Les résidus de l’ANOVA à un facteur sont ainsi examinés ensemble. Cette vérification porte sur les erreurs du modèle, pas sur les valeurs brutes regroupées.</p><p><strong>Shapiro–Wilk</strong></p>${testCard('Shapiro–Wilk',sw)}${adResidual?`<p><strong>Anderson–Darling</strong></p><div class="result-grid"><div class="result-box"><div class="k">A² ajusté</div><div class="v">${fmt(adResidual.A2star)}</div></div><div class="result-box"><div class="k">p-value approchée</div><div class="v">${pText(adResidual.p)}</div></div><div class="result-box"><div class="k">Effectif</div><div class="v">${adResidual.n.toLocaleString('fr-FR')}</div></div></div><p><strong>${conclusion(adResidual.p)}</strong></p><p class="muted">Anderson–Darling est ajouté ici lorsque Shapiro–Wilk dépasse 5 000 observations. Sa p-value repose sur une approximation de Stephens et doit être considérée comme indicative.</p>`:''}<canvas id="qqCanvas" width="900" height="340" style="height:270px"></canvas><p class="muted">Q-Q plot des résidus centrés (n = ${residuals.length.toLocaleString('fr-FR')}). Les écarts systématiques à la diagonale signalent une incompatibilité possible avec la normalité.</p></div><div class="analysis-card"><strong>Diagnostics complémentaires par groupe</strong><p class="muted">Shapiro–Wilk est utilisé jusqu’à 5 000 observations. Au-delà, Anderson–Darling est proposé à titre indicatif avec une approximation de sa p-value.</p>${perGroup}</div><div class="analysis-card"><strong>Levene centré sur la médiane (Brown–Forsythe)</strong><p>${esc(levene)}</p><p class="muted">H₀ : les variances des groupes sont égales. Une p-value inférieure à 0,05 suggère une hétérogénéité des variances. Ce test ne vérifie ni la normalité ni l’indépendance.</p></div><div class="analysis-card"><strong>Comment interpréter ces diagnostics ?</strong><p><strong>Shapiro–Wilk.</strong> H₀ : les données examinées proviennent d’une distribution normale. W est compris entre 0 et 1 ; plus il est proche de 1, plus les données sont compatibles avec une forme normale. La p-value mesure le caractère statistiquement détectable de l’écart.</p><p><strong>Anderson–Darling.</strong> Ce test compare la distribution empirique à une loi normale théorique et accorde une attention particulière aux queues de distribution. A² ajusté augmente lorsque l’écart à la normalité augmente. La p-value affichée ici est approchée ; elle ne doit pas être interprétée comme une mesure de l’importance pratique de l’écart.</p><p><strong>Si p &lt; 0,05 :</strong> on rejette l’hypothèse de normalité au seuil de 5 %. <strong>Si p ≥ 0,05 :</strong> on ne la rejette pas ; cela ne prouve pas que la distribution est normale.</p><p><strong>Grands effectifs :</strong> les tests peuvent détecter des écarts très faibles. Confronte toujours la p-value au Q-Q plot, aux valeurs extrêmes, à l’ampleur des écarts et au plan expérimental.</p><p><strong>Indépendance :</strong> elle ne se vérifie ni avec Shapiro–Wilk, ni avec Anderson–Darling, ni avec Levene. Elle dépend de la façon dont les observations ont été recueillies.</p><p class="muted">Méthodes : Shapiro–Wilk AS R94 de Royston (3 à 5 000 observations) ; Anderson–Darling avec correction de Stephens pour la normalité (p-value approchée). Les résultats Anderson–Darling de cette version sont à valider indépendamment avant usage décisionnel.</p></div><div class="notice">Valeurs exclues du diagnostic (groupe vide ou donnée manquante/non numérique) : ${excluded}. Les résidus sont calculés uniquement pour les groupes contenant des observations valides.</div>`;
+ drawQQ($('qqCanvas'),residuals);
+}
+
+function erfApprox(x){return 2*normalCDF(x*Math.SQRT2)-1}
+function normalInv(p){if(p<=0)return -Infinity;if(p>=1)return Infinity;const a=[-39.6968302866538,220.946098424521,-275.928510446969,138.357751867269,-30.6647980661472,2.50662827745924],b=[-54.4760987982241,161.585836858041,-155.698979859887,66.8013118877197,-13.2806815528857],c=[-.00778489400243029,-.322396458041136,-2.40075827716184,-2.54973253934373,4.37466414146497,2.93816398269878],d=[.00778469570904146,.32246712907004,2.445134137143,3.75440866190742];let q,r;if(p<.02425){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}if(p>1-.02425){q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}q=p-.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}
+function rankGroups(gs){const all=[];gs.forEach(([name,a],gi)=>a.forEach(v=>all.push({v,gi})));all.sort((a,b)=>a.v-b.v);let tieSum=0;for(let i=0;i<all.length;){let j=i+1;while(j<all.length&&all[j].v===all[i].v)j++;const r=(i+1+j)/2;for(let z=i;z<j;z++)all[z].rank=r;const t=j-i;if(t>1)tieSum+=t*t*t-t;i=j}const sums=gs.map(()=>0);all.forEach(x=>sums[x.gi]+=x.rank);return {all,sums,tieSum,N:all.length}}
+function holmAdjust(items){const sorted=items.map((x,i)=>({...x,_i:i})).sort((a,b)=>a.p-b.p),m=sorted.length;let prev=0;sorted.forEach((x,i)=>{x.pAdj=Math.min(1,Math.max(prev,(m-i)*x.p));prev=x.pAdj});const out=Array(m);sorted.forEach(x=>out[x._i]=x);return out}
+function svgMeanPlot(groups,crit){const W=720,H=300,L=76,R=24,T=22,B=58,vals=groups.flatMap(g=>[g.mean-g.half,g.mean+g.half]),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo||1)*.16,y0=lo-pad,y1=hi+pad,x=i=>L+i*(W-L-R)/Math.max(1,groups.length-1),y=v=>T+(y1-v)*(H-T-B)/(y1-y0);let out=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Moyennes par groupe avec intervalles de confiance à 95 %" style="width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:8px">`;for(let j=0;j<5;j++){const v=y0+(y1-y0)*j/4,yy=y(v);out+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#e4eaee"/><text x="${L-9}" y="${yy+4}" text-anchor="end" font-size="11" fill="#53636d">${fmt(v)}</text>`}groups.forEach((g,i)=>{const xx=x(i),ym=y(g.mean),yt=y(g.mean+g.half),yb=y(g.mean-g.half);out+=`<line x1="${xx}" y1="${yt}" x2="${xx}" y2="${yb}" stroke="#267c78" stroke-width="2"/><line x1="${xx-7}" y1="${yt}" x2="${xx+7}" y2="${yt}" stroke="#267c78" stroke-width="2"/><line x1="${xx-7}" y1="${yb}" x2="${xx+7}" y2="${yb}" stroke="#267c78" stroke-width="2"/><circle cx="${xx}" cy="${ym}" r="5" fill="#267c78"/><text x="${xx}" y="${H-30}" text-anchor="middle" font-size="12" fill="#263943">${esc(g.name).slice(0,18)}</text>`});out+=`<text x="${W/2}" y="${H-9}" text-anchor="middle" font-size="11" fill="#53636d">Groupes</text></svg>`;return out}
+function runAnova(){const vi=$('anovaVariable').value,gi=$('anovaGroup').value,mode=$('anovaMode')?.value||'param';let post=$('anovaPosthoc')?.value||'holm';if(mode==='nonparam'){if(post!=='dscf')post='dunn';}else if(post==='dunn'||post==='dscf')post=mode==='welch'?'games':'tukey';if(mode==='welch'&&post==='tukey')post='games';$('anovaPosthoc').value=post;if(vi===''||gi==='')return;const groups=new Map();let excluded=0;getFilteredRows().forEach(r=>{const g=String(r[+gi]??'').trim(),v=num(r[+vi]);if(!g||v===null){excluded++;return}if(!groups.has(g))groups.set(g,[]);groups.get(g).push(v)});const gs=[...groups.entries()].filter(x=>x[1].length>0),k=gs.length,N=gs.reduce((s,g)=>s+g[1].length,0);if(k<2||N<=k){$('anovaResults').innerHTML='<div class="notice">Il faut au moins deux groupes et un nombre total d’observations supérieur au nombre de groupes.</div>';return}if(gs.some(g=>g[1].length<2)){ $('anovaResults').innerHTML='<div class="notice">Chaque groupe doit contenir au moins deux observations pour calculer les estimations et leurs intervalles de confiance.</div>';return}
+const all=gs.flatMap(x=>x[1]),grand=meanOf(all),ssb=gs.reduce((s,g)=>s+g[1].length*(meanOf(g[1])-grand)**2,0),ssw=gs.reduce((s,g)=>s+g[1].reduce((u,v)=>u+(v-meanOf(g[1]))**2,0),0),df1=k-1,df2=N-k,msb=ssb/df1,msw=ssw/df2;let F,p,eta=ssb/(ssb+ssw),welchDf2=null,welchCorrection=null;if(mode==='welch'){const w=gs.map(([name,a])=>a.length/varianceOf(a)),W=w.reduce((x,y)=>x+y,0),wm=gs.reduce((z,g,i)=>z+w[i]*meanOf(g[1]),0)/W,term=w.reduce((z,wi,i)=>z+((1-wi/W)**2)/(gs[i][1].length-1),0);welchCorrection=1+(2*(k-2)/(k*k-1))*term;F=(w.reduce((z,wi,i)=>z+wi*(meanOf(gs[i][1])-wm)**2,0)/(k-1))/welchCorrection;welchDf2=(k*k-1)/(3*term);p=fUpperP(F,k-1,welchDf2);eta=NaN}else{F=msw>0?msb/msw:Infinity;p=fUpperP(F,df1,df2)}const rank=rankGroups(gs),tieCorr=1-rank.tieSum/(N*N*N-N);let H=0;gs.forEach((g,i)=>H+=rank.sums[i]**2/g[1].length);H=12/(N*(N+1))*H-3*(N+1);H=tieCorr>0?H/tieCorr:NaN;const pKW=chiSquareSurvival(H,k-1);const alpha=.05;const means=gs.map(([name,a])=>{const v=varianceOf(a),se=mode==='welch'?Math.sqrt(v/a.length):Math.sqrt(msw/a.length),crit=tQuantile(1-alpha/2,mode==='welch'?a.length-1:df2),half=crit*se;return {name,n:a.length,mean:meanOf(a),sd:Math.sqrt(v),half}});const meansRows=means.map(g=>`<tr><td>${esc(g.name)}</td><td>${g.n}</td><td>${fmt(g.mean)}</td><td>${fmt(g.sd)}</td><td>[${fmt(g.mean-g.half)} ; ${fmt(g.mean+g.half)}]</td></tr>`).join('');let postRows='',postNote='';
+if(mode!=='nonparam'){
+ let pairs=[];const useGH=post==='games'||mode==='welch',useTukey=post==='tukey'&&mode==='param';
+ if(useGH||useTukey){
+  for(let i=0;i<k;i++)for(let j=i+1;j<k;j++){
+   const [na,a]=gs[i],[nb,b]=gs[j],diff=meanOf(a)-meanOf(b),va=varianceOf(a),vb=varianceOf(b);
+   let q,df,se,pRaw;
+   if(useGH){const qa=va/a.length,qb=vb/b.length;se=Math.sqrt(qa+qb);df=(qa+qb)**2/(qa*qa/(a.length-1)+qb*qb/(b.length-1));q=Math.abs(diff)/Math.sqrt((qa+qb)/2);pRaw=studentizedRangeP(q,k,df)}
+   else{se=Math.sqrt(msw/2*(1/a.length+1/b.length));df=df2;q=Math.abs(diff)/se;pRaw=studentizedRangeP(q,k,df)}
+   pairs.push({a:na,b:nb,diff,q,df,se,p:pRaw,pAdj:pRaw,method:useGH?'Games–Howell':'Tukey–Kramer'});
+  }
+  postRows=pairs.map(x=>`<tr><td>${esc(x.a)} – ${esc(x.b)}</td><td>${fmt(x.diff)}</td><td>${fmt(x.q)}</td><td>${fmt(x.df)}</td><td>${fmtP(x.p)}</td><td>${x.p<alpha?'Oui':'Non'}</td></tr>`).join('');
+  postNote=useGH?'Games–Howell : statistique de l’étendue studentisée, degrés de liberté de Welch propres à chaque paire. Pas d’hypothèse d’égalité des variances.':'Tukey–Kramer : étendue studentisée avec variance résiduelle commune de l’ANOVA ; adapté aux comparaisons de toutes les paires sous hypothèse d’homogénéité des variances.';
+ }else{
+  for(let i=0;i<k;i++)for(let j=i+1;j<k;j++){
+   const [na,a]=gs[i],[nb,b]=gs[j],diff=meanOf(a)-meanOf(b);let t,df,se;
+   if(post==='games'||mode==='welch'){const q1=varianceOf(a)/a.length,q2=varianceOf(b)/b.length;se=Math.sqrt(q1+q2);df=(q1+q2)**2/(q1*q1/(a.length-1)+q2*q2/(b.length-1));t=diff/se}else{se=Math.sqrt(msw*(1/a.length+1/b.length));df=df2;t=diff/se}
+   pairs.push({a:na,b:nb,diff,t,df,se,p:2*(1-tCDF(Math.abs(t),df))});
+  }
+  const adj=holmAdjust(pairs);postRows=adj.map(x=>`<tr><td>${esc(x.a)} – ${esc(x.b)}</td><td>${fmt(x.diff)}</td><td>${fmt(x.t)}</td><td>${fmt(x.df)}</td><td>${fmt(x.p)}</td><td>${fmt(x.pAdj)}</td><td>${x.pAdj<alpha?'Oui':'Non'}</td></tr>`).join('');postNote='Tests t bilatéraux par paires avec correction de Holm. Cette méthode contrôle le risque familial ; elle n’est ni Tukey–Kramer ni Games–Howell.';
+ }
+
+}else{
+ let pairs=[];
+ for(let i=0;i<k;i++)for(let j=i+1;j<k;j++){
+  const [na,a]=gs[i],[nb,b]=gs[j];
+  if(post==='dscf'){
+   const r=dscfPair(a,b,k);pairs.push({a:na,b:nb,diff:r.z,q:r.q,z:r.z,p:r.p,pAdj:r.p});
+  }else{
+   const diff=Math.abs(rank.sums[i]/a.length-rank.sums[j]/b.length),se=Math.sqrt(N*(N+1)/12*tieCorr*(1/a.length+1/b.length)),z=diff/se,raw=2*(1-normalCDF(Math.abs(z)));pairs.push({a:na,b:nb,diff,z,p:raw});
+  }
+ }
+ if(post==='dscf'){
+  postRows=pairs.map(x=>`<tr><td>${esc(x.a)} – ${esc(x.b)}</td><td>${fmt(x.z)}</td><td>${fmt(x.q)}</td><td>${fmtP(x.p)}</td><td>${x.p<alpha?'Oui':'Non'}</td></tr>`).join('');
+  postNote='DSCF (Dwass–Steel–Critchlow–Fligner) : chaque paire est comparée par un test de rangs de type Wilcoxon, puis les comparaisons multiples sont prises en compte par la distribution de l’étendue studentisée. Les p-values affichées utilisent l’approximation asymptotique (ddl infinis) ; prudence avec les très petits échantillons et les nombreux ex æquo.';
+ }else{
+  const adj=holmAdjust(pairs);postRows=adj.map(x=>`<tr><td>${esc(x.a)} – ${esc(x.b)}</td><td>${fmt(x.diff)}</td><td>${fmt(x.z)}</td><td>${fmt(x.p)}</td><td>${fmt(x.pAdj)}</td><td>${x.pAdj<alpha?'Oui':'Non'}</td></tr>`).join('');postNote='Dunn–Holm compare les rangs moyens par paires après Kruskal–Wallis. Les p-values des comparaisons sont ajustées par la méthode de Holm.';
+ }
+}
+const title=mode==='nonparam'?'Kruskal–Wallis (analyse non paramétrique)':(mode==='welch'?'ANOVA de Welch à un facteur':'ANOVA classique à un facteur');const summary=mode!=='nonparam'?(p<alpha?'Au moins une moyenne diffère statistiquement au seuil de 5 %.':'Aucune différence globale statistiquement significative détectée au seuil de 5 %.'):(pKW<alpha?'Au moins une distribution/rang diffère statistiquement au seuil de 5 %.':'Aucune différence globale statistiquement significative détectée au seuil de 5 %.');const postTitle=mode!=='nonparam'?'Comparaisons post hoc des moyennes':(post==='dscf'?'Comparaisons post hoc des rangs (DSCF)':'Comparaisons post hoc des rangs (Dunn–Holm)');const postHeaders=mode!=='nonparam'?((post==='games'||post==='tukey'||mode==='welch')?'<th>Comparaison</th><th>Différence des moyennes</th><th>q (étendue studentisée)</th><th>ddl</th><th>p ajustée</th><th>Significatif</th>':'<th>Comparaison</th><th>Différence des moyennes</th><th>t</th><th>ddl</th><th>p brute</th><th>p ajustée Holm</th><th>Significatif</th>'):(post==='dscf'?'<th>Comparaison</th><th>|z| de Wilcoxon</th><th>q = √2 × |z|</th><th>p DSCF</th><th>Significatif</th>':'<th>Comparaison</th><th>Écart des rangs moyens</th><th>z</th><th>p brute</th><th>p ajustée Holm</th><th>Significatif</th>');
+$('anovaResults').innerHTML=`<div class="analysis-card"><strong>${title}</strong><div class="result-grid">${(mode==='welch'?[['F de Welch',fmt(F)],['p-value',fmt(p)],['ddl dénominateur',fmt(welchDf2)]]:mode==='param'?[['F',fmt(F)],['p-value',fmt(p)],['Eta carré (η²)',fmt(eta)]]:[['H de Kruskal–Wallis',fmt(H)],['p-value',fmt(pKW)],['Correction ex æquo',fmt(tieCorr)]]).map(x=>`<div class="result-box"><div class="k">${x[0]}</div><div class="v">${x[1]}</div></div>`).join('')}</div><p><strong>${summary}</strong></p>${mode!=='nonparam'?`<h3>Moyennes marginales estimées et IC à 95 %</h3><p class="muted">Dans ce modèle à un facteur, les moyennes marginales estimées correspondent aux moyennes de chaque groupe. ${mode==='welch'?'Les IC de chaque moyenne utilisent la variance propre au groupe et ses degrés de liberté.':'Les IC sont calculés à partir de l’erreur résiduelle commune de l’ANOVA classique.'}</p><div style="overflow-x:auto"><table><thead><tr><th>Groupe</th><th>n</th><th>Moyenne estimée</th><th>Écart-type observé</th><th>IC 95 %</th></tr></thead><tbody>${meansRows}</tbody></table></div><h3>Graphique des moyennes et IC 95 %</h3>${svgMeanPlot(means)}<p class="muted">Les barres représentent les intervalles de confiance individuels à 95 %, non ajustés pour les comparaisons multiples. Le chevauchement ou non des IC ne remplace pas le test post hoc.</p>`:`<h3>Description des groupes</h3><div style="overflow-x:auto"><table><thead><tr><th>Groupe</th><th>n</th><th>Médiane</th><th>Q1</th><th>Q3</th><th>IQR</th></tr></thead><tbody>${gs.map(([name,a])=>{const z=[...a].sort((x,y)=>x-y),q1=quantile(z,.25),q3=quantile(z,.75);return `<tr><td>${esc(name)}</td><td>${a.length}</td><td>${fmt(quantile(z,.5))}</td><td>${fmt(q1)}</td><td>${fmt(q3)}</td><td>${fmt(q3-q1)}</td></tr>`}).join('')}</tbody></table></div><p class="muted">Pour Kruskal–Wallis, les comparaisons portent sur les rangs. Les moyennes et leurs IC paramétriques ne sont donc pas présentés comme estimations issues de ce test.</p>`}<h3>${postTitle}</h3><p class="muted">${postNote}</p>${mode==='nonparam'&&pKW>=alpha?'<div class="notice">Le test global de Kruskal–Wallis n’est pas significatif. Les comparaisons post hoc doivent être considérées comme exploratoires et ne permettent pas ici de conclure à une différence confirmée entre deux groupes.</div>':''}<div style="overflow-x:auto"><table><thead><tr>${postHeaders}</tr></thead><tbody>${postRows}</tbody></table></div>${mode==='param'?(mode==='welch'?`<h3>Résultat de l’ANOVA de Welch</h3><p class="muted">F(${fmt(df1)}, ${fmt(welchDf2)}) = ${fmt(F)}. Welch ajuste le test global lorsque les variances et/ou les effectifs diffèrent. Les comparaisons affichées utilisent Games–Howell lorsque cette méthode est sélectionnée ; sinon, la procédure choisie est indiquée dans le tableau.</p>`:`<h3>Tableau de l’ANOVA</h3><div class="result-table"><table><thead><tr><th>Source</th><th>SC</th><th>ddl</th><th>CM</th><th>F</th></tr></thead><tbody><tr><td>Inter-groupes</td><td>${fmt(ssb)}</td><td>${df1}</td><td>${fmt(msb)}</td><td>${fmt(F)}</td></tr><tr><td>Intra-groupes</td><td>${fmt(ssw)}</td><td>${df2}</td><td>${fmt(msw)}</td><td>—</td></tr><tr><td>Total</td><td>${fmt(ssb+ssw)}</td><td>${N-1}</td><td>—</td><td>—</td></tr></tbody></table></div><p class="muted">Hypothèses : indépendance des observations (à justifier par le plan), résidus approximativement normaux et homogénéité des variances.</p>`):mode==='welch'?`<h3>Résultat de l’ANOVA de Welch</h3><p class="muted">F(${df1}, ${fmt(welchDf2)}) = ${fmt(F)}. Welch ajuste le test global en tenant compte des variances propres aux groupes et des effectifs. Le tableau classique des sommes des carrés ne s’applique pas directement à cette statistique.</p>`:`<p class="muted">Kruskal–Wallis travaille sur les rangs plutôt que sur les valeurs brutes. La p-value est calculée à partir de la loi du khi-deux avec k − 1 degrés de liberté, après correction de la statistique H pour les ex æquo. Il ne teste pas directement l’égalité des moyennes. Son interprétation comme différence de localisation suppose des distributions de forme comparable ; sinon, les différences peuvent aussi concerner la dispersion ou la forme.</p>`}<p class="muted">Valeurs exclues : ${excluded}. Les observations doivent être indépendantes. Les IC des moyennes affichés sont descriptifs et issus du modèle paramétrique ; pour l’analyse non paramétrique, ne pas les interpréter comme des IC fondés sur Kruskal–Wallis.</p>${mode==='nonparam'&&post==='dscf'?'<p class="muted">La procédure DSCF est ici calculée avec une approximation asymptotique de l’étendue studentisée. Les petits effectifs, les ex æquo nombreux et les distributions très discrètes appellent une interprétation prudente.</p>':''}</div>`;
+const result={method:mode!=='nonparam'?'ANOVA paramétrique':'Kruskal-Wallis',groups:gs.map(([name,a])=>({name,n:a.length,mean:meanOf(a),sd:Math.sqrt(varianceOf(a))})),N,k,ssBetween:ssb,ssWithin:ssw,df1,df2,F,p,etaSquared:eta,H,pKruskal:pKW,posthoc:post,excluded};project.analyses.push({id:makeId(),type:title,variable:project.headers[+vi],groupVariable:project.headers[+gi],createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},results:result,parameters:{alpha,posthoc:post,version:'0.8.8'}});markChanged();renderHistory();setStatus('Analyse de variance et comparaisons enregistrées dans le projet.')}
+function updatePosthocGuide(){const m=$('anovaMode')?.value,p=$('anovaPosthoc'),n=$('posthocRecommendation');if(!p||!n)return;const wanted=m==='welch'?'games':m==='nonparam'?'dunn':'tukey';if(!p.dataset.userChanged)p.value=wanted;n.textContent=m==='welch'?'Recommandation : Games–Howell. Cette méthode compare les moyennes par paires sans supposer l’égalité des variances.':'Recommandation : '+(m==='nonparam'?'Dunn–Holm ou DSCF après Kruskal–Wallis. Dunn–Holm compare les rangs moyens avec correction de Holm ; DSCF utilise une procédure spécifique de comparaisons par rangs.':'Tukey–Kramer avec l’ANOVA classique, si l’homogénéité des variances est défendable.');} $('anovaPosthoc').addEventListener('change',e=>{e.target.dataset.userChanged='1'});$('anovaMode').addEventListener('change',()=>{delete $('anovaPosthoc').dataset.userChanged;updatePosthocGuide()});updatePosthocGuide();
+$('runDiagnostics').addEventListener('click',runDiagnostics);$('runAnova').addEventListener('click',runAnova);
+function normalCDF(x){const z=Math.abs(x)/Math.sqrt(2),t=1/(1+0.3275911*z),erf=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z);return .5*(1+(x<0?-erf:erf))}
+function renderTestOptions(){const numOpts=project.headers.map((h,i)=>({h,i,n:getFilteredRows().filter(r=>num(r[i])!==null).length})).filter(x=>x.n>0&&(project.variableTypes?.[x.i]||guessVariableType(project.rows,x.i))==='quantitative');const oldV=$('testVariable').value,oldG=$('groupVariable').value;$('testVariable').innerHTML=numOpts.map(x=>`<option value="${x.i}">${esc(x.h)}</option>`).join('')||'<option value="">Aucune variable numérique</option>';if(numOpts.some(x=>String(x.i)===oldV))$('testVariable').value=oldV;const catOpts=project.headers.map((h,i)=>{const rows=getFilteredRows(),vals=[...new Set(rows.map(r=>String(r[i]??'')).filter(x=>x.trim()!==''))],numeric=rows.filter(r=>String(r[i]??'').trim()!=='').filter(r=>num(r[i])!==null).length,ratio=vals.length?numeric/rows.filter(r=>String(r[i]??'').trim()!=='').length:0;return {h,i,vals,ratio}}).filter(x=>x.vals.length>=2&&x.vals.length<=30&&['nominale','ordinale'].includes(project.variableTypes?.[x.i]||guessVariableType(project.rows,x.i)));$('groupVariable').innerHTML=catOpts.map(x=>`<option value="${x.i}">${esc(x.h)} (${x.vals.length} modalités)</option>`).join('')||'<option value="">Aucune variable de groupe adaptée</option>';if(catOpts.some(x=>String(x.i)===oldG))$('groupVariable').value=oldG;updateGroupLevels();if($('pairedVarA'))pairedOptions()}
+function updateGroupLevels(){const gi=$('groupVariable').value;if(gi==='')return;const vals=[...new Set(getFilteredRows().map(r=>String(r[Number(gi)]??'')).filter(x=>x.trim()!==''))].sort((a,b)=>a.localeCompare(b,'fr',{numeric:true}));const a=$('groupA').value,b=$('groupB').value;$('groupA').innerHTML=vals.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');$('groupB').innerHTML=vals.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');if(vals.includes(a))$('groupA').value=a;if(vals.includes(b)&&b!==$('groupA').value)$('groupB').value=b;else if(vals.length>1)$('groupB').value=vals[1]}
+$('groupVariable').addEventListener('change',updateGroupLevels);$('runTest').addEventListener('click',runTwoGroupTest);$('loadTestDemo').addEventListener('click',()=>{if(!project.rows.length){$('demo').click();}renderTestOptions()});
+
+function pairedOptions(){
+ const opts=project.headers.map((h,i)=>({h,i,n:getFilteredRows().filter(r=>num(r[i])!==null).length,vals:getFilteredRows().map(r=>r[i])}));
+ const q=opts.filter(x=>x.n>0&&(project.variableTypes?.[x.i]||guessVariableType(project.rows,x.i))==='quantitative');
+ const all=opts.filter(x=>getFilteredRows().some(r=>String(r[x.i]??'').trim()!==''));
+ const set=(id,arr,selected)=>{const el=$(id);if(!el)return;const old=selected??el.value;el.innerHTML=arr.map(x=>`<option value="${x.i}">${esc(x.h)}</option>`).join('')||'<option value="">Aucune variable disponible</option>';if(arr.some(x=>String(x.i)===String(old)))el.value=old;};
+ set('pairedVarA',q);set('pairedVarB',q,q[1]?.i);
+ set('pairedId',all);set('pairedCondition',all);set('pairedValue',q);
+ const update=()=>{const ci=Number($('pairedCondition').value),vals=[...new Set(getFilteredRows().map(r=>String(r[ci]??'')).filter(x=>x.trim()!==''))];const fill=(id,chosen)=>{const e=$(id),old=e.value;e.innerHTML=vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');if(vals.includes(old))e.value=old;else if(vals.length>1)e.value=chosen===1?vals[1]:vals[0]};fill('pairedLevelA',0);fill('pairedLevelB',1);};
+ $('pairedCondition').onchange=update;update();
+}
+function pairedGetPairs(){
+ const rows=getFilteredRows(),mode=$('pairedLayout').value,pairs=[];let excluded=0,duplicate=0,unmatched=0;
+ if(mode==='wide'){
+  const ai=Number($('pairedVarA').value),bi=Number($('pairedVarB').value);
+  if(!Number.isInteger(ai)||!Number.isInteger(bi)||ai===bi)return {error:'Choisis deux variables quantitatives distinctes.'};
+  for(const r of rows){const a=num(r[ai]),b=num(r[bi]);if(a===null||b===null){excluded++;continue}pairs.push({a,b,id:pairs.length+1})}
+ }else{
+  const ii=Number($('pairedId').value),ci=Number($('pairedCondition').value),vi=Number($('pairedValue').value),la=$('pairedLevelA').value,lb=$('pairedLevelB').value;
+  if([ii,ci,vi].some(x=>!Number.isInteger(x))||new Set([ii,ci,vi]).size!==3||la===lb)return {error:'Choisis un identifiant, une condition et une mesure distincts, ainsi que deux conditions différentes.'};
+  const map=new Map(),duplicateDetails=[];
+  for(const r of rows){
+   const id=String(r[ii]??'').trim(),cond=String(r[ci]??''),v=num(r[vi]);
+   if(!id||![la,lb].includes(cond))continue;
+   if(!map.has(id))map.set(id,{});
+   const obj=map.get(id);
+   if(Object.prototype.hasOwnProperty.call(obj,cond)){
+    duplicate++;
+    duplicateDetails.push({id,condition:cond});
+    continue;
+   }
+   obj[cond]=v;
+  }
+  // Un doublon dans une condition rend l'appariement ambigu :
+  // on bloque l'analyse plutôt que de retenir arbitrairement une ligne.
+  if(duplicateDetails.length){
+   const examples=[...new Map(duplicateDetails.map(x=>[`${x.id}|||${x.condition}`,x])).values()]
+    .slice(0,5)
+    .map(x=>`« ${x.id} » (${x.condition})`);
+   const more=duplicateDetails.length>5?` et ${duplicateDetails.length-5} autre(s) occurrence(s)`:''; 
+   return {error:`Appariement impossible : plusieurs mesures existent pour un même identifiant et une même condition : ${examples.join(', ')}${more}. Corrige les doublons avant de lancer le test.`,pairs:[],excluded:0,duplicate,unmatched};
+  }
+  for(const [id,o] of map){
+   if(!(la in o)||!(lb in o)||o[la]===null||o[lb]===null){unmatched++;continue}
+   pairs.push({a:o[la],b:o[lb],id});
+  }
+  excluded=unmatched;
+ }
+ return {pairs,excluded,duplicate,unmatched};
+}
+function runPaired(){
+ const got=pairedGetPairs();if(got.error){$('pairedResults').innerHTML=`<div class="notice">${esc(got.error)}</div>`;return}
+ const pairs=got.pairs;if(pairs.length<2){$('pairedResults').innerHTML='<div class="notice">Il faut au moins deux paires complètes pour effectuer une comparaison.</div>';return}
+ const dif=pairs.map(p=>p.b-p.a),n=dif.length,mu=meanOf(dif),sd=Math.sqrt(varianceOf(dif)),se=sd/Math.sqrt(n),alpha=Number($('pairedAlpha').value),crit=tQuantile(1-alpha/2,n-1),lo=mu-crit*se,hi=mu+crit*se;
+ const method=$('pairedMethod').value;let stat,p,methodName,detail='';
+ if(method==='t'){
+  if(!(sd>0)){p=1;stat=0}else{stat=mu/se;p=2*(1-tCDF(Math.abs(stat),n-1))}
+  methodName='t de Student apparié';
+ }else if(method==='sign'){
+  const nz=dif.filter(x=>x!==0),pos=nz.filter(x=>x>0).length,nn=nz.length;
+  let tail=0;for(let k=0;k<=Math.min(pos,nn-pos);k++)tail+=Math.exp(logGamma(nn+1)-logGamma(k+1)-logGamma(nn-k+1)-nn*Math.log(2));
+  p=Math.min(1,2*tail);stat=pos;methodName='Test des signes exact';detail=`Différences positives : ${pos}/${nn} ; négatives : ${nn-pos} ; nulles : ${n-nn}.`;
+ }else{
+  const nz=dif.filter(x=>x!==0),ranked=nz.map(x=>({abs:Math.abs(x),sign:Math.sign(x)})).sort((a,b)=>a.abs-b.abs);
+  let rankSum=0,tieTerm=0,rank=1;
+  for(let i=0;i<ranked.length;){let j=i+1;while(j<ranked.length&&ranked[j].abs===ranked[i].abs)j++;const avg=(rank+(rank+j-i-1))/2;for(let k=i;k<j;k++){ranked[k].rank=avg;ranked[k].sign>0&&(rankSum+=avg)}const t=j-i;tieTerm+=t*(t+1)*(2*t+1);rank=j+1;i=j}
+  const N=ranked.length,mean=N*(N+1)/4,variance=ranked.reduce((sum,r)=>sum+r.rank*r.rank,0)/4;
+  stat=rankSum;const z=variance>0?(rankSum-mean-(rankSum>mean?.5:rankSum<mean?-.5:0))/Math.sqrt(variance):0;p=2*(1-normalCDF(Math.abs(z)));methodName='Wilcoxon signé-rang (approximation normale)';
+  detail=`Paires non nulles : ${N} ; paires à différence nulle : ${n-N}. Variance calculée à partir des rangs moyens en présence d’ex æquo ; correction de continuité appliquée à l’approximation normale.`;
+ }
+ p=Math.max(0,Math.min(1,p));
+ const significant=p<alpha;
+ const sortedDif=[...dif].sort((a,b)=>a-b);
+ const diffTable=`<table><tbody><tr><th>Nombre de paires complètes</th><td>${n}</td></tr><tr><th>Paires exclues / incomplètes</th><td>${got.excluded}</td></tr><tr><th>Moyenne des différences (B − A)</th><td>${fmt(mu)}</td></tr><tr><th>Écart-type des différences</th><td>${fmt(sd)}</td></tr><tr><th>Médiane des différences</th><td>${fmt(quantile(sortedDif,.5))}</td></tr><tr><th>Q1 – Q3 des différences</th><td>${fmt(quantile(sortedDif,.25))} – ${fmt(quantile(sortedDif,.75))}</td></tr><tr><th>IC ${Math.round((1-alpha)*100)} % de la différence moyenne (t)</th><td>[${fmt(lo)} ; ${fmt(hi)}]</td></tr></tbody></table>`;
+ let resultRows=`<div class="metric-grid"><div class="metric"><span>Test</span><strong>${methodName}</strong></div><div class="metric"><span>Statistique</span><strong>${fmt(stat)}</strong></div><div class="metric"><span>p-value</span><strong>${p<0.000001?p.toExponential(3):fmt(p)}</strong></div></div><p><strong>${significant?'Différence statistiquement significative':'Aucune différence statistiquement significative'} au seuil α = ${fmt(alpha)}.</strong></p>${diffTable}<p class="muted">${detail}</p>`;
+ if(method==='t')resultRows+=`<p>Le test t apparié évalue si la moyenne des différences est nulle. t(${n-1}) = ${fmt(stat)}. L'intervalle de confiance porte sur la différence moyenne B − A.</p>`;
+ else if(method==='wilcoxon')resultRows+='<p>Wilcoxon utilise les rangs des valeurs absolues des différences et leur signe. La p-value affichée repose ici sur une approximation normale avec correction de continuité et correction des ex æquo ; elle doit être interprétée prudemment pour les petits effectifs.</p>';
+ else resultRows+='<p>Le test des signes évalue si les différences positives et négatives sont aussi fréquentes sous l’hypothèse nulle. Il ne tient pas compte de leur amplitude.</p>';
+ resultRows+='<div class="notice">Hypothèses à examiner : les paires doivent être correctement constituées ; les différences entre paires doivent être indépendantes. Pour le test t, examiner la normalité des différences, notamment avec un Q-Q plot. Shapiro–Wilk n’est pas encore disponible dans cette version. L’IC affiché est celui de la différence moyenne et ne constitue pas un IC adapté aux tests de rangs ou des signes.</div>';
+ $('pairedResults').innerHTML=`<div class="analysis-card"><h3>${methodName}</h3>${resultRows}</div>`;
+}
+$('pairedLayout').addEventListener('change',()=>{const wide=$('pairedLayout').value==='wide';$('pairedWideFields').classList.toggle('hidden',!wide);$('pairedLongFields').classList.toggle('hidden',wide);});
+$('runPaired').addEventListener('click',runPaired);
+function baIsId(h,values){
+ const name=String(h).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ if(/\b(id|identifiant|echantillon|sample|numero|num|cb|dossier|index|ligne)\b/.test(name))return true;
+ const a=values.map(num).filter(x=>x!==null);
+ if(a.length>=5&&a.length===values.length&&a.every(Number.isInteger)&&new Set(a).size/a.length>=.98){
+  const q=[...a].sort((x,y)=>x-y);if(q.every((v,i)=>i===0||v-q[i-1]===1))return true;
+ }
+ return false;
+}
+function baOptions(){return project.headers.map((h,i)=>({h,i,n:getFilteredRows().filter(r=>num(r[i])!==null).length,values:getFilteredRows().map(r=>r[i])})).filter(x=>x.n>0&&(project.variableTypes?.[x.i]||guessVariableType(project.rows,x.i))==='quantitative'&&!baIsId(x.h,x.values))}
+function baOptsHTML(opts,v){return '<option value="">— Choisir —</option>'+opts.map(x=>`<option value="${x.i}" ${String(x.i)===String(v)?'selected':''}>${esc(x.h)} (${x.n})</option>`).join('')}
+function addBAPair(a='',b=''){
+ const opts=baOptions(),d=document.createElement('div');d.className='two analysis-card ba-pair-row';d.style.marginTop='8px';
+ d.innerHTML=`<div class="field"><label>Méthode / mesure A</label><select class="ba-pair-a">${baOptsHTML(opts,a)}</select></div><div class="field"><label>Méthode / mesure B</label><select class="ba-pair-b">${baOptsHTML(opts,b)}</select></div><div class="row" style="grid-column:1/-1;margin-top:0"><button type="button" class="secondary ba-remove-pair">Retirer</button></div>`;
+ $('baPairs').appendChild(d);
+}
+function renderBlandOptions(){
+ const opts=baOptions(),ref=$('baReference').value,id=$('baId').value;
+ $('baReference').innerHTML=baOptsHTML(opts,ref);
+ if(opts.some(x=>String(x.i)===ref))$('baReference').value=ref;
+ const ids=project.headers.map((h,i)=>({h,i,v:getFilteredRows().map(r=>r[i])})).filter(x=>x.v.filter(v=>String(v??'').trim()!=='').length>0&&new Set(x.v.filter(v=>String(v??'').trim()!=='')).size===x.v.filter(v=>String(v??'').trim()!=='').length);
+ $('baId').innerHTML='<option value="">Aucun identifiant</option>'+ids.map(x=>`<option value="${x.i}">${esc(x.h)}</option>`).join('');
+ if(ids.some(x=>String(x.i)===id))$('baId').value=id;
+ if(!$('baPairs').children.length)addBAPair(opts[0]?.i??'',opts[1]?.i??'');
+ else document.querySelectorAll('.ba-pair-row').forEach(r=>{let a=r.querySelector('.ba-pair-a'),b=r.querySelector('.ba-pair-b'),av=a.value,bv=b.value;a.innerHTML=baOptsHTML(opts,av);b.innerHTML=baOptsHTML(opts,bv)});
+ $('baReferenceWrap').classList.toggle('hidden',$('baSetup').value!=='reference');
+ $('baFreeControls').classList.toggle('hidden',$('baSetup').value!=='free');
+}
+function drawBlandCanvas(c,pairs,bias,lo,hi,logMode){
+ const ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);if(!pairs.length)return;
+ const xs=pairs.map(p=>p.x),ys=pairs.map(p=>p.d),xmin=Math.min(...xs),xmax=Math.max(...xs);
+ let ymin=Math.min(...ys,lo),ymax=Math.max(...ys,hi),pad=(ymax-ymin)*.12||1;ymin-=pad;ymax+=pad;
+ const L=70,R=w-25,T=25,B=h-55,X=x=>L+(x-xmin)/(xmax-xmin||1)*(R-L),Y=y=>B-(y-ymin)/(ymax-ymin)*(B-T);
+ ctx.strokeStyle='#dce4e9';ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,B);ctx.lineTo(R,B);ctx.stroke();
+ ctx.font='13px sans-serif';ctx.fillStyle='#52636e';ctx.textAlign='center';ctx.fillText(logMode?'Moyenne des logarithmes':'Moyenne des deux méthodes',(L+R)/2,h-15);
+ ctx.save();ctx.translate(17,(T+B)/2);ctx.rotate(-Math.PI/2);ctx.fillText(logMode?'Logarithme du rapport A/B':'Différence A − B',0,0);ctx.restore();
+ function line(y,color,dash){ctx.beginPath();ctx.setLineDash(dash);ctx.strokeStyle=color;ctx.lineWidth=2;ctx.moveTo(L,Y(y));ctx.lineTo(R,Y(y));ctx.stroke();ctx.setLineDash([])}
+ line(bias,'#267c78',[]);line(lo,'#b46b2a',[8,5]);line(hi,'#b46b2a',[8,5]);ctx.fillStyle='#315c78';
+ pairs.forEach(p=>{ctx.beginPath();ctx.arc(X(p.x),Y(p.d),4,0,Math.PI*2);ctx.fill()});
+ ctx.fillStyle='#52636e';ctx.textAlign='left';ctx.fillText('Limite supérieure',L+8,Y(hi)-6);ctx.fillText('Biais',L+8,Y(bias)-6);ctx.fillText('Limite inférieure',L+8,Y(lo)-6);
+ ctx.textAlign='left';ctx.fillText(fmt(xmin),L,B+22);ctx.textAlign='right';ctx.fillText(fmt(xmax),R,B+22);
+}
+function runOneBland(ia,ib,mode,conf,idIndex,label,k){
+ if(ia===''||ib===''||ia===ib)return {error:'Choisis deux colonnes de mesure distinctes.'};
+ const pairs=[];let excluded=0,invalidLog=0;
+ getFilteredRows().forEach((r,i)=>{const a=num(r[+ia]),b=num(r[+ib]);if(a===null||b===null){excluded++;return}if(mode==='log'&&(a<=0||b<=0)){excluded++;invalidLog++;return}pairs.push({x:mode==='log'?(Math.log(a)+Math.log(b))/2:(a+b)/2,d:mode==='log'?Math.log(a/b):a-b})});
+ const n=pairs.length;if(n<3)return {error:`Il faut au moins 3 paires valides ; ${n} disponible(s).`,excluded};
+ const ds=pairs.map(p=>p.d),xs=pairs.map(p=>p.x),bias=meanOf(ds),sd=Math.sqrt(varianceOf(ds)),z=conf===.99?2.5758293035489:conf===.90?1.6448536269515:1.95996398454,lo=bias-z*sd,hi=bias+z*sd,alpha=1-conf,tcrit=tQuantile(1-alpha/2,n-1),biasSE=sd/Math.sqrt(n);
+ const biasCI=[bias-tcrit*biasSE,bias+tcrit*biasSE],loaSE=sd*Math.sqrt(1/n+z*z/(2*(n-1))),loCI=[lo-tcrit*loaSE,lo+tcrit*loaSE],hiCI=[hi-tcrit*loaSE,hi+tcrit*loaSE];
+ const mx=meanOf(xs),my=bias,Sxx=xs.reduce((s,x)=>s+(x-mx)**2,0),Sxy=pairs.reduce((s,p)=>s+(p.x-mx)*(p.d-my),0);let slope=NaN,slopeP=NaN,slopeCI=[NaN,NaN];
+ if(Sxx>0&&n>2){slope=Sxy/Sxx;const intercept=my-slope*mx,res=pairs.reduce((s,p)=>s+(p.d-intercept-slope*p.x)**2,0),se=Math.sqrt(res/(n-2)/Sxx),tc=tQuantile(1-alpha/2,n-2);if(se>0){slopeP=2*(1-tCDF(Math.abs(slope/se),n-2));slopeCI=[slope-tc*se,slope+tc*se]}}
+ const log=mode==='log',val=x=>log?Math.exp(x):x,loCount=pairs.filter(p=>p.d<lo||p.d>hi).length,aName=project.headers[+ia],bName=project.headers[+ib],cid='ba-chart-'+k;
+ const ci=a=>`[${fmt(val(a[0]))} ; ${fmt(val(a[1]))}]`,biasName=log?'Rapport géométrique moyen A/B':'Biais moyen (A − B)';
+ const stats={label,aName,bName,n,excluded,invalidLog,bias:val(bias),sd,lowerLimit:val(lo),upperLimit:val(hi),biasCI:biasCI.map(val),lowerLimitCI:loCI.map(val),upperLimitCI:hiCI.map(val),slope,slopeCI,slopeP,outside:loCount,mode,confidence:conf,relativeBiasPercent:log?(Math.exp(bias)-1)*100:null};
+ const vals=[['Paires analysées',n],['Paires exclues',excluded],[biasName,fmt(val(bias))],[`Limite inférieure ${conf*100}%`,fmt(val(lo))],[`Limite supérieure ${conf*100}%`,fmt(val(hi))],['Écart-type des différences',fmt(sd)],['Points hors limites',`${loCount} (${fmt(loCount/n*100)} %)`],...(log?[['Biais relatif',fmt(stats.relativeBiasPercent)+' %']]:[])];
+ const html=`<div class="analysis-card"><strong>${esc(label)} — ${log?'logarithmique':'classique'} : ${esc(aName)} vs ${esc(bName)}</strong><div class="result-grid">${vals.map(v=>`<div class="result-box"><div class="k">${esc(v[0])}</div><div class="v">${esc(v[1])}</div></div>`).join('')}</div><div class="result-table"><table><tbody><tr><th>IC du biais</th><td>${ci(biasCI)}</td></tr><tr><th>IC de la limite inférieure</th><td>${ci(loCI)}</td></tr><tr><th>IC de la limite supérieure</th><td>${ci(hiCI)}</td></tr><tr><th>Pente différence ~ moyenne</th><td>${fmt(slope)}</td></tr><tr><th>IC de la pente</th><td>[${fmt(slopeCI[0])} ; ${fmt(slopeCI[1])}]</td></tr><tr><th>p-value de la pente</th><td>${fmt(slopeP)}</td></tr><tr><th>Valeurs non positives exclues (log)</th><td>${invalidLog}</td></tr></tbody></table></div><p class="muted">${log?'Les valeurs exponentiées sont des rapports A/B ; le biais relatif vaut (rapport géométrique − 1) × 100.':'Les différences sont orientées A − B et exprimées dans l’unité des mesures.'} Les IC des limites utilisent une approximation usuelle. Les points hors limites sont un descriptif, pas un test d’acceptabilité.</p><h3>Diagramme de Bland-Altman</h3><canvas id="${cid}" width="900" height="430" style="height:320px"></canvas><div class="row"><button class="secondary ba-export-chart" data-canvas="${cid}" data-name="Bland-Altman-${k}">Exporter le graphique PNG</button></div></div>`;
+ return {html,pairs,bias,lo,hi,log,cid,stats};
+}
+function runBland(){
+ const mode=$('baMode').value,conf=Number($('baAlpha').value),id=$('baId').value,setup=$('baSetup').value;let configs=[];
+ if(setup==='reference'){const ref=$('baReference').value;if(ref===''){$('baResults').innerHTML='<div class="notice">Choisis une méthode de référence.</div>';return}configs=baOptions().filter(x=>String(x.i)!==ref).map(x=>({a:ref,b:String(x.i),label:`Référence ${project.headers[+ref]} vs ${x.h}`}))}
+ else configs=Array.from(document.querySelectorAll('.ba-pair-row')).map((r,i)=>({a:r.querySelector('.ba-pair-a').value,b:r.querySelector('.ba-pair-b').value,label:`Comparaison ${i+1}`}));
+ if(!configs.length){$('baResults').innerHTML='<div class="notice">Aucune comparaison à effectuer.</div>';return}
+ const out=[],errors=[];configs.forEach((c,i)=>{const r=runOneBland(c.a,c.b,mode,conf,id,c.label,i+1);if(r.error)errors.push(`${c.label} : ${r.error}`);else out.push(r)});
+ if(!out.length){$('baResults').innerHTML='<div class="notice">'+errors.map(esc).join('<br>')+'</div>';return}
+ $('baResults').innerHTML=(errors.length?'<div class="notice">'+errors.map(esc).join('<br>')+'</div>':'')+out.map(x=>x.html).join('');
+ $('baResults').querySelectorAll('.analysis-card').forEach((card,i)=>{const x=out[i];if(!x)return;registerCsvExport(card,{type:'Bland-Altman '+(mode==='log'?'logarithmique':'classique'),variable:x.stats.aName+' / '+x.stats.bName,createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},parameters:{mode,confidence:conf,setup,identifier:id===''?null:project.headers[+id]},results:x.stats},'StatLab-Bland-Altman-'+safeExportName(x.stats.aName)+'-'+safeExportName(x.stats.bName));});
+ out.forEach(x=>{const c=$(x.cid);if(c){drawBlandCanvas(c,x.pairs,x.bias,x.lo,x.hi,x.log);canvasToBlob(c).then(blob=>{if(blob)c.__statlabPngBlob=blob}).catch(()=>{})}project.analyses.push({id:makeId(),type:'Bland-Altman '+(mode==='log'?'logarithmique':'classique'),variable:x.stats.aName+' / '+x.stats.bName,createdAt:new Date().toISOString(),dataRevision:project.dataRevision,filter:{...project.filter},results:x.stats,parameters:{confidence:conf,setup,identifier:id===''?null:project.headers[+id],version:'0.6'}})});
+ markChanged();renderHistory();setStatus(`${out.length} comparaison(s) Bland-Altman calculée(s) et enregistrée(s).`);
+}
+$('baSetup').addEventListener('change',renderBlandOptions);
+$('baAddPair').addEventListener('click',()=>addBAPair());
+$('baPairs').addEventListener('click',e=>{if(e.target.classList.contains('ba-remove-pair'))e.target.closest('.ba-pair-row').remove()});
+$('runBland').addEventListener('click',runBland);
+$('loadBlandDemo').addEventListener('click',()=>{if(!project.rows.length)$('demo').click();renderBlandOptions()});
+$('baResults').addEventListener('click',e=>{const b=e.target.closest('.ba-export-chart');if(!b)return;const c=$(b.dataset.canvas);if(!c)return;const name=(b.dataset.name||'Bland-Altman')+'.png';if(c.__statlabPngBlob){b.disabled=true;exportBlob(name,c.__statlabPngBlob).catch(err=>setStatus('Export PNG impossible : '+(err?.message||String(err)))).finally(()=>{b.disabled=false});return}b.disabled=true;setStatus('Préparation du PNG… Le graphique sera prêt dans un instant.');canvasToBlob(c).then(blob=>{if(!blob)throw Error('Le navigateur n’a pas pu produire le fichier PNG.');c.__statlabPngBlob=blob;setStatus('Graphique prêt. Appuie de nouveau sur « Exporter le graphique PNG » pour choisir son enregistrement ou son partage.')}).catch(err=>setStatus('Export PNG impossible : '+(err?.message||String(err)))).finally(()=>{b.disabled=false})});
+function renderHistory(){const h=project.analyses||[];$('historyList').innerHTML=h.length?h.slice().reverse().map(a=>{const csvId=makeId();csvExportPayloads.set(csvId,{analysis:a,filename:'StatLab-'+safeExportName(a.type||'analyse')+'-'+safeExportName(a.variable||'resultats')+'.csv'});return `<div class="analysis-card"><strong>${esc(a.type)} · ${esc(a.variable)}</strong><div class="muted">${new Date(a.createdAt).toLocaleString('fr-FR')} · ${a.results?.['Effectif valide']??a.results?.n??'—'} valeurs valides · Révision des données ${a.dataRevision}</div><div class="small" style="margin-top:6px">${Object.entries(a.results||{}).slice(0,5).map(([k,v])=>`${esc(k)} : ${esc(v)}`).join(' · ')}</div>${a.dataRevision===project.dataRevision?'<span class="pill">Données identiques à la révision actuelle</span>':'<span class="pill" style="background:#fff2df;color:#865b18">Révision différente — résultats historiques</span>'}<div class="row"><button type="button" class="secondary csv-export" data-csv-id="${csvId}">↓ Exporter cette analyse en CSV</button></div></div>`}).join(''):'<div class="empty">Aucune analyse enregistrée. Lance une statistique descriptive pour commencer l’historique.</div>'}
+function renderAll(){renderData();renderHistory();$('projectName').value=project.name}
+function safeExportName(name){return String(name||'export').replace(/[\\/:*?"<>|\x00-\x1F]/g,'_').trim()||'export'}
+function canvasToBlob(canvas){return new Promise((resolve,reject)=>{try{if(typeof canvas.toBlob==='function'){canvas.toBlob(blob=>resolve(blob||null),'image/png');return}const data=canvas.toDataURL('image/png');const parts=data.split(',');if(parts.length!==2)throw Error('Image PNG invalide.');const mime=(parts[0].match(/data:([^;]+)/)||[])[1]||'image/png';const binary=atob(parts[1]);const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);resolve(new Blob([bytes],{type:mime}));}catch(err){reject(err)}})}
+async function exportBlob(name,blob){
+ const filename=safeExportName(name);if(!(blob instanceof Blob))blob=new Blob([blob],{type:'application/octet-stream'});
+ // 1) Native save dialog where supported (Chromium-based desktop browsers).
+ if(window.isSecureContext&&typeof window.showSaveFilePicker==='function'){
+  try{const handle=await window.showSaveFilePicker({suggestedName:filename});const writable=await handle.createWritable();await writable.write(blob);await writable.close();setStatus('Fichier enregistré : '+filename);return {ok:true,method:'save-picker'}}
+  catch(err){if(err&&err.name==='AbortError'){setStatus('Enregistrement annulé.');return {ok:false,cancelled:true}}}
+ }
+ // 2) Native share sheet when the browser can share files (notably iOS/iPadOS and Android).
+ if(typeof navigator.share==='function'&&typeof navigator.canShare==='function'&&typeof File==='function'){
+  try{const file=new File([blob],filename,{type:blob.type||'application/octet-stream'});if(navigator.canShare({files:[file]})){await navigator.share({files:[file],title:filename});setStatus('Fichier transmis au menu de partage : '+filename);return {ok:true,method:'share'}}}
+  catch(err){if(err&&err.name==='AbortError'){setStatus('Partage ou enregistrement annulé.');return {ok:false,cancelled:true}}}
+ }
+ // 3) Standard browser download fallback (Firefox, Safari desktop, and other browsers).
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.rel='noopener';a.style.display='none';document.body.appendChild(a);
+ try{if('download' in a){a.click();setStatus('Téléchargement demandé : '+filename+'. Vérifie les téléchargements du navigateur.')}else{const opened=window.open(url,'_blank','noopener');if(!opened){a.target='_self';a.click()}setStatus('Fichier prêt : '+filename+'. Enregistre-le depuis le nouvel onglet si nécessaire.')}}
+ catch(err){document.body.removeChild(a);URL.revokeObjectURL(url);throw err}
+ setTimeout(()=>{if(a.isConnected)a.remove()},1000);setTimeout(()=>URL.revokeObjectURL(url),60000);return {ok:true,method:'anchor-download'}
+}
+function download(name,content,type){const blob=content instanceof Blob?content:new Blob([content],{type:type||'application/octet-stream'});return exportBlob(name,blob)}
+async function saveProject(){project.name=$('projectName').value.trim()||'Projet sans nom';project.updatedAt=new Date().toISOString();const safe=project.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]+/gi,'_').slice(0,50)||'projet';try{const result=await download(safe+'.statlab',JSON.stringify(project,null,2),'application/json');if(result?.ok){persistDraft();$('saveState').textContent='Projet exporté';setStatus('Fichier .statlab exporté. Conserve-le dans un emplacement approuvé pour pouvoir le restaurer.')}}catch(err){setStatus('Export du projet impossible : '+(err?.message||String(err)))}}
+$('saveProject').addEventListener('click',saveProject);$('projectName').addEventListener('change',()=>{project.name=$('projectName').value.trim()||'Nouveau projet';markChanged()});$('openProject').addEventListener('click',()=>$('projectFile').click());$('projectFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const p=normaliseProject(JSON.parse(await f.text()));if(!Array.isArray(p.headers)||!Array.isArray(p.rows))throw Error('Structure de projet invalide.');project=p;renderAll();markChanged();setStatus('Projet restauré : '+f.name)}catch(err){alert('Ouverture impossible : '+err.message)}finally{e.target.value=''}});
+$('newProject').addEventListener('click',()=>{if(project.headers.length||project.analyses.length){if(!confirm('Créer un nouveau projet ? Pense à enregistrer le projet actuel avant de continuer.'))return}project={format:'statlab',version:2,id:makeId(),name:'Nouveau projet',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),sourceFilename:'',sourceFormat:'',headers:[],rows:[],variableTypes:{},filter:{column:'',value:''},analyses:[],dataRevision:0};renderAll();markChanged();setStatus('Nouveau projet créé.')});
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));['data','desc','history','tests','bland','models','quality','reports'].forEach(v=>$('view-'+v).classList.toggle('hidden',v!==b.dataset.view));if(b.dataset.view==='reports')renderReportChoices();if(b.dataset.view==='tests'){renderTestOptions();fillDiagnosticOptions();pairedOptions();}if(b.dataset.view==='bland')renderBlandOptions()}));
+
+// --- Générateur de rapports PDF (première version StatLab 0.7.3) ---
+function reportDateDefault(){
+ const d=new Date();const z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`;
+}
+function renderReportChoices(){
+ const list=$('reportAnalysisList');
+ if(!list)return;
+ const items=project.analyses||[];
+ if(!items.length){list.innerHTML='<div class="empty">Aucune analyse enregistrée. Lance d’abord une analyse descriptive, un test ou une comparaison Bland–Altman.</div>';return}
+ list.innerHTML=items.slice().reverse().map((a,revIndex)=>{
+  const index=items.length-1-revIndex;
+  const date=a.createdAt?new Date(a.createdAt).toLocaleString('fr-FR'):'Date inconnue';
+  return `<label class="report-select-item"><input type="checkbox" class="report-analysis-check" value="${index}"><span><strong>${esc(a.type||'Analyse')}</strong><br><span class="muted">${esc(a.variable||'')} · ${esc(date)}</span></span></label>`;
+ }).join('');
+ if(!$('reportDate').value)$('reportDate').value=reportDateDefault();
+}
+const reportLabels={
+ n:'Nombre de paires',n1:'Effectif du groupe 1',n2:'Effectif du groupe 2',
+ mean1:'Moyenne du groupe 1',mean2:'Moyenne du groupe 2',
+ differenceMean:'Différence des moyennes (groupe 1 − groupe 2)',
+ statistic:'Statistique de test',df:'Degrés de liberté',p:'Valeur p',
+ alpha:'Seuil de significativité (α)',effect:'Taille d’effet',
+ effectName:'Indicateur de taille d’effet',ciLow:'Borne inférieure de l’IC',
+ ciHigh:'Borne supérieure de l’IC',excluded:'Observations exclues',
+ method:'Méthode statistique',version:'Version du module',
+ variance:'Hypothèse sur les variances',alternative:'Hypothèse alternative',
+ confidenceLevel:'Niveau de confiance',scale:'Échelle d’analyse',
+ quartiles:'Méthode de calcul des quartiles',standardDeviation:'Écart-type',
+ correction:'Correction appliquée',paired:'Données appariées',
+ bias:'Biais moyen',lowerLimit:'Limite inférieure d’accord',
+ upperLimit:'Limite supérieure d’accord',mode:'Échelle d’analyse',
+ ratioBias:'Rapport moyen',validPairs:'Paires valides',
+ 'Effectif valide':'Effectif valide',
+ 'Valeurs manquantes / non numériques':'Valeurs manquantes / non numériques',
+ 'Moyenne':'Moyenne','Médiane':'Médiane','Écart-type (n−1)':'Écart-type (n−1)',
+ 'Erreur standard':'Erreur standard','Minimum':'Minimum','Maximum':'Maximum',
+ 'Premier quartile (Q1)':'Premier quartile (Q1)',
+ 'Troisième quartile (Q3)':'Troisième quartile (Q3)','IQR':'Écart interquartile (IQR)'
+};
+function reportLabel(k){
+ if(reportLabels[k])return reportLabels[k];
+ return String(k).replace(/([a-z0-9])([A-Z])/g,'$1 $2').replace(/_/g,' ')
+  .replace(/^./,c=>c.toUpperCase());
+}
+function reportValue(v,key=''){
+ if(v===null||v===undefined)return '—';
+ if(typeof v==='boolean')return v?'Oui':'Non';
+ if(typeof v==='number'){
+  if(key==='p')return v<0.001?'< 0,001':v.toLocaleString('fr-FR',{maximumFractionDigits:4});
+  if(Number.isInteger(v))return v.toLocaleString('fr-FR');
+  return v.toLocaleString('fr-FR',{maximumFractionDigits:4});
+ }
+ if(typeof v==='object')return JSON.stringify(v);
+ return String(v);
+}
+function reportAnalysisTable(a){
+ const r=a.results||{};
+ const rows=Object.entries(r);
+ const isTwoGroup=String(a.type||'').includes('Test deux groupes');
+ const ciLabel=isTwoGroup&&Number.isFinite(Number(r.alpha))?`IC ${(1-Number(r.alpha))*100}% de la différence des moyennes`:'IC de la différence des moyennes';
+ return `<table class="results-table"><thead><tr><th>Indicateur</th><th>Résultat</th></tr></thead><tbody>${rows.map(([k,v])=>{let label=reportLabel(k);if(isTwoGroup&&k==='ciLow')label=ciLabel+' — borne inférieure';if(isTwoGroup&&k==='ciHigh')label=ciLabel+' — borne supérieure';return `<tr><td>${esc(label)}</td><td>${esc(reportValue(v,k))}</td></tr>`}).join('')}</tbody></table>`;
+}
+function reportAnalysisSection(a,index){
+ const p=a.parameters||{},filter=a.filter||{};
+ const metadata=[
+  ['Analyse',a.type||'—'],['Variable(s)',a.variable||'—'],
+  ...(a.groupVariable?[['Variable de groupe',a.groupVariable]]:[]),
+  ...(a.groups?[['Groupes comparés',a.groups.join(' vs ')]]:[]),
+  ['Date du calcul',a.createdAt?new Date(a.createdAt).toLocaleString('fr-FR'):'—'],
+  ['Révision des données',a.dataRevision??'—'],
+  ['Filtre appliqué',filter.column?`${filter.column} = ${filter.value}`:'Aucun filtre'],
+  ['Paramètres',Object.entries(p).map(([k,v])=>`${reportLabel(k)} : ${reportValue(v,k)}`).join(' ; ')||'Non renseignés']
+ ];
+ return `<section class="analysis"><h2>${index+1}. ${esc(a.type||'Analyse statistique')}</h2><p class="lead">${esc(a.variable||'')}</p><table><tbody>${metadata.map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</tbody></table><h3>Résultats</h3>${reportAnalysisTable(a)}</section>`;
+}
+function buildReportHtml(selected,globalReport){
+ const title=$('reportTitle').value.trim()||'Rapport d’analyse statistique';
+ const author=$('reportAuthor').value.trim(),lab=$('reportLab').value.trim(),service=$('reportService').value.trim(),ref=$('reportReference').value.trim();
+ const date=$('reportDate').value||reportDateDefault();
+ const interpretation=$('reportInterpretation').value.trim();
+ const safeTitle=esc(title);
+ const coverFields=[['Auteur',author],['Laboratoire',lab],['Service',service],['Référence de l’étude',ref],['Date',date]].filter(x=>x[1]);
+ const body=selected.map(reportAnalysisSection).join('');
+ const synthesis=globalReport?`<section class="synthesis"><h2>Synthèse transversale</h2>${interpretation?`<p>${esc(interpretation).replace(/\n/g,'<br>')}</p>`:'<p class="muted">Aucune synthèse transversale n’a été rédigée. Cette section est volontairement laissée à compléter par l’auteur.</p>'}</section>`:'';
+ const individualNote=!globalReport&&interpretation?`<section><h2>Interprétation / commentaire</h2><p>${esc(interpretation).replace(/\n/g,'<br>')}</p></section>`:'';
+ return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${safeTitle}</title><style>
+ @page{size:A4;margin:18mm 17mm 18mm}*{box-sizing:border-box}body{font:10.5pt/1.48 Georgia,"Times New Roman",serif;color:#202b33;margin:0}h1,h2,h3{font-family:Arial,sans-serif;color:#183b50}h1{font-size:25pt;line-height:1.2;margin:0 0 14mm}h2{font-size:15pt;border-bottom:1px solid #9aabb5;padding-bottom:5px;margin:0 0 9px}h3{font-size:11pt;margin:14px 0 6px}.cover{height:230mm;min-height:0;display:flex;flex-direction:column;justify-content:center;page-break-after:always;break-after:page;position:relative;overflow:hidden}.brand{font:700 12pt Arial,sans-serif;letter-spacing:2px;color:#267c78;margin-bottom:25mm}.cover .rule{width:45mm;border-top:3px solid #267c78;margin:0 0 12mm}.cover-meta{margin-top:18mm;border-top:1px solid #d5dde2;padding-top:8mm}.cover>.footer{position:absolute;bottom:0;left:0;right:0;margin:0}.cover-meta p{margin:4px 0}.small{font:9pt Arial,sans-serif;color:#647580}.analysis{page-break-before:always;break-before:page}.analysis:first-child{page-break-before:auto;break-before:auto}h2,h3,.lead{break-after:avoid;page-break-after:avoid}.synthesis h2{break-after:avoid;page-break-after:avoid}.lead{font:italic 11pt Georgia,serif;color:#52636e}table{border-collapse:collapse;width:100%;margin:8px 0 15px;font:9pt Arial,sans-serif}th,td{border-bottom:1px solid #dce4e9;padding:4px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}tr{break-inside:avoid;page-break-inside:avoid}.results-table{font-size:8.5pt;margin:5px 0 10px}.results-table th,.results-table td{padding:3.5px 6px}th{width:34%;color:#52636e;background:#f5f8f9;font-weight:600}thead th{background:#eaf0f2}.synthesis{page-break-before:always;break-before:page}.synthesis p{orphans:3;widows:3}section{margin:0 0 18px}.footer{margin-top:20mm;border-top:1px solid #dce4e9;padding-top:5px;font:8pt Arial,sans-serif;color:#657680}.muted{color:#657680}.lead{margin:0 0 12px}@media screen{body{max-width:800px;margin:24px auto;padding:22px;background:white;box-shadow:0 2px 18px #0001}.cover{min-height:760px}} </style></head><body>
+ <div class="cover"><div class="brand">STATLAB · RAPPORT SCIENTIFIQUE</div><div class="rule"></div><h1>${safeTitle}</h1><p class="small">${globalReport?'RAPPORT GLOBAL':'RAPPORT INDIVIDUEL'} · StatLab 0.7.3</p><div class="cover-meta">${coverFields.map(([k,v])=>`<p><strong>${esc(k)} :</strong> ${esc(v)}</p>`).join('')}</div><div class="footer">Généré avec StatLab · Les résultats sont reproduits à partir des analyses enregistrées dans le projet.</div></div>
+ ${globalReport?`<section><h2>Sommaire</h2><ol>${selected.map(a=>`<li>${esc(a.type||'Analyse')} — ${esc(a.variable||'')}</li>`).join('')}<li>Synthèse transversale</li></ol></section>`:''}
+ ${body}${individualNote}${synthesis}
+ <div class="footer">StatLab 0.7.3 · Rapport généré le ${esc(new Date().toLocaleString('fr-FR'))}. Les données individuelles ne sont pas incluses.</div>
+ <script>window.addEventListener('load',()=>setTimeout(()=>window.print(),450));<\/script></body></html>`;
+}
+
+function formatReportNumber(value,digits=4){
+ const n=Number(value);
+ return Number.isFinite(n)?n.toLocaleString('fr-FR',{maximumFractionDigits:digits}):'non disponible';
+}
+function effectSizeComment(a){
+ const r=a.results||{},name=String(r.effectName||'').toLowerCase(),value=Number(r.effect);
+ if(!Number.isFinite(value))return '';
+ const abs=Math.abs(value);
+ // These conventional thresholds apply to standardized mean differences only.
+ if(name.includes('hedges')||name.includes('cohen')||name==='d'){
+  const level=abs<0.2?'négligeable':abs<0.5?'faible':abs<0.8?'modérée':'importante';
+  return ` Selon les repères conventionnels souvent utilisés pour une différence standardisée (0,2 ; 0,5 ; 0,8), l’ampleur observée est ${level} (|g| = ${formatReportNumber(abs)}). Ces seuils sont indicatifs et ne remplacent pas des critères de pertinence définis pour le domaine étudié.`;
+ }
+ // Do not apply Hedges/Cohen thresholds to unrelated effect-size metrics.
+ if(name.includes('cramer')){
+  const level=abs<0.1?'faible':abs<0.3?'modérée':abs<0.5?'forte':'très forte';
+  return ` Pour le V de Cramér, les repères indicatifs dépendent notamment du tableau de contingence ; la valeur observée est ${formatReportNumber(value)}. L’interprétation doit tenir compte des dimensions du tableau et du contexte.`;
+ }
+ if(name.includes('eta')){
+  return ` La taille d’effet est exprimée en ${r.effectName}. Son interprétation doit utiliser des repères adaptés au modèle et au plan d’étude ; aucun seuil générique n’est appliqué automatiquement ici.`;
+ }
+ if(name.includes('odds')||name.includes('rapport de cotes')){
+  return ` Cette mesure est un rapport de cotes : une valeur de 1 correspond à l’absence d’association sur cette échelle. Son importance s’interprète selon son éloignement de 1, son intervalle de confiance et le contexte.`;
+ }
+ return ` L’ampleur de cette taille d’effet doit être appréciée avec des repères propres à cet indicateur et au domaine d’application ; aucun seuil générique n’est appliqué automatiquement.`;
+}
+function autoInterpretationForAnalysis(a){
+ const r=a.results||{},type=String(a.type||'');
+ if(type.includes('descriptives')){
+  const n=Number(r['Effectif valide']),mean=r['Moyenne'],median=r['Médiane'],sd=r['Écart-type (n−1)'];
+  return `L’analyse descriptive porte sur ${Number.isFinite(n)?n:'un effectif non précisé'} observation(s) valide(s) pour la variable « ${a.variable||'non précisée'} ». La moyenne est de ${mean??'non disponible'}, la médiane de ${median??'non disponible'} et l’écart-type (calculé avec le dénominateur n−1) de ${sd??'non disponible'}. Ces indicateurs décrivent la distribution observée ; ils ne permettent pas, à eux seuls, d’établir une différence statistique entre groupes ni une relation causale.`;
+ }
+ if(type.includes('Test deux groupes')){
+  const p=Number(r.p),alpha=Number(r.alpha),diff=Number(r.differenceMean),effect=r.effect;
+  let conclusion='La conclusion inférentielle ne peut pas être formulée car la valeur p ou le seuil alpha n’est pas disponible.';
+  if(Number.isFinite(p)&&Number.isFinite(alpha)){
+   conclusion=p<alpha
+    ?`La valeur p (${formatReportNumber(p)}) est inférieure au seuil alpha (${formatReportNumber(alpha)}). Le résultat est statistiquement significatif au seuil retenu.`
+    :`La valeur p (${formatReportNumber(p)}) est supérieure ou égale au seuil alpha (${formatReportNumber(alpha)}). Le résultat n’est pas statistiquement significatif au seuil retenu ; cela ne démontre pas l’absence d’effet.`;
+  }
+  const effectText=effect!==undefined&&effect!==null?`; la taille d’effet (${r.effectName||'indicateur'}) est ${formatReportNumber(effect)}`:'';
+  const ciText=Number.isFinite(Number(r.ciLow))&&Number.isFinite(Number(r.ciHigh))?` L’intervalle de confiance ${(1-alpha)*100}% affiché dans le tableau concerne la différence des moyennes, et non la taille d’effet.`:' Aucun intervalle de confiance de la différence des moyennes n’est disponible dans les résultats enregistrés.';
+  const effectUncertainty=' La taille d’effet est présentée séparément ; aucun intervalle de confiance de cette taille d’effet n’est fourni par cette analyse.';
+  return `La comparaison porte sur ${a.variable||'la variable étudiée'} entre les groupes ${a.groups?.[0]??'A'} et ${a.groups?.[1]??'B'} (${type}). La différence de moyennes enregistrée est ${formatReportNumber(diff)}${effectText}. ${conclusion}${ciText}${effectUncertainty}${effectSizeComment(a)} L’interprétation doit également tenir compte des effectifs, des hypothèses du test et de la pertinence scientifique de l’écart observé.`;
+ }
+ if(type.includes('Bland-Altman')){
+  const n=Number(r.n),bias=r.bias,lo=r.lowerLimit,hi=r.upperLimit,mode=r.mode;
+  return `La comparaison de Bland–Altman entre ${a.variable||'les deux méthodes'} repose sur ${Number.isFinite(n)?n:'un nombre non précisé'} paire(s) valide(s). Le biais estimé est ${bias??'non disponible'} ; les limites d’accord estimées sont ${lo??'non disponibles'} et ${hi??'non disponibles'}. ${mode==='log'?'L’analyse est réalisée sur l’échelle logarithmique ; les valeurs exponentiées s’interprètent comme des rapports.':'Les différences sont orientées selon l’ordre A − B.'} L’acceptabilité de l’accord ne peut être conclue qu’en comparant ces limites à des critères définis a priori et adaptés à l’usage. Les intervalles des limites peuvent être approximatifs selon la méthode implémentée.`;
+ }
+ return `L’analyse « ${type||'analyse statistique'} » porte sur ${a.variable||'une variable non précisée'}. Les résultats numériques sont présentés dans le tableau ci-dessous. Une interprétation spécifique nécessite de vérifier la méthode, ses hypothèses, les effectifs et les critères d’acceptabilité pertinents.`;
+}
+function proposeReportInterpretation(){
+ const selected=[...document.querySelectorAll('.report-analysis-check:checked')].map(x=>project.analyses[Number(x.value)]).filter(Boolean);
+ if(!selected.length){$('reportStatus').textContent='Sélectionne au moins une analyse avant de générer une proposition.';return}
+ if(selected.length===1)$('reportInterpretation').value=autoInterpretationForAnalysis(selected[0]);
+ else $('reportInterpretation').value=selected.map((a,i)=>`${i+1}. ${a.type||'Analyse'} — ${a.variable||''}\n${autoInterpretationForAnalysis(a)}`).join('\n\n')+'\n\nSynthèse transversale : ces analyses sont présentées côte à côte. Leur rapprochement ne constitue pas une méta-analyse ; toute conclusion commune doit tenir compte des différences de méthodes, de variables et d’effectifs.';
+ $('reportStatus').textContent='Proposition générée. Relis-la et modifie-la avant l’export PDF.';
+}
+
+function launchPdfReport(globalReport){
+ const checked=[...document.querySelectorAll('.report-analysis-check:checked')].map(x=>project.analyses[Number(x.value)]).filter(Boolean);
+ if(!checked.length){$('reportStatus').textContent='Sélectionne au moins une analyse.';return}
+ if(!globalReport&&checked.length!==1){$('reportStatus').textContent='Pour un rapport individuel, sélectionne exactement une analyse.';return}
+ const win=window.open('','_blank');
+ if(!win){$('reportStatus').textContent='La fenêtre du rapport a été bloquée. Autorise les fenêtres surgissantes pour ce site puis réessaie.';return}
+ win.document.open();win.document.write(buildReportHtml(checked,globalReport));win.document.close();
+ $('reportStatus').textContent='Rapport préparé. Dans la fenêtre d’impression, choisis « Enregistrer en PDF » ou le partage/impression sur iPad.';
+}
+$('reportAutoInterpret')?.addEventListener('click',proposeReportInterpretation);
+$('reportIndividual')?.addEventListener('click',()=>launchPdfReport(false));
+$('reportGlobal')?.addEventListener('click',()=>launchPdfReport(true));
+$('reportRefresh')?.addEventListener('click',renderReportChoices);
+
+loadDraft();renderAll();
+window.addEventListener('error', event => {
+  const message = event?.message || 'Erreur JavaScript inconnue';
+  const status = document.getElementById('status');
+  if (status) status.textContent = 'Erreur de l’application : ' + message;
+});
+window.addEventListener('unhandledrejection', event => {
+  const message = event?.reason?.message || String(event?.reason || 'Erreur asynchrone inconnue');
+  const status = document.getElementById('status');
+  if (status) status.textContent = 'Erreur de traitement : ' + message;
+});
+// Service worker désactivé dans cette version de test : aucun fichier sw.js n'est fourni.
+</script></body></html>
