@@ -1,0 +1,22 @@
+{
+  "format": "statlab",
+  "version": 2,
+  "id": "p-mwotsxx7-mj3ign",
+  "name": "Nouveau projet",
+  "createdAt": "2026-11-20T10:18:12.284Z",
+  "updatedAt": "2026-11-20T10:32:40.931Z",
+  "sourceFilename": "",
+  "sourceFormat": "",
+  "headers": [],
+  "rows": [],
+  "variableTypes": {},
+  "filter": {
+    "column": "",
+    "value": ""
+  },
+  "analyses": [],
+  "validations": [],
+  "experimentalPlans": [],
+  "activeExperimentalPlanId": null,
+  "dataRevision": 0
+}
