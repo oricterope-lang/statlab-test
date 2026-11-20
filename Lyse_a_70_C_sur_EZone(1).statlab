@@ -1,0 +1,22 @@
+{
+  "format": "statlab",
+  "version": 2,
+  "id": "p-mworeb7m-i8juv9",
+  "name": "Lyse à 70°C sur EZone",
+  "createdAt": "2026-11-20T09:10:50.434Z",
+  "updatedAt": "2026-11-20T09:21:24.157Z",
+  "sourceFilename": "",
+  "sourceFormat": "",
+  "headers": [],
+  "rows": [],
+  "variableTypes": {},
+  "filter": {
+    "column": "",
+    "value": ""
+  },
+  "analyses": [],
+  "validations": [],
+  "experimentalPlans": [],
+  "activeExperimentalPlanId": null,
+  "dataRevision": 0
+}
